@@ -70,6 +70,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloudflare-generated-image
-          path: output/generated/*.png
+          path: output/generated/*
           if-no-files-found: error
           retention-days: 7
