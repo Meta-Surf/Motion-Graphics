@@ -27,15 +27,18 @@ Transformar um roteiro de pelo menos 30 segundos em um Short 9:16 com:
 
 ## API de imagem
 
-A API ainda não está escolhida nem conectada. A arquitetura deve isolar o provedor em `src/providers/`, sem credenciais no código ou no Git. A integração deve permitir gerar e regenerar uma imagem por cena, mantendo versão do modelo e prompt. O provedor e a cobrança serão decididos antes de habilitar chamadas pagas.
+Integração inicial disponível: **Cloudflare Workers AI com FLUX.2 Klein 4B**. O adaptador em `src/providers/cloudflare_workers_ai.py` envia um prompt e salva a imagem PNG; credenciais são lidas do ambiente e nunca devem ser versionadas. Veja [a configuração e os comandos](docs/cloudflare-workers-ai.md).
+
+A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. A cota gratuita é diária e o consumo depende do tamanho da imagem. Revise os preços atuais antes de gerar lotes.
 
 ## Estrutura
 
 - `docs/architecture.md` — arquitetura e decisões de qualidade.
 - `docs/visual-quality-gates.md` — critérios para aprovar imagens e montagem.
-- `src/providers/` — adaptadores futuros de geração de imagem.
-- `config.example.env` — nomes de configuração sem segredos.
+- `docs/cloudflare-workers-ai.md` — configuração, uso e custos do provedor.
+- `src/providers/cloudflare_workers_ai.py` — adaptador de geração via Workers AI.
+- `.env.example` — nomes de configuração sem segredos.
 
 ## Execução
 
-O pipeline final ainda está em desenvolvimento. O pacote contém apenas a estrutura reutilizável do projeto; não inclui nenhum Short finalizado ou conteúdo específico do vídeo anterior.
+O pipeline completo de storyboard, narração e render ainda está em desenvolvimento. O adaptador de imagem pode ser usado isoladamente conforme a documentação do provedor.
