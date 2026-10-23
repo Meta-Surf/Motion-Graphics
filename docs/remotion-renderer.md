@@ -5,7 +5,7 @@ O Remotion entra como segundo renderer do projeto. Ele não substitui o pipeline
 ## O que a composição adiciona
 
 - Imagem com movimento de câmera (zoom e deriva lateral).
-- Títulos cinéticos com palavra destacada, entrata escalonada e legendas animadas.
+- Títulos cinéticos com palavra destacada, entrada escalonada e legendas animadas.
 - Elementos em primeiro plano que se movem independentemente do fundo.
 - Cinco layouts reutilizáveis: hero, interface, timeline, stat e orbit.
 - Painéis, cartões, progressos, formas orbitais e sinalização de capítulo.
@@ -46,7 +46,8 @@ Passe os dados de cada cena ao componente ShortComposition:
   scenes: [{
     id: "scene-01",
     durationInFrames: 120,
-    image: "https://example.com/scene-01.jpg",\n    foregroundImage: "https://example.com/scene-01-cutout.png",
+    image: "https://example.com/scene-01.jpg",
+    foregroundImage: "https://example.com/scene-01-cutout.png",
     eyebrow: "ABERTURA",
     headline: "Uma ideia curta e clara",
     accent: "clara",
@@ -59,7 +60,7 @@ Passe os dados de cada cena ao componente ShortComposition:
 }
 ```
 
-Para assets locais, salve as imagens sob remotion/public/ e use staticFile("images/scene-01.jpg") ao montar os props. durationInFrames é por cena; a 30 fps, 120 frames equivalem a 4 segundos. A soma das cenas define a duração. Áudio e legendas com timecodes reais podem ser conectados na próxima etapa.
+Para assets locais, salve as imagens sob remotion/public/ e use staticFile("images/scene-01.jpg") ao montar os props. durationInFrames é por cena; a 30 fps, 120 frames equivalem a 4 segundos. A soma das cenas define a duração. A narração pode ser passada opcionalmente pela propriedade audio, apontando para um arquivo local. As legendas deste primeiro template são por cena; sincronização palavra a palavra com timecodes reais fica para uma próxima etapa. As cenas também aceitam foregroundImage para um segundo plano visual: use um recorte transparente do sujeito ou objeto para animá-lo à frente do fundo, com entrada, deriva e sombra próprias. As cenas se sobrepõem por 12 frames para criar uma dissolvência curta.
 
 Use cada layout pela intenção narrativa: hero para promessa, interface para fluxo, timeline para etapas, stat para dado e orbit para relações. Um Short de 35–55 segundos normalmente precisa de 7–12 cenas breves, com algumas cenas mais limpas sem cartões.
 
