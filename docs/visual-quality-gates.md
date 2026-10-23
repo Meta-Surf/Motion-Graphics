@@ -11,7 +11,7 @@
 ## Movimento e composição
 
 - 9:16 com área segura para interface do Shorts e legendas.
-- Pan/zoom/parallax sutis, sem aparência de slideshow parado.
+- Pan/zoom/parallax sutis, sem aparência de slideshow parado.\n- A imagem serve a cena; gráficos de primeiro plano, títulos, relações e transições carregam movimento independente quando ajudam a explicação.\n- Alternar cenas com e sem overlays para evitar excesso de cartões e interfaces.
 - Alternar planos e composição para sustentar ritmo sem transições excessivas.
 - Legendas com contraste alto e no máximo 2–3 linhas legíveis em telefone.
 - Não cobrir detalhes visuais importantes com legendas ou UI.
