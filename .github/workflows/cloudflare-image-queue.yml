@@ -73,7 +73,7 @@ jobs:
                   "artifact_retention_days": 7,
                   "images": files,
               }
-              result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+              result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
 
       - name: Mark jobs complete
