@@ -46,7 +46,7 @@ Passe os dados de cada cena ao componente ShortComposition:
   scenes: [{
     id: "scene-01",
     durationInFrames: 120,
-    image: "https://example.com/scene-01.jpg",
+    image: "https://example.com/scene-01.jpg",\n    foregroundImage: "https://example.com/scene-01-cutout.png",
     eyebrow: "ABERTURA",
     headline: "Uma ideia curta e clara",
     accent: "clara",
