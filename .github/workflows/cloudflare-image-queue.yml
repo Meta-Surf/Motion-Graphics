@@ -7,7 +7,7 @@ on:
       - ".github/workflows/cloudflare-image-queue.yml"
       - "src/process_image_queue.py"
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "17 * * * *"
 
 permissions:
   contents: write
