@@ -14,7 +14,7 @@ O workflow `.github/workflows/generate-cloudflare-image.yml` gera uma imagem qua
 4. Informe prompt, largura e altura. Para 9:16, o padrão é 1024×1792.
 5. Após a execução, abra o workflow concluído e baixe o artefato `cloudflare-generated-image`.
 
-Os valores de secret são ocultos pelo GitHub e o workflow não os grava no repositório. Nunca os inclua em logs, prompts, arquivos versionados ou mensagens. O artefato de imagem fica disponível por sete dias.
+Os valores de secret são ocultos pelo GitHub e o workflow não os grava no repositório. Nunca os inclua em logs, prompts, arquivos versionados ou mensagens. O adaptador detecta se o retorno é PNG, JPEG ou WebP e salva com a extensão correspondente. O artefato fica disponível por sete dias.
 
 ## Gerar localmente
 
@@ -41,7 +41,7 @@ $env:CLOUDFLARE_API_TOKEN = "seu_token"
 python src/providers/cloudflare_workers_ai.py --prompt "descrição visual detalhada" --width 1024 --height 1792 --output output/scenes/scene-01.png
 ```
 
-Opcionalmente, use `--seed 1234` para solicitar uma seed reproduzível. O script verifica as credenciais, envia multipart, valida a resposta PNG e salva o arquivo. O modelo aceita dimensões entre 256 e 1920.
+Opcionalmente, use `--seed 1234` para solicitar uma seed reproduzível. O script verifica as credenciais, envia multipart, identifica o formato de imagem retornado (PNG, JPEG ou WebP) e salva o arquivo com a extensão correta. O modelo aceita dimensões entre 256 e 1920.
 
 ## Custos e limites
 
