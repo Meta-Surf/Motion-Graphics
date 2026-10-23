@@ -1,0 +1,58 @@
+name: Process Cloudflare image queue
+
+on:
+  push:
+    paths:
+      - "jobs/pending/**"
+      - ".github/workflows/cloudflare-image-queue.yml"
+      - "src/process_image_queue.py"
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cloudflare-image-queue
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Process queued images
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python src/process_image_queue.py
+
+      - name: Upload generated images
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-generated-images-${{ github.run_id }}
+          path: output/generated/**
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Mark jobs complete
+        run: |
+          if git diff --quiet -- jobs/pending jobs/processed; then
+            echo "Nenhum job novo para marcar como concluído."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add jobs/pending jobs/processed
+          git commit -m "Mark Cloudflare image jobs complete"
+          git push
