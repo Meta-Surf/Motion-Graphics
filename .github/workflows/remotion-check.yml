@@ -1,0 +1,27 @@
+name: Remotion typecheck
+
+on:
+  push:
+    paths:
+      - "remotion/**"
+      - ".github/workflows/remotion-check.yml"
+  pull_request:
+    paths:
+      - "remotion/**"
+      - ".github/workflows/remotion-check.yml"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: remotion
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: remotion/package-lock.json
+      - run: npm install
+      - run: npm run typecheck
