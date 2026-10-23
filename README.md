@@ -39,6 +39,10 @@ A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. A cota
 - `src/providers/cloudflare_workers_ai.py` — adaptador de geração via Workers AI.
 - `.env.example` — nomes de configuração sem segredos.
 
+## Renderer opcional com Remotion
+
+O repositório agora inclui um renderer alternativo em `remotion/` para composições mais dinâmicas: títulos cinéticos, painéis em primeiro plano, layouts narrativos, animações por frame e movimento de câmera. Ele é opcional; o adaptador Cloudflare, a fila de imagens e os workflows atuais continuam disponíveis. A demo vertical tem 36 segundos e abre sem assets externos. Consulte [o guia do Remotion](docs/remotion-renderer.md).
+
 ## Execução
 
 O pipeline completo de storyboard, narração e render ainda está em desenvolvimento. O adaptador de imagem pode ser usado isoladamente conforme a documentação do provedor.
