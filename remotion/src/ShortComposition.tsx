@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Img, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Img, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 
 export type SceneLayout = "hero" | "interface" | "timeline" | "stat" | "orbit";
 export type ShortScene = {
@@ -15,7 +15,7 @@ export type ShortScene = {
   metric?: string;
   visualLabel?: string;
 };
-export type ShortProps = { title: string; accentColor: string; scenes: ShortScene[] };
+export type ShortProps = { title: string; accentColor: string; scenes: ShortScene[]; audio?: string };
 const clamp = { extrapolateLeft: "clamp" as const, extrapolateRight: "clamp" as const };
 
 const Headline: React.FC<{scene: ShortScene; color: string}> = ({scene, color}) => {
@@ -90,12 +90,12 @@ const Scene: React.FC<{scene:ShortScene;color:string;index:number}> = ({scene,co
   </AbsoluteFill>;
 };
 
-export const ShortComposition: React.FC<ShortProps> = ({scenes,accentColor}) => {
+export const ShortComposition: React.FC<ShortProps> = ({scenes,accentColor,audio}) => {
   let cursor=0;
   const positioned=scenes.map(scene=>{const from=cursor;cursor+=scene.durationInFrames;return {scene,from};});
   const frame=useCurrentFrame();
   return <AbsoluteFill style={{backgroundColor:"#080c16",overflow:"hidden"}}>
     {positioned.map(({scene,from},index)=><Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames} layout="none"><Scene scene={scene} color={accentColor} index={index}/></Sequence>)}
-    <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,cursor],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
+    {audio && <Audio src={audio}/>}\n    <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,cursor],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
   </AbsoluteFill>;
 };
