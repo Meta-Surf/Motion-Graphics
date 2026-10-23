@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""Generate a still image with Cloudflare Workers AI FLUX.2 Klein 4B.
+
+Required environment:
+  CLOUDFLARE_ACCOUNT_ID
+  CLOUDFLARE_API_TOKEN (Workers AI: Run permission)
+"""
+from __future__ import annotations
+
+import argparse
+import base64
+import json
+import os
+import re
+import sys
+import urllib.error
+import urllib.request
+import uuid
+from pathlib import Path
+
+DEFAULT_MODEL = "@cf/black-forest-labs/flux-2-klein-4b"
+API_ROOT = "https://api.cloudflare.com/client/v4/accounts"
+
+
+def multipart(fields: dict[str, str]) -> tuple[bytes, str]:
+    boundary = "----MotionGraphics" + uuid.uuid4().hex
+    chunks: list[bytes] = []
+    for name, value in fields.items():
+        chunks.extend([
+            f"--{boundary}\r\n".encode(),
+            f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode(),
+            value.encode("utf-8"),
+            b"\r\n",
+        ])
+    chunks.append(f"--{boundary}--\r\n".encode())
+    return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
+
+
+def generate(prompt: str, output: Path, width: int, height: int,
+             model: str, seed: int | None) -> None:
+    account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
+    token = os.getenv("CLOUDFLARE_API_TOKEN", "").strip()
+    if not account_id or not token:
+        raise SystemExit(
+            "Defina CLOUDFLARE_ACCOUNT_ID e CLOUDFLARE_API_TOKEN no ambiente. "
+            "Não coloque o token em arquivos versionados."
+        )
+    if not re.fullmatch(r"[0-9a-fA-F]{32}", account_id):
+        raise SystemExit("CLOUDFLARE_ACCOUNT_ID parece inválido (esperado ID de 32 caracteres).")
+    if not 256 <= width <= 1920 or not 256 <= height <= 1920:
+        raise SystemExit("Largura e altura devem ficar entre 256 e 1920.")
+    fields = {"prompt": prompt, "width": str(width), "height": str(height)}
+    if seed is not None:
+        fields["seed"] = str(seed)
+    body, content_type = multipart(fields)
+    url = f"{API_ROOT}/{account_id}/ai/run/{model}"
+    request = urllib.request.Request(
+        url, data=body, method="POST",
+        headers={"Authorization": f"Bearer {token}", "Content-Type": content_type},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=300) as response:
+            payload = response.read()
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", "replace")
+        # Avoid printing request headers or the token.
+        raise SystemExit(f"Cloudflare retornou HTTP {exc.code}: {detail[:1500]}") from None
+    except urllib.error.URLError as exc:
+        raise SystemExit(f"Falha de conexão com Cloudflare: {exc.reason}") from None
+
+    content_type = ""
+    try:
+        data = json.loads(payload)
+        result = data.get("result", data)
+        image_data = result.get("image") if isinstance(result, dict) else None
+        if not image_data:
+            raise SystemExit(f"Resposta sem imagem: {json.dumps(data, ensure_ascii=False)[:1500]}")
+        image_bytes = base64.b64decode(image_data, validate=True)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        # Some models/API versions may return the image bytes directly.
+        image_bytes = payload
+    except (ValueError, TypeError) as exc:
+        raise SystemExit(f"Resposta de imagem inválida: {exc}") from None
+
+    if not image_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise SystemExit("A resposta não parece ser um PNG válido; nenhum arquivo foi salvo.")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(image_bytes)
+    print(f"Imagem salva: {output} ({len(image_bytes):,} bytes)")
+    print(f"Modelo: {model} | dimensão solicitada: {width}x{height}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Gera imagem com Cloudflare Workers AI.")
+    parser.add_argument("--prompt", required=True, help="Descrição visual da imagem.")
+    parser.add_argument("--output", type=Path, required=True, help="Caminho do PNG de saída.")
+    parser.add_argument("--width", type=int, default=1024)
+    parser.add_argument("--height", type=int, default=1792)
+    parser.add_argument("--model", default=os.getenv("CLOUDFLARE_IMAGE_MODEL", DEFAULT_MODEL))
+    parser.add_argument("--seed", type=int)
+    args = parser.parse_args()
+    if not args.prompt.strip():
+        parser.error("--prompt não pode ficar vazio")
+    generate(args.prompt, args.output, args.width, args.height, args.model, args.seed)
+
+
+if __name__ == "__main__":
+    main()
