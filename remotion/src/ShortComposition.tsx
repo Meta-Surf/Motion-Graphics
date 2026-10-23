@@ -74,11 +74,13 @@ const Foreground: React.FC<{scene: ShortScene; color: string}> = ({scene, color}
 const Scene: React.FC<{scene:ShortScene;color:string;index:number}> = ({scene,color,index}) => {
   const f=useCurrentFrame();
   const {fps}=useVideoConfig();
-  const opacity=interpolate(f,[0,10,scene.durationInFrames-12,scene.durationInFrames],[0,1,1,0],clamp);
+  const contentOpacity=interpolate(f,[0,10,scene.durationInFrames-12,scene.durationInFrames-11],[0,1,1,0],clamp);
+  const backgroundOpacity=interpolate(f,[0,12],[0,1],clamp)*interpolate(f,[scene.durationInFrames-12,scene.durationInFrames],[1,0],clamp);
   const zoom=interpolate(f,[0,scene.durationInFrames],[1.06,1.14],clamp);
   const drift=index%2===0?-24:24;
-  return <AbsoluteFill style={{opacity,overflow:"hidden",backgroundColor:"#080c16",color:"#fff",fontFamily:"Arial,Helvetica,sans-serif"}}>
-    {scene.image?<Img src={scene.image} style={{width:"100%",height:"100%",objectFit:"cover",transform:"scale("+zoom+") translateX("+interpolate(f,[0,scene.durationInFrames],[0,drift],clamp)+"px)",filter:"brightness(.64) saturate(.9)"}}/>:<AbsoluteFill style={{background:"radial-gradient(ellipse at "+(35+(index%3)*15)+"% 35%,"+color+"38 0%,transparent 48%),linear-gradient(145deg,#111a2c 0%,#090b13 65%,#18223a 100%)"}}/>}
+  return <AbsoluteFill style={{overflow:"hidden",backgroundColor:"#080c16",color:"#fff",fontFamily:"Arial,Helvetica,sans-serif"}}>
+    {scene.image?<Img src={scene.image} style={{width:"100%",height:"100%",objectFit:"cover",transform:"scale("+zoom+") translateX("+interpolate(f,[0,scene.durationInFrames],[0,drift],clamp)+"px)",opacity:backgroundOpacity,filter:"brightness(.64) saturate(.9)"}}/>:<AbsoluteFill style={{background:"radial-gradient(ellipse at "+(35+(index%3)*15)+"% 35%,"+color+"38 0%,transparent 48%),linear-gradient(145deg,#111a2c 0%,#090b13 65%,#18223a 100%)",opacity:backgroundOpacity}}/>}
+    <AbsoluteFill style={{opacity:contentOpacity}}>
     <AbsoluteFill style={{background:"linear-gradient(180deg,rgba(5,8,15,.10),rgba(5,8,15,.20) 35%,rgba(5,8,15,.92))"}}/>
     {scene.foregroundImage && <Img src={scene.foregroundImage} style={{position:"absolute",left:0,top:650,width:"100%",height:870,objectFit:"contain",objectPosition:"center bottom",transform:"translateX("+interpolate(f,[0,24],[70,0],clamp)+"px) translateY("+Math.sin(f/11)*8+"px) scale("+interpolate(f,[0,28],[0.88,1],clamp)+")",filter:"drop-shadow(0 26px 45px rgba(0,0,0,.55))",zIndex:3}}/>}
     <AbsoluteFill style={{pointerEvents:"none",opacity:.2,backgroundImage:"linear-gradient("+color+"20 1px,transparent 1px),linear-gradient(90deg,"+color+"20 1px,transparent 1px)",backgroundSize:"90px 90px",maskImage:"linear-gradient(180deg,black,transparent 62%)",transform:"translateY("+(-(f%90))+"px)"}}/>
@@ -89,6 +91,7 @@ const Scene: React.FC<{scene:ShortScene;color:string;index:number}> = ({scene,co
     </div>
     <Foreground scene={scene} color={color}/>
     <div style={{position:"absolute",bottom:195,left:78,right:78,padding:"24px 28px",borderLeft:"6px solid "+color,background:"linear-gradient(90deg,rgba(5,8,15,.88),rgba(5,8,15,.42))",fontSize:31,lineHeight:1.25,fontWeight:700,textShadow:"0 2px 10px rgba(0,0,0,.8)",transform:"translateY("+interpolate(spring({frame:f-34,fps,config:{damping:15,stiffness:100}}),[0,1],[54,0])+"px)",opacity:interpolate(f,[32,44],[0,1],clamp)}}>{scene.caption}</div>
+    </AbsoluteFill>
   </AbsoluteFill>;
 };
 
@@ -99,6 +102,7 @@ export const ShortComposition: React.FC<ShortProps> = ({scenes,accentColor,audio
   const frame=useCurrentFrame();
   return <AbsoluteFill style={{backgroundColor:"#080c16",overflow:"hidden"}}>
     {positioned.map(({scene,from},index)=><Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames} layout="none"><Scene scene={scene} color={accentColor} index={index}/></Sequence>)}
-    {audio && <Audio src={audio}/>}\n    <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,cursor],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
+    {audio && <Audio src={audio}/>}
+    <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,cursor],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
   </AbsoluteFill>;
 };
