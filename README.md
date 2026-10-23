@@ -29,7 +29,7 @@ Transformar um roteiro de pelo menos 30 segundos em um Short 9:16 com:
 
 Integração inicial disponível: **Cloudflare Workers AI com FLUX.2 Klein 4B**. O adaptador em `src/providers/cloudflare_workers_ai.py` envia um prompt e salva o arquivo de imagem no formato retornado pela API; credenciais são lidas do ambiente e nunca devem ser versionadas. Veja [a configuração e os comandos](docs/cloudflare-workers-ai.md).
 
-A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. A cota gratuita é diária e o consumo depende do tamanho da imagem. Revise os preços atuais antes de gerar lotes.
+A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. Revise a cota e os preços atuais antes de gerar lotes.
 
 ## Estrutura
 
@@ -41,12 +41,15 @@ A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. A cota
 
 ## Renderer opcional com Remotion
 
-O repositório agora inclui um renderer alternativo em `remotion/` para composições mais dinâmicas: títulos cinéticos, painéis em primeiro plano, layouts narrativos, animações por frame e movimento de câmera. Ele é opcional; o adaptador Cloudflare, a fila de imagens e os workflows atuais continuam disponíveis. A demo vertical tem pouco mais de 35 segundos e abre sem assets externos. Consulte [o guia do Remotion](docs/remotion-renderer.md).
+O repositório inclui um renderer alternativo em `remotion/` para composições dinâmicas: títulos cinéticos, painéis em primeiro plano, layouts narrativos, animações por frame e movimento de câmera. Ele é opcional; o adaptador Cloudflare, a fila de imagens e os workflows atuais continuam disponíveis. Consulte [o guia do Remotion](docs/remotion-renderer.md).
+
+## Revisão final opcional
+
+O [Editonny](https://github.com/soumatheusgomes/editonny) pode apoiar a revisão local pós-render e ajustes editoriais com confirmação. Adicionamos um handoff que valida o arquivo e cria um manifesto/checklist sem chamar serviços externos nem modificar a exportação original. Veja [integração e fluxo de revisão](docs/editonny-review.md).
 
 ## Execução
 
 O pipeline completo de storyboard, narração e render ainda está em desenvolvimento. O adaptador de imagem pode ser usado isoladamente conforme a documentação do provedor.
-
 
 ## Geração automática sem iniciar o workflow manualmente
 
