@@ -5,6 +5,7 @@ secrets/
 assets/generated/
 assets/voice/
 renders/
+review/
 *.mp4
 *.wav
 *.m4a
