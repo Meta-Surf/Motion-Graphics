@@ -27,7 +27,7 @@ Transformar um roteiro de pelo menos 30 segundos em um Short 9:16 com:
 
 ## API de imagem
 
-Integração inicial disponível: **Cloudflare Workers AI com FLUX.2 Klein 4B**. O adaptador em `src/providers/cloudflare_workers_ai.py` envia um prompt e salva a imagem PNG; credenciais são lidas do ambiente e nunca devem ser versionadas. Veja [a configuração e os comandos](docs/cloudflare-workers-ai.md).
+Integração inicial disponível: **Cloudflare Workers AI com FLUX.2 Klein 4B**. O adaptador em `src/providers/cloudflare_workers_ai.py` envia um prompt e salva o arquivo de imagem no formato retornado pela API; credenciais são lidas do ambiente e nunca devem ser versionadas. Veja [a configuração e os comandos](docs/cloudflare-workers-ai.md).
 
 A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. A cota gratuita é diária e o consumo depende do tamanho da imagem. Revise os preços atuais antes de gerar lotes.
 
