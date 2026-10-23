@@ -41,7 +41,7 @@ A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. A cota
 
 ## Renderer opcional com Remotion
 
-O repositório agora inclui um renderer alternativo em `remotion/` para composições mais dinâmicas: títulos cinéticos, painéis em primeiro plano, layouts narrativos, animações por frame e movimento de câmera. Ele é opcional; o adaptador Cloudflare, a fila de imagens e os workflows atuais continuam disponíveis. A demo vertical tem 36 segundos e abre sem assets externos. Consulte [o guia do Remotion](docs/remotion-renderer.md).
+O repositório agora inclui um renderer alternativo em `remotion/` para composições mais dinâmicas: títulos cinéticos, painéis em primeiro plano, layouts narrativos, animações por frame e movimento de câmera. Ele é opcional; o adaptador Cloudflare, a fila de imagens e os workflows atuais continuam disponíveis. A demo vertical tem pouco mais de 35 segundos e abre sem assets externos. Consulte [o guia do Remotion](docs/remotion-renderer.md).
 
 ## Execução
 
