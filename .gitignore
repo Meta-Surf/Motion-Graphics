@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+secrets/
+assets/generated/
+assets/voice/
+renders/
+*.mp4
+*.wav
+*.m4a
+__pycache__/
+*.py[cod]
+.DS_Store
