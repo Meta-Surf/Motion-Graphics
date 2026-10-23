@@ -47,7 +47,7 @@ const Foreground: React.FC<{scene: ShortScene; color: string}> = ({scene, color}
   </div>;
 
   if (scene.layout === "timeline") return <div style={{position:"absolute",left:70,right:70,bottom:445,height:260,...glass,borderRadius:28,padding:28,transform:"translateY("+lift+"px)",opacity:pop}}>
-    <div style={{display:"flex",justifyContent:"space-between",fontSize:18,letterSpacing:2,color:"rgba(255,255,255,.68)"}}><span>{scene.visualLabel || "TIMELINE"}</span><span>00:34 / 00:45</span></div>
+    <div style={{display:"flex",justifyContent:"space-between",fontSize:18,letterSpacing:2,color:"rgba(255,255,255,.68)"}}><span>{scene.visualLabel || "TIMELINE"}</span><span style={{color}}>AUTO CUT</span></div>
     <div style={{display:"flex",gap:10,height:108,marginTop:24}}>{cards.slice(0,4).map((x,i)=><div key={x} style={{flex:1,borderRadius:14,padding:12,background:"linear-gradient(145deg,"+color+(i===0?"80":"35")+",rgba(49,63,91,.8))",border:"1px solid rgba(255,255,255,.17)",...floating(i),display:"flex",alignItems:"end",fontSize:14,fontWeight:800}}>{x}</div>)}</div>
     <div style={{height:5,marginTop:20,borderRadius:5,background:"rgba(255,255,255,.15)"}}><div style={{width:interpolate(f,[20,100],[4,92],clamp)+"%",height:"100%",background:color,borderRadius:5}}/></div>
   </div>;
@@ -71,11 +71,11 @@ const Foreground: React.FC<{scene: ShortScene; color: string}> = ({scene, color}
   </div>;
 };
 
-const Scene: React.FC<{scene:ShortScene;color:string;index:number}> = ({scene,color,index}) => {
+const Scene: React.FC<{scene:ShortScene;color:string;index:number;isLast:boolean}> = ({scene,color,index,isLast}) => {
   const f=useCurrentFrame();
   const {fps}=useVideoConfig();
-  const contentOpacity=interpolate(f,[0,10,scene.durationInFrames-12,scene.durationInFrames-11],[0,1,1,0],clamp);
-  const backgroundOpacity=interpolate(f,[0,12],[0,1],clamp)*interpolate(f,[scene.durationInFrames-12,scene.durationInFrames],[1,0],clamp);
+  const contentOpacity=isLast?interpolate(f,[0,10],[0,1],clamp):interpolate(f,[0,10,scene.durationInFrames-12,scene.durationInFrames-11],[0,1,1,0],clamp);
+  const backgroundOpacity=interpolate(f,[0,12],[0,1],clamp)*(isLast?1:interpolate(f,[scene.durationInFrames-12,scene.durationInFrames],[1,0],clamp));
   const zoom=interpolate(f,[0,scene.durationInFrames],[1.06,1.14],clamp);
   const drift=index%2===0?-24:24;
   return <AbsoluteFill style={{overflow:"hidden",backgroundColor:"#080c16",color:"#fff",fontFamily:"Arial,Helvetica,sans-serif"}}>
@@ -101,7 +101,7 @@ export const ShortComposition: React.FC<ShortProps> = ({scenes,accentColor,audio
   const positioned=scenes.map((scene,index)=>{const from=cursor;cursor+=scene.durationInFrames-(index<scenes.length-1?overlap:0);return {scene,from};});
   const frame=useCurrentFrame();
   return <AbsoluteFill style={{backgroundColor:"#080c16",overflow:"hidden"}}>
-    {positioned.map(({scene,from},index)=><Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames} layout="none"><Scene scene={scene} color={accentColor} index={index}/></Sequence>)}
+    {positioned.map(({scene,from},index)=><Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames} layout="none"><Scene scene={scene} color={accentColor} index={index} isLast={index===scenes.length-1}/></Sequence>)}
     {audio && <Audio src={audio}/>}
     <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,cursor],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
   </AbsoluteFill>;
