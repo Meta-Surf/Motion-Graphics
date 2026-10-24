@@ -1,0 +1,94 @@
+{
+  "job_id": "hardware-ia-short-20261024",
+  "title": "Short — Como o hardware está sendo redesenhado para IA",
+  "images": [
+    {
+      "asset_id": "s01-chip-hook",
+      "scene_id": "s01",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s01-chip-hook.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51001,
+      "prompt": "Premium cinematic macro photograph of a next-generation AI accelerator chip floating above a dark graphite circuit board, a precise luminous neural-network pattern reflected in the silicon, dramatic teal and amber rim lighting, subtle volumetric haze, high-end science documentary, vertical 9:16 composition, chip centered slightly above center with generous clean dark negative space in lower third, ultra realistic materials, no legible text, no letters, no logos, no watermark."
+    },
+    {
+      "asset_id": "s02-matrix-core",
+      "scene_id": "s02",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s02-matrix-core.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51002,
+      "prompt": "Photorealistic extreme macro inside a conceptual AI accelerator, luminous square compute tiles arranged in a dense matrix, cyan data pulses processing in parallel, sharp metallic microstructures and dark navy depth, one restrained amber highlight, cinematic science documentary, vertical 9:16, strong center subject and uncluttered lower quarter for motion-graphic labels, no readable text, no letters, no logos, no watermark."
+    },
+    {
+      "asset_id": "s03-precision",
+      "scene_id": "s03",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s03-precision.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51003,
+      "prompt": "Cinematic photorealistic conceptual visualization of numerical data compressing into compact glowing four-bit blocks while preserving a stable luminous signal, small precise geometric cubes moving through a processor lattice, teal and electric blue with restrained amber accents, premium technology documentary, vertical 9:16, clear depth, central visual, open dark space for editorial typography, no legible text or numerals, no logos, no watermark."
+    },
+    {
+      "asset_id": "s04-hbm-memory",
+      "scene_id": "s04",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s04-hbm-memory.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51004,
+      "prompt": "Ultra detailed photorealistic macro of stacked high-bandwidth memory dies positioned beside a large AI processor on an advanced semiconductor package, tiny vertical connections and fast luminous data streams between layers, precise engineering, dark graphite metal, cyan blue and warm amber accents, cinematic science documentary, vertical 9:16, layered depth and negative space for labels, no text, no logos, no watermark."
+    },
+    {
+      "asset_id": "s05-chiplets-package",
+      "scene_id": "s05",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s05-chiplets-package.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51005,
+      "prompt": "Exploded view of an advanced heterogeneous AI semiconductor package, compute chiplets and stacked memory floating in carefully aligned layers above a silicon interposer, hair-thin connections glowing between components, beautiful realistic precision engineering, dark navy studio, teal and amber edge lighting, premium product photography, vertical 9:16, composition centered with room around components for animated callout lines, absolutely no labels or text, no logo, no watermark."
+    },
+    {
+      "asset_id": "s06-rack-scale",
+      "scene_id": "s06",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s06-rack-scale.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51006,
+      "prompt": "Towering AI data-center rack photographed in a dark cinematic server hall, several accelerator trays connected by subtle cyan optical light paths, liquid cooling tubes and metal manifolds visible as real hardware, dramatic perspective from close-up rack to distant rows, premium documentary cinematography, vertical 9:16, vivid but restrained teal and amber, no brand marks, no text, no watermark."
+    },
+    {
+      "asset_id": "s07-cooling-power",
+      "scene_id": "s07",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s07-cooling-power.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51007,
+      "prompt": "Cinematic photorealistic close-up of liquid cooling infrastructure serving high-performance AI servers, transparent coolant pipes, heat-exchanger metal, controlled blue flow and subtle thermal amber glow fading into cool teal, realistic engineering details and atmospheric depth, editorial science-documentary look, vertical 9:16, balanced dark negative space for small motion graphics, no text, logos or watermark."
+    },
+    {
+      "asset_id": "s08-human-scale",
+      "scene_id": "s08",
+      "role": "background",
+      "alpha": "none",
+      "filename": "s08-human-scale.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 51008,
+      "prompt": "A single glowing AI accelerator chip in the foreground visually connected by delicate cyan light trails to a distant data-center rack and then to a human researcher silhouette, cinematic visual metaphor from silicon to useful AI answer, grounded premium technology documentary, deep navy, teal and restrained warm amber, vertical 9:16, strong focal composition, clean central dark space for final title, no text, no logos, no watermark."
+    }
+  ]
+}
