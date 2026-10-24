@@ -12,3 +12,6 @@ review/
 __pycache__/
 *.py[cod]
 .DS_Store
+
+voice-cache/
+*.partial.mp4

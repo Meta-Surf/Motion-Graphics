@@ -63,6 +63,13 @@ def main() -> int:
         parser.error("Input has no video stream")
     if video_stream.get("width") != 1080 or video_stream.get("height") != 1920:
         parser.error(f"Expected vertical 1080x1920 video, got {video_stream.get('width')}x{video_stream.get('height')}")
+    audio_stream = next((s for s in streams if s.get("codec_type") == "audio"), None)
+    if not audio_stream or audio_stream.get("codec_name") != "aac":
+        parser.error("Final review requires an AAC audio track; silent previews are not final exports")
+    if video_stream.get("codec_name") != "h264":
+        parser.error("Expected H.264 video")
+    if metadata["duration_seconds"] > 60.05:
+        parser.error("This pipeline targets Shorts up to 60 seconds")
     if metadata["duration_seconds"] < 30:
         parser.error(f"Short must be at least 30 seconds; found {metadata['duration_seconds']}s")
 

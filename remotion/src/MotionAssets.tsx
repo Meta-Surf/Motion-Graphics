@@ -1,8 +1,9 @@
 import React from "react";
-import { Audio, Img, interpolate, useCurrentFrame } from "remotion";
+import { Audio, Img, useCurrentFrame } from "remotion";
 import { calculateAudioVolumeAtFrame, type AudioEnvelope } from "./audio-envelope";
 
-export type LayerTransform = { x?: number; y?: number; scale?: number; rotate?: number; opacity?: number };
+import {sampleLayerMotion, type Transform, type LayerKeyframe} from "./layer-motion";
+export type LayerTransform = Transform;
 export type SceneLayer = {
   id: string;
   src: string;
@@ -14,6 +15,7 @@ export type SceneLayer = {
   from?: LayerTransform;
   to?: LayerTransform;
   zIndex?: number;
+  keyframes?: LayerKeyframe[];
 };
 export type AudioTrack = AudioEnvelope & {
   id: string;
@@ -22,8 +24,6 @@ export type AudioTrack = AudioEnvelope & {
   fromFrame?: number;
   startFrom?: number;
 };
-
-const clamp = { extrapolateLeft: "clamp" as const, extrapolateRight: "clamp" as const };
 
 export const SceneLayerImage: React.FC<{
   layer: SceneLayer;
@@ -34,22 +34,8 @@ export const SceneLayerImage: React.FC<{
   const start = Math.max(0, layer.startFrame ?? 0);
   const duration = Math.max(1, layer.durationInFrames ?? sceneDuration);
   const localFrame = frame - start;
-  const hasMotion = Boolean(layer.from || layer.to);
-  const from = {
-    x: layer.from?.x ?? 0,
-    y: layer.from?.y ?? 0,
-    scale: layer.from?.scale ?? 1,
-    rotate: layer.from?.rotate ?? 0,
-    opacity: layer.from?.opacity ?? (hasMotion ? 0 : 1),
-  };
-  const to = {
-    x: layer.to?.x ?? 0,
-    y: layer.to?.y ?? 0,
-    scale: layer.to?.scale ?? 1,
-    rotate: layer.to?.rotate ?? 0,
-    opacity: layer.to?.opacity ?? 1,
-  };
-  const value = (key: keyof typeof from) => interpolate(localFrame, [0, duration], [from[key], to[key]], clamp);
+  const sampled=sampleLayerMotion(localFrame,duration,layer.from,layer.to,layer.keyframes);
+  const value=(key:keyof typeof sampled)=>sampled[key];
   const active = localFrame >= 0 && localFrame < duration;
   const defaultZ = layer.role === "background" ? 0 : layer.role === "overlay" ? 6 : 3;
   return <Img

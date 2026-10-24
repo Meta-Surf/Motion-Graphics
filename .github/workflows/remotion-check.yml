@@ -8,10 +8,14 @@ on:
       - "src/process_image_queue.py"
       - "src/providers/cloudflare_workers_ai.py"
       - "examples/cloudflare-layered-image-job.example.json"
+      - "scripts/**"
+      - "src/providers/voicestudio.py"
   pull_request:
     paths:
       - "remotion/**"
       - ".github/workflows/remotion-check.yml"
+      - "scripts/**"
+      - "src/providers/**"
 
 jobs:
   typecheck:
@@ -24,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      - run: npm ci
       - run: npm test
       - run: npm run typecheck
 
@@ -37,3 +41,5 @@ jobs:
           python-version: "3.12"
       - run: python -m py_compile src/process_image_queue.py src/providers/cloudflare_workers_ai.py
       - run: python -m json.tool examples/cloudflare-layered-image-job.example.json > /dev/null
+
+      - run: python scripts/test_pipeline.py

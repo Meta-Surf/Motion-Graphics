@@ -61,3 +61,14 @@ Use `src/process_image_queue.py` para validar e processar os pedidos. Cada manif
 ## Motion por camadas e áudio sincronizado
 
 O Remotion aceita múltiplos assets com movimento independente e faixas temporizadas de voz, música e efeitos, com fades e ducking em janelas marcadas. O cálculo de duração é compartilhado com a timeline para evitar frames vazios no fechamento. Consulte a documentação em docs/remotion-renderer.md, o exemplo examples/remotion-layers.example.json e execute os testes e typecheck no diretório remotion.
+
+## Atualização de qualidade e DACOL
+
+- [Voz GPU, inicialização e fluxo no DACOL](docs/dacol-gpu-and-production.md).
+- [Biblioteca de seis novos motions e keyframes](docs/motion-library.md).
+- Voz por GPU: `python src/providers/voicestudio.py --health` (porta 3901, sem fallback CPU).
+- No diretório `remotion`, use `npm ci`, `npm test`, `npm run typecheck` e `npm run preview:library`.
+- `npm run render:amf` exige `--voice` para uma exportação final ou `--silent-preview` para uma prévia explicitamente sem som.
+- `scripts/finalize_short.py` inclui a narração e valida o MP4; o handoff Editonny agora rejeita arquivos finais sem áudio.
+
+O desktop Windows do VoiceStudio (3900) e o serviço AMD ROCm no WSL (3901) são instalações diferentes. A produção no DACOL usa a segunda. Consulte o diagnóstico antes de reinstalar modelos.

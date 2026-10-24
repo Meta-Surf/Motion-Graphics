@@ -1,6 +1,8 @@
 import React from "react";
 import { Composition } from "remotion";
 import { ShortComposition, ShortProps } from "./ShortComposition";
+import {validateShort} from "./validate-short";
+import {getMotionDemoProps} from "./motion-demo";
 import { getTimelineDuration } from "./timeline";
 
 const demoProps: ShortProps = {
@@ -14,6 +16,7 @@ const demoProps: ShortProps = {
 };
 
 export const RemotionRoot: React.FC = () => (
+  <>
   <Composition
     id="AiShort"
     component={ShortComposition}
@@ -21,6 +24,9 @@ export const RemotionRoot: React.FC = () => (
     fps={30}
     width={1080}
     height={1920}
+    calculateMetadata={({props})=>({durationInFrames:validateShort(props)})}
     defaultProps={demoProps}
   />
+  <Composition id="MotionLibraryDemo" component={ShortComposition} durationInFrames={validateShort(getMotionDemoProps())} fps={30} width={1080} height={1920} defaultProps={getMotionDemoProps()} calculateMetadata={({props})=>({durationInFrames:validateShort(props)})}/>
+  </>
 );
