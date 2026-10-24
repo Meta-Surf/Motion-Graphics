@@ -1,0 +1,12 @@
+{
+  "job_id": "generative-ai-layered-cleanup-20261024",
+  "run_id": 40067141265,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40067141265",
+  "artifact_name": "cloudflare-generated-images-40067141265",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/generative-ai-layered-cleanup-20261024/asset-manifest.json",
+    "output/generated/generative-ai-layered-cleanup-20261024/bg-05-modalities-v2.jpg",
+    "output/generated/generative-ai-layered-cleanup-20261024/bg-08-close-v2.jpg"
+  ]
+}
