@@ -11,6 +11,9 @@ class PipelineTest(unittest.TestCase):
  def test_short_chunks_preserve_every_word(self):
   text='Primeira frase. '+('Outra palavra '*25)+'. Final.'
   chunks=voice.split_text(text,70);self.assertEqual(' '.join(chunks).split(),text.split());self.assertTrue(all(len(c)<=70 for c in chunks))
+ def test_reference_leakage_is_blocked(self):
+  with self.assertRaises(RuntimeError):voice.check_transcript('Tudo para transformar dados em respostas.','Creators, tudo para transformar dados em respostas.')
+  self.assertEqual(voice.check_transcript('Inteligência artificial.','Inteligencia artificial!'),1.0)
  def test_missing_voice_is_blocked(self):
   m={'format':{'duration':'60'},'streams':[{'codec_type':'video','codec_name':'h264','width':1080,'height':1920}]}
   self.assertTrue(any('AAC' in x for x in final.check_media(m)));self.assertEqual(final.check_media(m,False),[])

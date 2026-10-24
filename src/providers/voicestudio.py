@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """VoiceStudio GPU narration: explicit voice, short cached takes, no tempo changes."""
 from __future__ import annotations
-import argparse, hashlib, json, os, re, time, urllib.request, wave
+import argparse, hashlib, json, os, re, time, urllib.request, wave, unicodedata, difflib, uuid
 from pathlib import Path
 DEFAULT_URL = 'http://127.0.0.1:3901'
 
@@ -40,11 +40,31 @@ def merge_wavs(paths: list[Path], output: Path, pause_ms: int = 140) -> float:
         w.writeframes(silence.join(audio))
     return (sum(map(len,audio))+len(silence)*(len(audio)-1))/(rate*channels*width)
 
+def check_transcript(expected: str, transcript: str) -> float:
+    def words(text):
+        plain=''.join(c for c in unicodedata.normalize('NFD',text.lower()) if not unicodedata.combining(c))
+        return re.findall(r'[a-z0-9]+',plain)
+    original,heard=words(expected),words(transcript)
+    if any(w in ('create','creator','creators') and w not in original for w in heard):
+        raise RuntimeError('Unexpected reference word in narration; use a reference ending at a complete sentence, with matching transcript')
+    score=difflib.SequenceMatcher(a=original,b=heard).ratio()
+    if score<.85: raise RuntimeError(f'Narration differs from the script (ASR similarity {score:.3f}); review this take before rendering')
+    return score
+
 class VoiceStudio:
     def __init__(self,url: str = DEFAULT_URL): self.url=url.rstrip('/')
     def health(self):
         with urllib.request.urlopen(self.url+'/health',timeout=15) as r: health=json.load(r)
         require_gpu(health);return health
+    def transcribe(self,path: Path) -> dict:
+        boundary='MotionVoice'+uuid.uuid4().hex
+        fields={'model':'whisper-1','language':'pt','response_format':'verbose_json'}
+        body=b''
+        for key,value in fields.items():
+            body+=f'--{boundary}\r\nContent-Disposition: form-data; name="{key}"\r\n\r\n{value}\r\n'.encode()
+        body+=f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="voice.wav"\r\nContent-Type: audio/wav\r\n\r\n'.encode()+path.read_bytes()+f'\r\n--{boundary}--\r\n'.encode()
+        request=urllib.request.Request(self.url+'/v1/audio/transcriptions',data=body,headers={'Content-Type':'multipart/form-data; boundary='+boundary})
+        with urllib.request.urlopen(request,timeout=120) as response:return json.load(response)
     def narrate(self,text: str,output: Path,profile: str,steps: int=32) -> dict:
         health=self.health()
         if not profile.strip(): raise ValueError('An approved profile ID is required')
@@ -57,6 +77,7 @@ class VoiceStudio:
             payload={'model':'omnivoice','input':chunk,'voice':profile,'language':'pt','response_format':'wav','num_step':steps,'speed':1.0,'seed':42}
             signature=json.dumps({'request':payload,'server':self.url,'version':health.get('version'),'profile':profile_state},sort_keys=True).encode()
             key=hashlib.sha256(signature).hexdigest();p=cache/(key+'.wav');started=time.perf_counter();cached=p.exists()
+            review_path=cache/(key+'.review.json')
             if not cached:
                 request=urllib.request.Request(self.url+'/v1/audio/speech',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'})
                 with urllib.request.urlopen(request,timeout=240) as response: data=response.read()
@@ -65,8 +86,13 @@ class VoiceStudio:
                 with wave.open(str(temp)) as w:
                     if w.getnframes()<=0: raise RuntimeError('Empty narration')
                 temp.replace(p)
+            if review_path.exists(): review=json.loads(review_path.read_text(encoding='utf-8'))
+            else:
+                review=self.transcribe(p);review['script_similarity']=check_transcript(chunk,review['text'])
+                review_path.write_text(json.dumps(review,ensure_ascii=False,indent=2),encoding='utf-8')
+            check_transcript(chunk,review['text'])
             with wave.open(str(p)) as w: seconds=w.getnframes()/w.getframerate()
-            paths.append(p);takes.append({'text':chunk,'cache_key':key,'duration_seconds':seconds,'generation_seconds':round(time.perf_counter()-started,3),'cached':cached})
+            paths.append(p);takes.append({'text':chunk,'cache_key':key,'duration_seconds':seconds,'generation_seconds':round(time.perf_counter()-started,3),'cached':cached,'transcript':review['text'],'script_similarity':review['script_similarity']})
         duration=merge_wavs(paths,output)
         meta={'provider':'voicestudio','url':self.url,'health':health,'profile_id':profile,'steps':steps,'speed':1.0,'duration_seconds':duration,'takes':takes}
         output.with_suffix('.voice.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

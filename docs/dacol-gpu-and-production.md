@@ -72,10 +72,18 @@ Uma transcrição longa anterior excedeu o watchdog de 300 s enquanto TTS e ASR 
 
 ## Verificações da primeira implementação
 
-- Nove testes TypeScript, três testes Python e typecheck passaram.
+- Nove testes TypeScript, quatro testes Python e typecheck passaram.
 - Finalizador testado com fixture técnica de 30 s: H.264/AAC, decodificação completa aprovada; a fixture não é um Short editorial.
 - Seis stills da biblioteca renderizados e inspecionados.
 - Catálogo de 34 s: 1.020 frames, Chrome/ANGLE + H.264 AMF, exportado em aproximadamente 63 s (primeira execução medida).
 - Provedor de voz: trecho de 3,52 s em 8,777 s; segunda chamada reutilizou cache sem nova inferência.
 - Dependência Zod atualizada por override compatível; npm audit sem vulnerabilidades na verificação local.
 - Exportador declara Rec.709 e faixa de vídeo limitada para consistência entre players.
+
+## Correção da referência e revisão de cada tomada
+
+A revisão integral identificou vazamento de “Creators” em algumas tomadas, vindo do fim de um recorte de referência que terminava durante o nome YouTube Create. Uma amostra curta havia passado; ela não era suficiente para aprovar a referência inteira.
+
+Usamos a transcrição com timestamps para encontrar o fim da primeira frase: “artificial?” termina em aproximadamente 4,68 s, e a frase seguinte começa em 5,00 s. O novo recorte tem 5,00 s, encerra uma frase completa e inclui sua pausa final. A transcrição fornecida ao clone corresponde apenas a essa frase. Duas tomadas de teste com a nova referência retornaram exatamente o texto pedido.
+
+O provedor agora transcreve cada tomada antes de aceitá-la no áudio montado. Ele bloqueia “Create/Creator/Creators” quando não constam do texto e divergências grandes em relação ao roteiro. As revisões ficam em cache junto aos WAVs; alterar a referência invalida o cache. ASR continua sendo uma triagem, não uma prova de pronúncia ou uma substituição da escuta. O contador atual é de nove testes TypeScript e quatro testes Python.
