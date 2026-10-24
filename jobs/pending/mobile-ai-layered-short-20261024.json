@@ -1,0 +1,86 @@
+{
+  "job_id": "mobile-ai-layered-short-20261024",
+  "title": "IA nos smartphones: do chat à ação — fundos e camadas originais",
+  "images": [
+    {
+      "asset_id": "studio-bg",
+      "role": "background",
+      "alpha": "none",
+      "filename": "studio-bg.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 241024,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. An empty dark luxury technology product studio with a subtle curved horizon and a soft blue elliptical light reflection in the lower third. No objects, no devices, no smartphone, central negative space reserved for a separately rendered vertical smartphone. Sparse atmospheric depth, elegant controlled light, not a busy science fiction tunnel."
+    },
+    {
+      "asset_id": "city-bg",
+      "role": "background",
+      "alpha": "none",
+      "filename": "city-bg.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 241025,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. A softly defocused premium modern city cafe window at dusk, subtle bokeh from city lights beyond the glass, deep blue atmosphere, no people, no visible text. Wide open dark central composition reserved for an animated phone and floating interface cards. Rich photographic reflections, cinematic depth, not an illustration."
+    },
+    {
+      "asset_id": "cafe-photo",
+      "role": "texture",
+      "alpha": "none",
+      "filename": "cafe-photo.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 241026,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. A beautiful photorealistic specialty coffee cup on a modern wooden cafe table beside a window overlooking a softly blurred city at blue hour. Warm inviting amber light on the cup, sophisticated premium travel photography, full frame photo, clean composition, no text or labels."
+    },
+    {
+      "asset_id": "mountain-photo",
+      "role": "texture",
+      "alpha": "none",
+      "filename": "mountain-photo.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 241027,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. A spectacular photographic mountain lake at sunrise with snow peaks and a tiny lakeside cabin, crisp travel photography, blue atmospheric layers and warm sunrise rim light. No people, no text, full frame landscape photograph."
+    },
+    {
+      "asset_id": "neural-wallpaper",
+      "role": "texture",
+      "alpha": "none",
+      "filename": "neural-wallpaper.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 241028,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. An elegant abstract mobile wallpaper of flowing translucent sapphire glass ribbons with cyan light inside, smooth sculptural continuous curves, dark navy background, high end glass material rendering, strong depth, restrained glow, central focal swirl, no device, no text."
+    },
+    {
+      "asset_id": "ai-core",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "ai-core.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 241029,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. A single intricate small sculptural neural processor core floating in space, metallic titanium enclosure with a luminous cyan glass center and layered micro circuits. Three quarter perspective, centered object, clear clean silhouette with generous empty margins on a perfectly solid pure black background. No ground plane, no cast shadow, no background gradient, no particles outside the object. Suitable as an isolated compositing foreground."
+    },
+    {
+      "asset_id": "cloud-node",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "cloud-node.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 241030,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. A single elegant compact cloud computing node sculpture, a luminous frosted glass cloud hovering above three precisely machined miniature titanium server plates, blue light within. Centered isolated solid object with a clear silhouette, three quarter perspective, generous empty margins on a perfectly uniform pure black background. No ground, no cast shadow, no background glow, suitable for clean foreground compositing."
+    },
+    {
+      "asset_id": "privacy-shield",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "privacy-shield.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 241031,
+      "prompt": "Premium cinematic editorial photography, physically believable materials, sapphire blue and soft cyan lighting with restrained warm amber accents, deep navy color palette, no words, no letters, no logos, no watermark. One premium sculptural privacy shield made from smoked sapphire glass and polished titanium, a simple physical keyhole carved through the center, realistic thickness and bevels, subtle cyan rim light, three quarter angle. Centered isolated object, clear silhouette with generous margins, on perfectly solid pure black background. No ground plane, no cast shadow, no particles, no external background glow."
+    }
+  ]
+}
