@@ -87,3 +87,11 @@ A revisão integral identificou vazamento de “Creators” em algumas tomadas, 
 Usamos a transcrição com timestamps para encontrar o fim da primeira frase: “artificial?” termina em aproximadamente 4,68 s, e a frase seguinte começa em 5,00 s. O novo recorte tem 5,00 s, encerra uma frase completa e inclui sua pausa final. A transcrição fornecida ao clone corresponde apenas a essa frase. Duas tomadas de teste com a nova referência retornaram exatamente o texto pedido.
 
 O provedor agora transcreve cada tomada antes de aceitá-la no áudio montado. Ele bloqueia “Create/Creator/Creators” quando não constam do texto e divergências grandes em relação ao roteiro. As revisões ficam em cache junto aos WAVs; alterar a referência invalida o cache. ASR continua sendo uma triagem, não uma prova de pronúncia ou uma substituição da escuta. O contador atual é de nove testes TypeScript e quatro testes Python.
+
+## Teste integral no Short de hardware
+
+O Short pendente foi fechado como teste do fluxo completo. A narração com a referência de frase completa tem 53,22 s; geração e revisão das 13 tomadas levaram aproximadamente 120 s, usando a RX 7800 XT. A fala foi distribuída pelas oito cenas, sem aceleração, fechando 60,000 s de vídeo em 1080×1920/30 fps, H.264/AAC.
+
+A transcrição integral não encontrou Create/Creators. A correspondência textual normalizada foi 0,9881; diferenças observadas: artigo antes de FP4 e “racks” transcrito como “RECs”. Isso não é uma medição de qualidade de timbre. A exportação passou na checagem de streams e decodificação; escuta artística permanece pendente.
+
+Saída local de teste: `Videos/CanalVideos/Short_Hardware_IA_2026-10-24/Hardware_IA_Short_60s_v003.mp4`. O MP4 e a referência de voz ficam fora deste GitHub. A tentativa com referência inadequada foi separada em `project/review/rejected/`.
