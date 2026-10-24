@@ -5,6 +5,9 @@ on:
     paths:
       - "remotion/**"
       - ".github/workflows/remotion-check.yml"
+      - "src/process_image_queue.py"
+      - "src/providers/cloudflare_workers_ai.py"
+      - "examples/cloudflare-layered-image-job.example.json"
   pull_request:
     paths:
       - "remotion/**"
