@@ -72,3 +72,7 @@ O Remotion aceita múltiplos assets com movimento independente e faixas temporiz
 - `scripts/finalize_short.py` inclui a narração e valida o MP4; o handoff Editonny agora rejeita arquivos finais sem áudio.
 
 O desktop Windows do VoiceStudio (3900) e o serviço AMD ROCm no WSL (3901) são instalações diferentes. A produção no DACOL usa a segunda. Consulte o diagnóstico antes de reinstalar modelos.
+
+## Estudos de referências e padrões
+
+O primeiro estudo adiciona decomposição por frames, medidas de movimento e uma reconstrução editável com camadas independentes. Consulte [o processo e suas limitações](docs/reference-learning.md) e [o catálogo do estudo 001](motion-library/studies/001.json). Os renders `render:study` e `render:breakdown` são prévias técnicas sem áudio; os fluxos existentes de Shorts, Cloudflare e VoiceStudio permanecem disponíveis.

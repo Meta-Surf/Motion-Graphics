@@ -11,7 +11,9 @@
     "render:library": "remotion render src/index.ts MotionLibraryDemo renders/motion-library.mp4",
     "gpu:check": "remotion gpu --gl=angle",
     "preview:library": "node scripts-render-preview.mjs",
-    "render:amf": "node render-amf.mjs"
+    "render:amf": "node render-amf.mjs",
+    "render:study": "remotion render src/index.ts ReferenceMotionStudy renders/reference-study.mp4",
+    "render:breakdown": "remotion render src/index.ts LayerBreakdown renders/layer-breakdown.mp4"
   },
   "dependencies": {
     "@react-three/fiber": "9.8.2",

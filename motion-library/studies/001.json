@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "id": "study-001",
+  "source": {
+    "file_name": "1000599486.mp4",
+    "sha256": "7970a3bf1623d939b723dbc17fe60c408c98f04e60aedee891e86e6e61e457b6",
+    "width": 720,
+    "height": 1280,
+    "fps": 30,
+    "decoded_frames": 466,
+    "visual_duration_seconds": 15.533333333333333,
+    "media_in_repository": false
+  },
+  "status": "candidate",
+  "learning_type": "measured-evidence-and-parameterized-components",
+  "not_model_weight_training": true,
+  "observed_blocks": [
+    {
+      "id": "device-layers",
+      "start_frame": 0,
+      "end_frame_exclusive": 130,
+      "evidence": "observed-manually"
+    },
+    {
+      "id": "glowing-object",
+      "start_frame": 130,
+      "end_frame_exclusive": 194,
+      "evidence": "observed-manually"
+    },
+    {
+      "id": "kinetic-light",
+      "start_frame": 194,
+      "end_frame_exclusive": 278,
+      "evidence": "observed-manually"
+    },
+    {
+      "id": "kinetic-dark",
+      "start_frame": 278,
+      "end_frame_exclusive": 393,
+      "evidence": "observed-manually"
+    },
+    {
+      "id": "brand-resolve",
+      "start_frame": 393,
+      "end_frame_exclusive": 466,
+      "evidence": "observed-manually"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "P01",
+      "name": "Revelação de produto",
+      "required_layers": [
+        "corpo",
+        "frente",
+        "verso",
+        "borda",
+        "luz"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Materiais e reflexos ainda simplificados."
+    },
+    {
+      "id": "P02",
+      "name": "Interface explodida",
+      "required_layers": [
+        "tela base",
+        "painel",
+        "botões",
+        "3 cartões",
+        "avatar",
+        "câmera comum"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Recortes visíveis do frame 33; pixels ocultos não recuperados."
+    },
+    {
+      "id": "P03",
+      "name": "Aproximação por âncora",
+      "required_layers": [
+        "alvo",
+        "trajetória",
+        "distância",
+        "foco"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Trajetória estimada manualmente, sem calibração 3D."
+    },
+    {
+      "id": "P04",
+      "name": "Destaque emissivo",
+      "required_layers": [
+        "emblema",
+        "anéis",
+        "halo"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Brilho e oclusão aproximados em composição 2,5D."
+    },
+    {
+      "id": "P05",
+      "name": "Objeto giratório com texto",
+      "required_layers": [
+        "faces",
+        "espessura",
+        "rig",
+        "texto"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Cubo CSS é aproximação geométrica do objeto da referência."
+    },
+    {
+      "id": "P06",
+      "name": "Tipografia por palavra",
+      "required_layers": [
+        "cues",
+        "texto",
+        "pivô",
+        "câmera"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Cues visuais aproximados; precisa adaptar comprimentos de palavras."
+    },
+    {
+      "id": "P07",
+      "name": "Íris e mudança de luminância",
+      "required_layers": [
+        "máscara",
+        "fundo",
+        "palavra focal"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Máscara e tempos estimados."
+    },
+    {
+      "id": "P08",
+      "name": "Barras em primeiro plano",
+      "required_layers": [
+        "barras",
+        "texto ao fundo",
+        "oclusão"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Não existe recuperação da profundidade original."
+    },
+    {
+      "id": "P09",
+      "name": "Marca resolvida do desfoque",
+      "required_layers": [
+        "marca",
+        "curva de blur",
+        "hold"
+      ],
+      "status": "candidate",
+      "implementation": "remotion/src/ReferenceMotionStudy.tsx",
+      "authoring_parameters": "inferred-reconstruction",
+      "limitation": "Alpha estimado a partir de luminância; não é o logo vetorial original."
+    }
+  ],
+  "asset_provenance": [
+    {
+      "asset": "screen-rectified.png",
+      "source_frame": 33,
+      "operation": "manual quadrilateral homography",
+      "confidence": "visible-pixels-only"
+    },
+    {
+      "assets": [
+        "avatar.png",
+        "card-0.png",
+        "card-1.png",
+        "card-2.png"
+      ],
+      "source_frame": 33,
+      "operation": "crop of rectified screen"
+    },
+    {
+      "asset": "reference-mark.png",
+      "source_frame": 420,
+      "operation": "crop and approximate luminance alpha"
+    }
+  ],
+  "evaluation": {
+    "complete_frame_render": true,
+    "technical_transfer_without_reference_assets": true,
+    "visual_reference_parity": false,
+    "human_listening_approval": false,
+    "audio_for_study": "original reference mix, trimmed to visual duration",
+    "production_approved": false
+  },
+  "next_requirements": [
+    "Camera anchors and continuous velocity curves",
+    "High-resolution original assets and proper object geometry",
+    "Motion blur and calibrated materials",
+    "Typography reframing per word length",
+    "Independent audio and visual review"
+  ]
+}

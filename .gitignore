@@ -15,3 +15,6 @@ __pycache__/
 
 voice-cache/
 *.partial.mp4
+
+# Private reference material stays outside the reusable source library.
+remotion/public/reference-study-*/
