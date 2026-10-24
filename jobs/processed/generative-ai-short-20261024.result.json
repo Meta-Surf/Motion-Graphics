@@ -1,0 +1,17 @@
+{
+  "job_id": "generative-ai-short-20261024",
+  "run_id": 40065246610,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40065246610",
+  "artifact_name": "cloudflare-generated-images-40065246610",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/generative-ai-short-20261024/scene-01-hook.jpg",
+    "output/generated/generative-ai-short-20261024/scene-02-training.jpg",
+    "output/generated/generative-ai-short-20261024/scene-03-tokens.jpg",
+    "output/generated/generative-ai-short-20261024/scene-04-image-generation.jpg",
+    "output/generated/generative-ai-short-20261024/scene-05-modalities.jpg",
+    "output/generated/generative-ai-short-20261024/scene-06-limitations.jpg",
+    "output/generated/generative-ai-short-20261024/scene-07-human-judgment.jpg",
+    "output/generated/generative-ai-short-20261024/scene-08-close.jpg"
+  ]
+}
