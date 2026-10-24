@@ -36,6 +36,7 @@ A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. Revise
 - `docs/architecture.md` — arquitetura e decisões de qualidade.
 - `docs/visual-quality-gates.md` — critérios para aprovar imagens e montagem.
 - `docs/cloudflare-workers-ai.md` — configuração, uso e custos do provedor.
+- `docs/github-actions-cloudflare.md` — uso dos secrets no Actions e transferência dos assets para o editor local.
 - `src/providers/cloudflare_workers_ai.py` — adaptador de geração via Workers AI.
 - `.env.example` — nomes de configuração sem segredos.
 
@@ -55,8 +56,7 @@ O pipeline completo de storyboard, narração e render ainda está em desenvolvi
 
 O workflow `.github/workflows/cloudflare-image-queue.yml` aceita manifestos JSON em `jobs/pending/`. Uma atualização da fila tenta iniciar a geração automaticamente; há também uma verificação horária como recuperação. Imagens geradas são publicadas como artefatos do GitHub Actions por 7 dias e o manifesto concluído é movido para `jobs/processed/`.
 
-Use `src/process_image_queue.py` para validar e processar os pedidos. Cada manifesto pode solicitar de 1 a 8 imagens, com prompts de até 3.000 caracteres. As credenciais continuam somente nos secrets do repositório. Consulte `docs/image-generation-queue.md` para o formato do pedido e limites.
-
+Use `src/process_image_queue.py` para validar e processar os pedidos. Cada manifesto pode solicitar de 1 a 8 imagens, com prompts de até 3.000 caracteres. As credenciais continuam somente nos secrets do repositório. Consulte `docs/image-generation-queue.md` para o formato do pedido e limites, e [o guia de credenciais e fluxo Actions → editor local](docs/github-actions-cloudflare.md).
 
 ## Motion por camadas e áudio sincronizado
 
