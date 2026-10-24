@@ -1,0 +1,86 @@
+{
+  "job_id": "generative-ai-layered-bg-20261024",
+  "title": "Background plates for layered AI Short",
+  "images": [
+    {
+      "asset_id": "bg-01-hook",
+      "scene_id": "scene-01",
+      "role": "background",
+      "filename": "bg-01-hook.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52301,
+      "prompt": "High-end visual effects editorial image for a vertical 9:16 explainer about generative AI. An expansive luminous white cyclorama studio with soft porcelain surfaces, gigantic abstract translucent neural arcs and fine cyan-coral light filaments radiating from a central empty space, subtle shadow gradient, layered depth, impeccable minimal art direction, clear central and lower negative space for a separately composited 3D brain and kinetic typography. No people, no text, no letters, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-02-learning",
+      "scene_id": "scene-02",
+      "role": "background",
+      "filename": "bg-02-learning.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52302,
+      "prompt": "Vertical 9:16 premium science documentary backdrop: a spacious pale ice-blue data archive with thousands of tiny luminous image, sound and symbol fragments converging as fine fiber-optic paths toward a large open center; coral and cobalt accents, realistic optical depth, carefully controlled soft shadows, composition flowing from upper corners toward the center, no focal brain object because it will be composited separately, no text, no letters, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-03-tokens",
+      "scene_id": "scene-03",
+      "role": "background",
+      "filename": "bg-03-tokens.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52303,
+      "prompt": "Vertical 9:16 dynamic macro environment for a visual explanation of language tokens. A long luminous conveyor of empty translucent glass tiles passes diagonally through a deep cobalt and warm coral studio, precise highlights, shallow depth of field, strong directional movement left to right, central lane unobstructed for separate animated token objects and typography, premium editorial CGI, no readable text, no letters, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-04-diffusion",
+      "scene_id": "scene-04",
+      "role": "background",
+      "filename": "bg-04-diffusion.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52304,
+      "prompt": "Vertical 9:16 high-end science visualization of image generation: a clean warm-white canvas recedes in perspective while a beautiful alpine lake at dawn gradually forms from thousands of coral, cyan and gold particles, left edge remains fragmented and right side richly resolved, deep volumetric space, elegant controlled lighting, keep central lower area clear for a separate foreground particle object and kinetic labels, no words, no text, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-05-modalities",
+      "scene_id": "scene-05",
+      "role": "background",
+      "filename": "bg-05-modalities.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52305,
+      "prompt": "Vertical 9:16 art-directed multimedia studio in a bright ivory environment with three huge sculptural portals arranged at different depths, one made from abstract typography-like marks without legible letters, one image-frame aperture, one smooth waveform ribbon; coral, violet and electric-blue edge lighting, strong asymmetrical composition, airy clear negative space for separately animated foreground symbols, cinematic realistic 3D, no text, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-06-limits",
+      "scene_id": "scene-06",
+      "role": "background",
+      "filename": "bg-06-limits.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52306,
+      "prompt": "Vertical 9:16 editorial verification scene: a dark navy desk seen at an elegant oblique angle, scattered research notes and a softly illuminated tablet with abstract blurred lines, hard coral warning reflection at one edge and precise cool-white light on paper, realistic sophisticated documentary photography, leave central right area clear for a separate animated magnifying glass, no readable text, no letters, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-07-human",
+      "scene_id": "scene-07",
+      "role": "background",
+      "filename": "bg-07-human.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52307,
+      "prompt": "Vertical 9:16 cinematic portrait environment for a generative AI explainer: a Brazilian creative professional in a bright modern studio, only side profile and shoulder visible on the left edge, reaching toward a floating luminous interface, soft daylight mixed with cobalt and coral reflections, authentic documentary cinematography, right side intentionally open for a separate hand and neural-network foreground layer, no readable text, no logos, no watermark."
+    },
+    {
+      "asset_id": "bg-08-close",
+      "scene_id": "scene-08",
+      "role": "background",
+      "filename": "bg-08-close.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52308,
+      "prompt": "Vertical 9:16 optimistic premium science-documentary closing image: a creator silhouetted at a bright studio window at sunrise, a subtle luminous neural arc floats above the desk and dissolves into the pale sky, warm amber meeting clean cobalt and coral accents, spacious upper center and lower center reserved for a separate layered brain object and final kinetic question, realistic optical depth, no readable words, no logos, no watermark."
+    }
+  ]
+}
