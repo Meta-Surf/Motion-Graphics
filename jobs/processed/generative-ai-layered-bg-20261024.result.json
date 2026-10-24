@@ -1,0 +1,18 @@
+{
+  "job_id": "generative-ai-layered-bg-20261024",
+  "run_id": 40066785290,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40066785290",
+  "artifact_name": "cloudflare-generated-images-40066785290",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/generative-ai-layered-bg-20261024/asset-manifest.json",
+    "output/generated/generative-ai-layered-bg-20261024/bg-01-hook.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-02-learning.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-03-tokens.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-04-diffusion.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-05-modalities.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-06-limits.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-07-human.jpg",
+    "output/generated/generative-ai-layered-bg-20261024/bg-08-close.jpg"
+  ]
+}
