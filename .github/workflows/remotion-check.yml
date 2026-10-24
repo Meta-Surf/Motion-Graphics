@@ -5,6 +5,9 @@ on:
     paths:
       - "remotion/**"
       - ".github/workflows/remotion-check.yml"
+      - "src/process_image_queue.py"
+      - "src/providers/cloudflare_workers_ai.py"
+      - "examples/cloudflare-layered-image-job.example.json"
   pull_request:
     paths:
       - "remotion/**"
@@ -22,4 +25,15 @@ jobs:
         with:
           node-version: 22
       - run: npm install
+      - run: npm test
       - run: npm run typecheck
+
+  pipeline-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m py_compile src/process_image_queue.py src/providers/cloudflare_workers_ai.py
+      - run: python -m json.tool examples/cloudflare-layered-image-job.example.json > /dev/null

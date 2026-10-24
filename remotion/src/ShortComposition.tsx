@@ -1,5 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Audio, Img, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { getTimelineLayout } from "./timeline";
+import { AudioTrackPlayer, SceneLayerImage, type AudioTrack, type SceneLayer } from "./MotionAssets";
 
 export type SceneLayout = "hero" | "interface" | "timeline" | "stat" | "orbit";
 export type ShortScene = {
@@ -7,6 +9,7 @@ export type ShortScene = {
   durationInFrames: number;
   image?: string;
   foregroundImage?: string;
+  layers?: SceneLayer[];
   eyebrow: string;
   headline: string;
   accent?: string;
@@ -16,7 +19,13 @@ export type ShortScene = {
   metric?: string;
   visualLabel?: string;
 };
-export type ShortProps = { title: string; accentColor: string; scenes: ShortScene[]; audio?: string };
+export type ShortProps = {
+  title: string;
+  accentColor: string;
+  scenes: ShortScene[];
+  audio?: string;
+  audioTracks?: AudioTrack[];
+};
 const clamp = { extrapolateLeft: "clamp" as const, extrapolateRight: "clamp" as const };
 
 const Headline: React.FC<{scene: ShortScene; color: string}> = ({scene, color}) => {
@@ -80,9 +89,11 @@ const Scene: React.FC<{scene:ShortScene;color:string;index:number;isLast:boolean
   const drift=index%2===0?-24:24;
   return <AbsoluteFill style={{overflow:"hidden",backgroundColor:"#080c16",color:"#fff",fontFamily:"Arial,Helvetica,sans-serif"}}>
     {scene.image?<Img src={scene.image} style={{width:"100%",height:"100%",objectFit:"cover",transform:"scale("+zoom+") translateX("+interpolate(f,[0,scene.durationInFrames],[0,drift],clamp)+"px)",opacity:backgroundOpacity,filter:"brightness(.64) saturate(.9)"}}/>:<AbsoluteFill style={{background:"radial-gradient(ellipse at "+(35+(index%3)*15)+"% 35%,"+color+"38 0%,transparent 48%),linear-gradient(145deg,#111a2c 0%,#090b13 65%,#18223a 100%)",opacity:backgroundOpacity}}/>}
+    {scene.layers?.filter((layer)=>layer.role==="background").map((layer)=><SceneLayerImage key={layer.id} layer={layer} sceneDuration={scene.durationInFrames} opacityMultiplier={backgroundOpacity}/>)}
     <AbsoluteFill style={{opacity:contentOpacity}}>
     <AbsoluteFill style={{background:"linear-gradient(180deg,rgba(5,8,15,.10),rgba(5,8,15,.20) 35%,rgba(5,8,15,.92))"}}/>
     {scene.foregroundImage && <Img src={scene.foregroundImage} style={{position:"absolute",left:0,top:650,width:"100%",height:870,objectFit:"contain",objectPosition:"center bottom",transform:"translateX("+interpolate(f,[0,24],[70,0],clamp)+"px) translateY("+Math.sin(f/11)*8+"px) scale("+interpolate(f,[0,28],[0.88,1],clamp)+")",filter:"drop-shadow(0 26px 45px rgba(0,0,0,.55))",zIndex:3}}/>}
+    {scene.layers?.filter((layer)=>layer.role!=="background").map((layer)=><SceneLayerImage key={layer.id} layer={layer} sceneDuration={scene.durationInFrames}/>)}
     <AbsoluteFill style={{pointerEvents:"none",opacity:.2,backgroundImage:"linear-gradient("+color+"20 1px,transparent 1px),linear-gradient(90deg,"+color+"20 1px,transparent 1px)",backgroundSize:"90px 90px",maskImage:"linear-gradient(180deg,black,transparent 62%)",transform:"translateY("+(-(f%90))+"px)"}}/>
     <div style={{position:"absolute",top:112,left:78,right:78,display:"flex",justifyContent:"space-between",fontSize:22,letterSpacing:5,fontWeight:800,color}}><span>META / MOTION</span><span>0{index+1}</span></div>
     <div style={{position:"absolute",top:290,left:80,right:80}}>
@@ -95,14 +106,14 @@ const Scene: React.FC<{scene:ShortScene;color:string;index:number;isLast:boolean
   </AbsoluteFill>;
 };
 
-export const ShortComposition: React.FC<ShortProps> = ({scenes,accentColor,audio}) => {
+export const ShortComposition: React.FC<ShortProps> = ({scenes,accentColor,audio,audioTracks}) => {
   const overlap=12;
-  let cursor=0;
-  const positioned=scenes.map((scene,index)=>{const from=cursor;cursor+=scene.durationInFrames-(index<scenes.length-1?overlap:0);return {scene,from};});
+  const timeline=getTimelineLayout(scenes,overlap);
   const frame=useCurrentFrame();
   return <AbsoluteFill style={{backgroundColor:"#080c16",overflow:"hidden"}}>
-    {positioned.map(({scene,from},index)=><Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames} layout="none"><Scene scene={scene} color={accentColor} index={index} isLast={index===scenes.length-1}/></Sequence>)}
+    {timeline.items.map(({scene,from},index)=><Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames} layout="none"><Scene scene={scene} color={accentColor} index={index} isLast={index===scenes.length-1}/></Sequence>)}
     {audio && <Audio src={audio}/>}
-    <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,cursor],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
+    {audioTracks?.map(track=><Sequence key={track.id} from={track.fromFrame??0} durationInFrames={track.durationInFrames} layout="none"><AudioTrackPlayer track={track}/></Sequence>)}
+    <div style={{position:"absolute",top:0,left:0,width:"100%",height:5,background:"rgba(255,255,255,.16)",zIndex:50}}><div style={{width:interpolate(frame,[0,timeline.durationInFrames],[0,100],clamp)+"%",height:"100%",background:accentColor}}/></div>
   </AbsoluteFill>;
 };

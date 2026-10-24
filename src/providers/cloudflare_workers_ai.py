@@ -37,7 +37,7 @@ def multipart(fields: dict[str, str]) -> tuple[bytes, str]:
 
 
 def generate(prompt: str, output: Path, width: int, height: int,
-             model: str, seed: int | None) -> None:
+             model: str, seed: int | None) -> Path:
     account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
     token = os.getenv("CLOUDFLARE_API_TOKEN", "").strip()
     if not account_id or not token:
@@ -105,6 +105,7 @@ def generate(prompt: str, output: Path, width: int, height: int,
     output.write_bytes(image_bytes)
     print(f"Imagem salva: {output} ({len(image_bytes):,} bytes)")
     print(f"Modelo: {model} | dimensão solicitada: {width}x{height}")
+    return output
 
 
 def main() -> None:

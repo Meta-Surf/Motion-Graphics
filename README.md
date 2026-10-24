@@ -56,3 +56,8 @@ O pipeline completo de storyboard, narração e render ainda está em desenvolvi
 O workflow `.github/workflows/cloudflare-image-queue.yml` aceita manifestos JSON em `jobs/pending/`. Uma atualização da fila tenta iniciar a geração automaticamente; há também uma verificação horária como recuperação. Imagens geradas são publicadas como artefatos do GitHub Actions por 7 dias e o manifesto concluído é movido para `jobs/processed/`.
 
 Use `src/process_image_queue.py` para validar e processar os pedidos. Cada manifesto pode solicitar de 1 a 8 imagens, com prompts de até 3.000 caracteres. As credenciais continuam somente nos secrets do repositório. Consulte `docs/image-generation-queue.md` para o formato do pedido e limites.
+
+
+## Motion por camadas e áudio sincronizado
+
+O Remotion aceita múltiplos assets com movimento independente e faixas temporizadas de voz, música e efeitos, com fades e ducking em janelas marcadas. O cálculo de duração é compartilhado com a timeline para evitar frames vazios no fechamento. Consulte a documentação em docs/remotion-renderer.md, o exemplo examples/remotion-layers.example.json e execute os testes e typecheck no diretório remotion.

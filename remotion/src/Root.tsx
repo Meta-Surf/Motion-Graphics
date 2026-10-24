@@ -1,6 +1,7 @@
 import React from "react";
 import { Composition } from "remotion";
 import { ShortComposition, ShortProps } from "./ShortComposition";
+import { getTimelineDuration } from "./timeline";
 
 const demoProps: ShortProps = {
   title: "IA transforma a criação de vídeos",
@@ -16,7 +17,7 @@ export const RemotionRoot: React.FC = () => (
   <Composition
     id="AiShort"
     component={ShortComposition}
-    durationInFrames={demoProps.scenes.reduce((sum, scene) => sum + scene.durationInFrames, 0)}
+    durationInFrames={getTimelineDuration(demoProps.scenes, 12)}
     fps={30}
     width={1080}
     height={1920}
