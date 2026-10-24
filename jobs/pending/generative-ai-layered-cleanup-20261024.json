@@ -1,0 +1,28 @@
+{
+  "job_id": "generative-ai-layered-cleanup-20261024",
+  "title": "Clean replacement plates for generative AI Short",
+  "images": [
+    {
+      "asset_id": "layer-bg-modalities-clean",
+      "scene_id": "scene-05",
+      "role": "background",
+      "alpha": "none",
+      "filename": "bg-05-modalities-v2.jpg",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52331,
+      "prompt": "Vertical premium cinematic editorial background plate for an explainer about generative AI multimodality. Bright ivory-white minimalist sculptural studio with three blank translucent portals/panels in coral, cobalt and violet, asymmetrical spatial composition with beautiful soft daylight, subtle depth and shadows, clean sophisticated material texture, ample negative space for foreground motion graphics. Absolutely no words, letters, numbers, symbols, glyphs, writing, labels, logos, watermarks, UI, or readable marks anywhere. No people. 9:16 composition."
+    },
+    {
+      "asset_id": "layer-bg-close-clean",
+      "scene_id": "scene-08",
+      "role": "background",
+      "alpha": "none",
+      "filename": "bg-08-close-v2.jpg",
+      "width": 1024,
+      "height": 1792,
+      "seed": 52332,
+      "prompt": "Vertical premium cinematic editorial background plate for the closing shot of a generative AI explainer. Warm sunrise through a modern studio window, thoughtful creator viewed small at the lower-right looking toward a delicate luminous neural arc high in the open sky, elegant warm cream and soft coral colors, realistic subtle atmosphere, very spacious composition with a clean empty lower third and no clutter. Absolutely no screens, interface, words, letters, numbers, symbols, glyphs, writing, labels, logos, watermarks, or readable marks anywhere. 9:16 composition."
+    }
+  ]
+}
