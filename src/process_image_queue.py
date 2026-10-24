@@ -65,7 +65,7 @@ def main() -> int:
             if alpha not in {"none", "preferred", "required"}:
                 raise SystemExit(f"alpha inválido no job {job_id}: use none, preferred ou required.")
             model = item.get("model", DEFAULT_MODEL)
-            if not isinstance(model, str) or not re.fullmatch(r"@[A-Za-z0-9._/-]{1,120}", model):
+            if not isinstance(model, str) or not re.fullmatch(r"@[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)+", model):
                 raise SystemExit(f"Modelo Cloudflare inválido no job {job_id}.")
             print(f"Gerando {filename} ({role})...")
             saved_path = generate(prompt, OUTPUT / job_id / filename, width, height, model, seed)
