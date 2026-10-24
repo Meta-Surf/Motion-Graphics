@@ -1,0 +1,94 @@
+{
+  "job_id": "generative-ai-layered-fg-20261024",
+  "title": "Isolated motion-layer assets for generative AI Short",
+  "images": [
+    {
+      "asset_id": "layer-brain-shell",
+      "scene_id": "scene-01",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "brain-shell.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52321,
+      "prompt": "Isolated premium 3D medical-art object, a complete human cerebral cortex viewed in a clean three-quarter side angle, anatomically plausible folds sculpted from soft coral-pink porcelain with fine grooves and subtle ivory highlights, silhouette centered and large with empty margins, no labels, no brain stem emphasis, no cast shadow. Background must be perfectly uniform vivid chroma-key green (#00FF00) from edge to edge: absolutely flat, even brightness, no gradient, no texture, no horizon, no shadows, no reflections; no green on the subject. No text, letters, logos or watermark."
+    },
+    {
+      "asset_id": "layer-brain-mesh",
+      "scene_id": "scene-01",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "brain-mesh.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52322,
+      "prompt": "An isolated 3D neural network forming the exact recognizable side-profile silhouette of a human brain, viewed three-quarter from the left, made only from delicate cobalt-blue and white filaments, hundreds of small luminous synapse nodes, open interior mesh with generous visible gaps, centered and same scale as a full brain, crisp clean edges, no shadow. Background perfectly uniform vivid chroma-key green (#00FF00) edge to edge, flat and evenly lit, no gradient, no floor, no texture, no reflection, and no green in the object. No words, no text, no logos, no watermark."
+    },
+    {
+      "asset_id": "layer-brain-core",
+      "scene_id": "scene-01",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "brain-core.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52323,
+      "prompt": "A floating isolated 3D neural core shaped like a compact human brain from the same three-quarter side view, about two thirds the width of a full cortex, made of luminous coral and violet nerve fibers with a bright warm-white center and clean sculptural depth, no solid outer shell, centered, sharply separated from the background, no shadow. Background is perfectly uniform vivid chroma-key green (#00FF00), absolutely flat and evenly lit from edge to edge, no gradient, texture, ground, shadow, reflection, or green on the object. No text or logos."
+    },
+    {
+      "asset_id": "layer-token-tiles",
+      "scene_id": "scene-03",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "token-tiles.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52324,
+      "prompt": "Isolated group of four polished translucent glass cubes and short rectangular token tiles, arranged in a clear left-to-right sequence with visible gaps between each piece, one tile softly glowing coral, the others cobalt, ivory and violet, three-quarter perspective, no symbols or writing on any face, designed to float separately in a motion-graphics explainer, centered with generous clear margins, no shadow. Background uniformly pure chroma-key green (#00FF00), flat even color edge to edge, no gradient, texture, floor, reflection or green details on the objects. No text, letters, numbers or logos."
+    },
+    {
+      "asset_id": "layer-diffusion-frame",
+      "scene_id": "scene-04",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "diffusion-frame.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52325,
+      "prompt": "Isolated 3D rectangular picture frame in perspective, containing a richly detailed dawn alpine lake landscape; the left half of the frame and its border dissolve into hundreds of tiny coral, gold and white particles while the right half is fully resolved, dimensional depth, clean crisp silhouette, centered, no cast shadow. Background must be perfectly uniform vivid chroma-key green (#00FF00), flat and even edge to edge, no gradient, floor, texture, shadows, reflection, or green on the object. No text, letters, logos or watermark."
+    },
+    {
+      "asset_id": "layer-media-trio",
+      "scene_id": "scene-05",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "media-trio.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52326,
+      "prompt": "Three distinct isolated floating 3D glass objects separated with clear gaps: a blank ivory sheet/page, a small luminous image frame showing a colorful abstract landscape, and a smooth coral-violet waveform ribbon. Arrange as a rising triangular fan with strong depth and clean silhouettes, viewed three-quarter, objects do not overlap, no symbols or writing, centered and crisp, no shadow. Perfect uniform bright chroma-key green (#00FF00) background edge to edge, no gradient, floor, texture, shadows, reflection, or green color in the subjects. No words, text, letters, logos or watermark."
+    },
+    {
+      "asset_id": "layer-magnifier-risk",
+      "scene_id": "scene-06",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "magnifier-risk.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52327,
+      "prompt": "Isolated premium 3D editorial still-life: a large clear glass magnifying lens with a coral-red handle hovering above a small blank ivory document fragment, tiny crisp orange warning triangle on the paper but no text, strong depth and beautiful realistic refraction, centered subject with clean edges, no cast shadow. Background perfectly flat uniform vivid chroma-key green (#00FF00) from edge to edge, evenly lit, no gradient, floor, texture, reflections in the background, or green anywhere on the subject. No text, letters, logos or watermark."
+    },
+    {
+      "asset_id": "layer-hand-stylus",
+      "scene_id": "scene-07",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "hand-stylus.png",
+      "width": 1024,
+      "height": 1024,
+      "seed": 52328,
+      "prompt": "Photorealistic isolated adult right hand and partial wrist holding a slim matte cobalt digital stylus, natural warm skin, believable anatomy and five clean fingers, poised to tap or draw, stylus points diagonally toward upper left, cinematic soft edge light, large crisp silhouette, no extra objects and no shadow. Background must be perfectly uniform bright chroma-key green (#00FF00), absolutely flat edge to edge, no gradient, floor, texture, shadow, reflection, or green spill on the hand. No text, logos or watermark."
+    }
+  ]
+}
