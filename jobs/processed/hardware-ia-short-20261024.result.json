@@ -1,0 +1,18 @@
+{
+  "job_id": "hardware-ia-short-20261024",
+  "run_id": 40091258629,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40091258629",
+  "artifact_name": "cloudflare-generated-images-40091258629",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/hardware-ia-short-20261024/asset-manifest.json",
+    "output/generated/hardware-ia-short-20261024/s01-chip-hook.jpg",
+    "output/generated/hardware-ia-short-20261024/s02-matrix-core.jpg",
+    "output/generated/hardware-ia-short-20261024/s03-precision.jpg",
+    "output/generated/hardware-ia-short-20261024/s04-hbm-memory.jpg",
+    "output/generated/hardware-ia-short-20261024/s05-chiplets-package.jpg",
+    "output/generated/hardware-ia-short-20261024/s06-rack-scale.jpg",
+    "output/generated/hardware-ia-short-20261024/s07-cooling-power.jpg",
+    "output/generated/hardware-ia-short-20261024/s08-human-scale.jpg"
+  ]
+}
