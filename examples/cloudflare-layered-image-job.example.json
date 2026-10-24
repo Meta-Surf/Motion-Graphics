@@ -1,0 +1,26 @@
+{
+  "job_id": "ai-short-layers-01",
+  "title": "Assets por camada para um Short",
+  "images": [
+    {
+      "asset_id": "lab-background",
+      "scene_id": "scene-01",
+      "role": "background",
+      "alpha": "none",
+      "filename": "lab-background.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Cinematic editorial image of an advanced AI research lab, vertical 9:16 composition, open negative space in center for separate foreground subject and title, teal and warm amber lighting, realistic materials, no text, no logos."
+    },
+    {
+      "asset_id": "chip-subject",
+      "scene_id": "scene-01",
+      "role": "foreground",
+      "alpha": "preferred",
+      "filename": "chip-subject.png",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "A single detailed futuristic computer processor chip viewed three-quarter angle, centered isolated subject, clean silhouette, transparent background if supported, realistic metal and glass, no text, no logo, no shadow baked into the background."
+    }
+  ]
+}

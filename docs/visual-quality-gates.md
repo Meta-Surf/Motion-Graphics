@@ -24,3 +24,12 @@
 - Confirmar que toda afirmação acompanha a narração e fontes revisadas.
 - Duração mínima: 30 segundos; alvo recomendado: 35–55 segundos.
 - Verificar 1080×1920, H.264/AAC, áudio audível e ausência de quadros pretos ou imagens quebradas.
+
+
+## Assets em camadas e áudio
+
+- Cada imagem deve declarar sua função (fundo, foreground ou overlay) e manter prompt, provedor/modelo, dimensão, seed quando houver, cena, licença/origem e expectativa de alpha no manifesto.
+- Confirme o canal alpha no arquivo final; a solicitação por prompt não garante transparência.
+- Mapeie mudanças visuais e palavras destacadas aos timecodes da narração. Use faixas separadas para voz, música e efeitos; marque as janelas de ducking no roteiro.
+- Confira o último frame, a última fala e o fim das faixas para evitar composição vazia ou áudio cortado.
+- Meça render FPS, duração, CPU/GPU e encoder no Dacol. Aceleração do encoder não prova que o Chromium renderizou os frames na GPU.

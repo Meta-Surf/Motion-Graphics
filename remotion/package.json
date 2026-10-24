@@ -5,7 +5,8 @@
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render:demo": "remotion render src/index.ts AiShort renders/ai-short-demo.mp4",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test src/*.test.ts"
   },
   "dependencies": {
     "@remotion/cli": "4.0.538",

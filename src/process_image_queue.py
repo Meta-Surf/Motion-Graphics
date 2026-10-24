@@ -37,6 +37,7 @@ def main() -> int:
         if not SAFE_ID.fullmatch(job_id) or not isinstance(images, list) or not 1 <= len(images) <= 8:
             raise SystemExit(f"Manifesto inválido: {manifest.name}")
         print(f"Processando job {job_id}: {len(images)} imagens.")
+        generated_assets = []
         for item in images:
             filename = item.get("filename", "")
             prompt = item.get("prompt", "")
@@ -51,8 +52,36 @@ def main() -> int:
                 raise SystemExit(f"Dimensões inválidas no job {job_id}.")
             if seed is not None and (not isinstance(seed, int) or seed < 0):
                 raise SystemExit(f"Seed inválido no job {job_id}.")
-            print(f"Gerando {filename}...")
-            generate(prompt, OUTPUT / job_id / filename, width, height, DEFAULT_MODEL, seed)
+            role = item.get("role", "background")
+            if role not in {"background", "foreground", "overlay", "texture", "icon", "subject"}:
+                raise SystemExit(f"Papel de asset inválido no job {job_id}: {role}")
+            asset_id = item.get("asset_id", Path(filename).stem)
+            scene_id = item.get("scene_id")
+            alpha = item.get("alpha", "none")
+            if not isinstance(asset_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,100}", asset_id):
+                raise SystemExit(f"asset_id inválido no job {job_id}.")
+            if scene_id is not None and (not isinstance(scene_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,100}", scene_id)):
+                raise SystemExit(f"scene_id inválido no job {job_id}.")
+            if alpha not in {"none", "preferred", "required"}:
+                raise SystemExit(f"alpha inválido no job {job_id}: use none, preferred ou required.")
+            model = item.get("model", DEFAULT_MODEL)
+            if not isinstance(model, str) or not re.fullmatch(r"@[A-Za-z0-9._/-]{1,120}", model):
+                raise SystemExit(f"Modelo Cloudflare inválido no job {job_id}.")
+            print(f"Gerando {filename} ({role})...")
+            saved_path = generate(prompt, OUTPUT / job_id / filename, width, height, model, seed)
+            generated_assets.append({
+                "asset_id": asset_id, "scene_id": scene_id, "role": role,
+                "file": saved_path.relative_to(ROOT).as_posix(), "prompt": prompt,
+                "provider": "cloudflare-workers-ai", "model": model,
+                "requested_width": width, "requested_height": height, "seed": seed,
+                "alpha_expectation": alpha, "alpha_verified": False, "origin": "generated",
+            })
+        manifest_out = OUTPUT / job_id / "asset-manifest.json"
+        manifest_out.write_text(json.dumps({
+            "job_id": job_id,
+            "assets": generated_assets,
+            "note": "Verify alpha in the generated file; alpha_expectation is not a guarantee."
+        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         PROCESSED.mkdir(parents=True, exist_ok=True)
         destination = PROCESSED / manifest.name
         if destination.exists():

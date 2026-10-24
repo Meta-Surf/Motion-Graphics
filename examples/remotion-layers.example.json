@@ -1,0 +1,124 @@
+{
+  "project": {
+    "title": "Exemplo de composição com camadas",
+    "language": "pt-BR",
+    "fps": 30,
+    "canvas": {
+      "width": 1080,
+      "height": 1920
+    },
+    "note": "Exemplo de mapa de assets e timecodes; caminhos sob remotion/public."
+  },
+  "scenes": [
+    {
+      "id": "scene-01",
+      "durationInFrames": 180,
+      "layers": [
+        {
+          "id": "lab-background",
+          "role": "background",
+          "src": "images/background-lab.jpg",
+          "fit": "cover",
+          "from": {
+            "scale": 1.04,
+            "opacity": 0.9
+          },
+          "to": {
+            "scale": 1.12,
+            "opacity": 1
+          }
+        },
+        {
+          "id": "chip-cutout",
+          "role": "foreground",
+          "src": "images/chip-transparent.png",
+          "fit": "contain",
+          "bounds": {
+            "left": "8%",
+            "top": "28%",
+            "width": "84%",
+            "height": "58%",
+            "objectPosition": "center"
+          },
+          "startFrame": 18,
+          "durationInFrames": 132,
+          "from": {
+            "x": 70,
+            "y": 28,
+            "scale": 0.86,
+            "opacity": 0
+          },
+          "to": {
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "opacity": 1
+          },
+          "zIndex": 3
+        },
+        {
+          "id": "signal-rings",
+          "role": "overlay",
+          "src": "graphics/signal-rings.svg",
+          "fit": "contain",
+          "bounds": {
+            "left": "12%",
+            "top": "18%",
+            "width": "76%",
+            "height": "68%"
+          },
+          "startFrame": 48,
+          "durationInFrames": 96,
+          "from": {
+            "scale": 0.92,
+            "opacity": 0
+          },
+          "to": {
+            "scale": 1.04,
+            "opacity": 0.72
+          },
+          "zIndex": 6
+        }
+      ],
+      "audioTracks": [
+        {
+          "id": "voice-scene-01",
+          "kind": "voice",
+          "src": "audio/voice-scene-01.wav",
+          "fromFrame": 0,
+          "startFrom": 0,
+          "durationInFrames": 165,
+          "volume": 1,
+          "fadeInFrames": 4,
+          "fadeOutFrames": 8
+        },
+        {
+          "id": "music-bed",
+          "kind": "music",
+          "src": "audio/music-bed.wav",
+          "fromFrame": 0,
+          "durationInFrames": 180,
+          "volume": 0.18,
+          "fadeInFrames": 15,
+          "fadeOutFrames": 18,
+          "ducking": [
+            {
+              "startFrame": 12,
+              "endFrame": 154,
+              "gain": 0.45
+            }
+          ]
+        },
+        {
+          "id": "reveal-hit",
+          "kind": "sfx",
+          "src": "audio/reveal-hit.wav",
+          "fromFrame": 48,
+          "durationInFrames": 24,
+          "volume": 0.28,
+          "fadeOutFrames": 10
+        }
+      ]
+    }
+  ]
+}

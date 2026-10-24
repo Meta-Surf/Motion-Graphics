@@ -69,3 +69,16 @@ Use cada layout pela intenção narrativa: hero para promessa, interface para fl
 O Remotion produz cada frame via React e Chromium. A codificação acelerada depende do sistema e do encoder disponível; ter uma GPU não garante aceleração de todo o render. Teste qualidade e tempo na máquina final antes de fixar o encoder.
 
 Confira os termos atuais e a elegibilidade antes de automatizar renders ou operar comercialmente: [licença oficial](https://www.remotion.dev/license) e [FAQ](https://www.remotion.dev/docs/license).
+
+
+## Camadas de imagem animáveis
+
+Cada cena aceita múltiplos assets em layers: fundo, recorte de primeiro plano e overlay. Cada camada pode definir seu próprio intervalo local, caixa de enquadramento, posição, escala, rotação, opacidade e z-index. Os campos image e foregroundImage continuam disponíveis para projetos existentes. Use PNG com alpha ou SVG nos objetos isolados; use a imagem gerada como fundo separado. startFrame e durationInFrames contam desde o início da cena. from e to definem as transformações inicial e final. Veja examples/remotion-layers.example.json.
+
+## Faixas de áudio e sincronização
+
+O campo audio legado segue funcionando. audioTracks permite combinar voice, music e sfx, posicionar cada faixa por frame, definir volume, fades, recorte da fonte e janelas explícitas de ducking da música. O ducking usa timecodes fornecidos no storyboard; não detecta automaticamente a fala.
+
+## Validação de timeline
+
+A duração declarada da composição agora usa o mesmo cálculo que posiciona as cenas e considera as sobreposições. Os testes cobrem offsets, duração final, entradas inválidas, fades e ducking. Execute npm test e npm run typecheck.
