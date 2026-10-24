@@ -1,0 +1,54 @@
+{
+  "job_id": "short-gemini-conversational-edit-v003",
+  "title": "Short AI editing Gemini v003 — original images and motion layers",
+  "images": [
+    {
+      "filename": "scene-01-hook.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 premium cinematic editorial photograph, over-the-shoulder view of a Brazilian independent creator in a dark video-editing studio, a large monitor displays an intricate modern nonlinear editing timeline with colorful clip thumbnails and audio waveform but no legible words, hands near keyboard, dramatic teal and violet screen glow plus warm amber practical light, premium documentary film look, rich depth of field, layered foreground lenses, no text, no brand logos, no watermark."
+    },
+    {
+      "filename": "scene-02-prompt.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 cinematic editorial photography of a creator speaking a request to an AI video editing assistant, profile of creator and a clean luminous chat panel floating beside a video timeline, the panel shows only abstract nonverbal interface shapes and bars, video clips visibly slide into order, modern creative workspace, teal cyan and violet palette with amber highlights, believable realistic human, high-end product film, no readable text, no logos, no watermark."
+    },
+    {
+      "filename": "scene-03-reorder.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 cinematic close-up of a video editing timeline in motion on a large screen, colorful film clip blocks physically rearranging into a clean sequence, glowing audio waveform aligned under the clips, dynamic diagonal camera angle and slight motion blur, premium realistic creative software studio, electric cyan and violet accents, no readable text, no visible brand, no watermark."
+    },
+    {
+      "filename": "scene-04-human-control.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 premium cinematic photograph, close-up of creator's hand on a mouse and the other hand on a tactile video editing control surface, crisp real timeline visible on monitor, human making a precise trim while a subtle AI assistant panel sits off to the side, warm amber rim light, deep teal background, convincing human hands, polished documentary still, no legible text, no logos, no watermark."
+    },
+    {
+      "filename": "scene-05-creative-work.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 aspirational but authentic cinematic editorial photograph of a Brazilian creator reviewing a finished vertical video on a smartphone in a home studio, monitor in background has abstract clips and colorful shapes, creator expression focused and pleased, layered light from cyan and amber practicals, natural appearance, premium documentary style, no readable text, no logos, no watermark."
+    },
+    {
+      "filename": "scene-06-close.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 high-end cinematic editorial image of a creator's studio at golden hour, monitor with an elegant video timeline and vibrant footage thumbnails, camera and notebook in foreground, warm light meets teal shadows, visually beautiful final-frame composition with central negative space for a closing message, realistic photography, no readable text, no logos, no watermark."
+    },
+    {
+      "filename": "overlay-creator-green.jpg",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Full body isolated human video creator, Brazilian man in his 30s casual dark creative studio clothing holding a compact mirrorless camera, expressive but natural three-quarter pose, detailed realistic cinematic photography, studio rim light in teal and amber, entire body visible including hands and camera, standing against perfectly flat uniform pure chroma key green background (#00FF00), absolutely no shadows or gradients on the green, no props except camera, no text, no watermark."
+    },
+    {
+      "filename": "overlay-timeline-green.jpg",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Isolated premium 3D motion graphics object: a compact holographic stack of 3 colorful video clip cards with a glowing audio waveform and a small central neural network orb, cyan violet amber luminous edges, clean sharp readable silhouette without any text, centered and large, floating on perfectly flat uniform pure chroma key green (#00FF00) background with no shadows, no background details, no logos, no watermark."
+    }
+  ]
+}
