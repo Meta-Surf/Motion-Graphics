@@ -1,0 +1,48 @@
+{
+  "job_id": "ai-editor-gemini-test-20261023",
+  "title": "Short AI editing assistant / Gemini in YouTube Shorts",
+  "images": [
+    {
+      "filename": "scene-01-creator-phone.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 premium cinematic technology editorial photograph for a YouTube Short about AI video editing. Close-up over-the-shoulder view of a young independent video creator at a desk, holding a modern smartphone with a generic video editing timeline made of colorful thumbnail blocks and audio waveform, thoughtful expression reflected softly on the screen, warm studio practical lights with cyan and violet accents, realistic skin and hands, shallow depth of field, sophisticated composition, visually rich but uncluttered, no legible text, no brand logos, no watermark."
+    },
+    {
+      "filename": "scene-02-ai-assistant.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 cinematic premium technology campaign still. A smartphone and laptop on a creator's desk, a helpful AI editing assistant represented by a subtle luminous abstract interface hovering above a video timeline, tidy blocks of colorful footage being organized, calm human-centered mood, contemporary creator studio, cyan and amber lighting with violet highlights, photorealistic, high-end editorial photography, leave clean negative space near the top for motion-graphics captions, no words, no logos, no watermark."
+    },
+    {
+      "filename": "scene-03-auto-rearrange-clips.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 cinematic close-up of a video editing timeline on a large monitor, colorful short-video clips smoothly snapping into a coherent sequence, one clip visibly shortened and audio waveform aligning to a glowing beat marker, a creator's hand guiding the process with a trackpad, realistic modern editing suite, crisp screen reflections, cyan and orange accent light, premium photoreal technology editorial, dynamic diagonal composition, no readable interface text, no logos, no watermark."
+    },
+    {
+      "filename": "scene-04-human-control.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 realistic cinematic photograph, creator takes control of a video editing timeline after an AI suggestion, hand precisely dragging a clip edge on a monitor while the other hand rests on a keyboard, timeline layers and audio waveform visible but abstract and without readable words, confident focused expression reflected in glass, modern studio, balanced cyan and warm amber lighting, high-end editorial technology campaign, no logos, no watermark."
+    },
+    {
+      "filename": "scene-05-creators-using-ai.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 cinematic editorial image showing a diverse group of independent video creators in several contemporary small studios, each using AI-assisted editing on a phone or laptop, subtle luminous connections form an elegant network between scenes, grounded realistic documentary photography with refined blue, teal and amber palette, energetic but credible, no statistics, no text, no visible brand marks, no watermark."
+    },
+    {
+      "filename": "scene-06-human-story.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 cinematic human-centered technology photograph, a creator thoughtfully shaping a short video while an abstract AI assistant organizes clips in the background, the human creator's face and hands are the visual focus, warm emotional practical lighting with restrained cyan interface glow, feeling of authorship, creativity and control, premium realistic editorial photography, clean space for overlay captions, no text, no logos, no watermark."
+    },
+    {
+      "filename": "scene-07-ready-to-create.png",
+      "width": 1024,
+      "height": 1792,
+      "prompt": "Vertical 9:16 uplifting closing frame for a premium technology Short, confident young creator holding a smartphone with a finished vertical video preview represented only by abstract colorful imagery, softly lit modern home studio at dusk, subtle cyan and amber light, cinematic depth, hopeful and inviting expression, polished photoreal editorial campaign, subject composed in upper half with clean lower space for captions, no legible text, no logos, no watermark."
+    }
+  ]
+}

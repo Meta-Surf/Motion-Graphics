@@ -1,0 +1,16 @@
+{
+  "job_id": "ai-editor-gemini-test-20261023",
+  "run_id": 40024339619,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40024339619",
+  "artifact_name": "cloudflare-generated-images-40024339619",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/ai-editor-gemini-test-20261023/scene-01-creator-phone.jpg",
+    "output/generated/ai-editor-gemini-test-20261023/scene-02-ai-assistant.jpg",
+    "output/generated/ai-editor-gemini-test-20261023/scene-03-auto-rearrange-clips.jpg",
+    "output/generated/ai-editor-gemini-test-20261023/scene-04-human-control.jpg",
+    "output/generated/ai-editor-gemini-test-20261023/scene-05-creators-using-ai.jpg",
+    "output/generated/ai-editor-gemini-test-20261023/scene-06-human-story.jpg",
+    "output/generated/ai-editor-gemini-test-20261023/scene-07-ready-to-create.jpg"
+  ]
+}
