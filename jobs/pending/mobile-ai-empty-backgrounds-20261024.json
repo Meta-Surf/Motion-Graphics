@@ -1,0 +1,25 @@
+{
+  "job_id": "mobile-ai-empty-backgrounds-20261024",
+  "title": "Correção de fundos: ambiente vazio sem sujeito embutido",
+  "images": [
+    {
+      "asset_id": "studio-empty",
+      "role": "background",
+      "filename": "studio-empty.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 31424,
+      "prompt": "An unoccupied dark navy architectural cyclorama, seamless curved walls, expansive entirely empty central area, subtle sapphire light gradient and a very soft elliptical pool of cyan illumination near the floor, no furnishings or objects of any kind. Clean minimal abstract architectural environment. Premium realistic lighting, filmic blacks, subtle atmospheric depth, portrait 9:16, blank empty stage, nothing in the foreground, no text."
+    },
+    {
+      "asset_id": "city-empty",
+      "role": "background",
+      "filename": "city-empty.png",
+      "width": 1024,
+      "height": 1792,
+      "seed": 31425,
+      "prompt": "Close view of an empty large glass window at blue hour, an out-of-focus distant city skyline and beautiful sparse amber and cyan bokeh lights outside, deep navy atmosphere, no foreground objects, no furniture, an unobstructed view of glass and distant lights only, extremely softly defocused, premium cinematic architectural photography, portrait 9:16, no text."
+    }
+  ]
+}
+
