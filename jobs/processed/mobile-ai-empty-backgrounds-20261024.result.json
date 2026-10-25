@@ -1,0 +1,12 @@
+{
+  "job_id": "mobile-ai-empty-backgrounds-20261024",
+  "run_id": 40145241848,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40145241848",
+  "artifact_name": "cloudflare-generated-images-40145241848",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/mobile-ai-empty-backgrounds-20261024/asset-manifest.json",
+    "output/generated/mobile-ai-empty-backgrounds-20261024/city-empty.jpg",
+    "output/generated/mobile-ai-empty-backgrounds-20261024/studio-empty.jpg"
+  ]
+}
