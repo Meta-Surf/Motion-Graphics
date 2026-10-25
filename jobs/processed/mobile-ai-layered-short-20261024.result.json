@@ -1,0 +1,18 @@
+{
+  "job_id": "mobile-ai-layered-short-20261024",
+  "run_id": 40144902920,
+  "run_url": "https://github.com/Meta-Surf/Motion-Graphics/actions/runs/40144902920",
+  "artifact_name": "cloudflare-generated-images-40144902920",
+  "artifact_retention_days": 7,
+  "images": [
+    "output/generated/mobile-ai-layered-short-20261024/ai-core.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/asset-manifest.json",
+    "output/generated/mobile-ai-layered-short-20261024/cafe-photo.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/city-bg.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/cloud-node.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/mountain-photo.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/neural-wallpaper.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/privacy-shield.jpg",
+    "output/generated/mobile-ai-layered-short-20261024/studio-bg.jpg"
+  ]
+}
