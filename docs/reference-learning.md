@@ -98,3 +98,7 @@ Antes de promover uma técnica a modelo de produção:
 5. Revisar visual e áudio separadamente e registrar aprovação. Fluxo óptico e ASR não substituem essa revisão.
 
 REA não foi instalado para esse estudo: o trabalho usa pixels de um MP4, sem código-fonte de animação para investigar.
+
+## Estudo seguinte
+
+O [estudo 002](editorial-motion-study-002.md) amplia a biblioteca com composição editorial clara, interfaces, conexões e visualização de áudio. O analisador agora registra PTS individuais e folhas paginadas; os nove padrões e a reconstrução do estudo 001 continuam disponíveis. Consulte o [catálogo consolidado](../motion-library/catalog.json).

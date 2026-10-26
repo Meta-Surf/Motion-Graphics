@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "pattern_count": 21,
+  "studies": [
+    {
+      "id": "study-001",
+      "path": "studies/001.json",
+      "family": "product-depth-and-kinetic-type",
+      "pattern_count": 9
+    },
+    {
+      "id": "study-002",
+      "path": "studies/002.json",
+      "family": "editorial-light-interface-explainer",
+      "pattern_count": 12
+    }
+  ],
+  "patterns": [
+    {
+      "id": "P01",
+      "name": "Revelação de produto",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P02",
+      "name": "Interface explodida",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P03",
+      "name": "Aproximação por âncora",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P04",
+      "name": "Destaque emissivo",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P05",
+      "name": "Objeto giratório com texto",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P06",
+      "name": "Tipografia por palavra",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P07",
+      "name": "Íris e mudança de luminância",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P08",
+      "name": "Barras em primeiro plano",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P09",
+      "name": "Marca resolvida do desfoque",
+      "study": "study-001",
+      "status": "candidate"
+    },
+    {
+      "id": "P10",
+      "name": "Hierarquia editorial",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P11",
+      "name": "Painéis conectados",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P12",
+      "name": "Correção e foco semântico",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P13",
+      "name": "Contador com evidência",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P14",
+      "name": "Risco e revelação",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P15",
+      "name": "Funções em sequência",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P16",
+      "name": "Terminal digitado",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P17",
+      "name": "Reator radial de áudio",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P18",
+      "name": "Retrato com waveform",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P19",
+      "name": "CTA por palavra-chave",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P20",
+      "name": "Luz e papel em camadas",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    },
+    {
+      "id": "P21",
+      "name": "Olho e pausa de atenção",
+      "study": "study-002",
+      "status": "candidate-prototype"
+    }
+  ],
+  "policy": "Candidates require content transfer, visual review and audio review before production approval."
+}

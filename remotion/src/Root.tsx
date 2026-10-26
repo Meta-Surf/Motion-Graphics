@@ -5,6 +5,8 @@ import {validateShort} from "./validate-short";
 import {getMotionDemoProps} from "./motion-demo";
 import { getTimelineDuration } from "./timeline";
 import {ReferenceMotionStudy,LayerBreakdown} from './ReferenceMotionStudy';
+import {MobileLayeredShort,MOBILE_DURATIONS,validateMobile} from './MobileLayeredShort';
+import {EditorialPatternDemo} from './EditorialPatterns';
 
 const demoProps: ShortProps = {
   title: "IA transforma a criação de vídeos",
@@ -31,5 +33,7 @@ export const RemotionRoot: React.FC = () => (
   <Composition id="MotionLibraryDemo" component={ShortComposition} durationInFrames={validateShort(getMotionDemoProps())} fps={30} width={1080} height={1920} defaultProps={getMotionDemoProps()} calculateMetadata={({props})=>({durationInFrames:validateShort(props)})}/>
   <Composition id="ReferenceMotionStudy" component={ReferenceMotionStudy} durationInFrames={466} fps={30} width={720} height={1280} defaultProps={{useReferenceText:false,brand:'Motion'}}/>
   <Composition id="LayerBreakdown" component={LayerBreakdown} durationInFrames={240} fps={30} width={1440} height={1080} defaultProps={{}}/>
+  <Composition id="MobileLayeredShort" component={MobileLayeredShort} durationInFrames={1800} fps={30} width={1080} height={1920} defaultProps={{assetPrefix:'mobile-ai-20261024',durations:MOBILE_DURATIONS,captions:[]}} calculateMetadata={({props})=>({durationInFrames:validateMobile(props)})}/>
+  <Composition id="EditorialPatternDemo" component={EditorialPatternDemo} durationInFrames={1080} fps={30} width={1080} height={1920} defaultProps={{audioFile:'editorial-demo/signal.wav'}}/>
   </>
 );

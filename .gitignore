@@ -18,3 +18,5 @@ voice-cache/
 
 # Private reference material stays outside the reusable source library.
 remotion/public/reference-study-*/
+remotion/public/mobile-ai-*/
+remotion/public/editorial-demo/

@@ -1,0 +1,444 @@
+{
+  "schema_version": 2,
+  "id": "study-002",
+  "family": "editorial-light-interface-explainer",
+  "source": {
+    "file_name": "Os caras clonaram o ElevenLabs (VoiceStudio).mp4",
+    "sha256": "d8626f74184e6703e70d3ca0e6aa9132fa14a11c8da912f5e61ba48910e0514b",
+    "width": 720,
+    "height": 1280,
+    "fps": 60,
+    "decoded_frames": 3281,
+    "visual_duration_seconds": 54.683333,
+    "container_duration_seconds": 54.76932,
+    "video_pts_origin_seconds": 0.016667,
+    "reference_media_in_repository": false
+  },
+  "evidence_policy": {
+    "observed": "visible pixels, frame times and audio measurements",
+    "inferred": "layer tree, original font, exact curves, masks and authoring tools",
+    "not_verified": "software capabilities, pricing, star count and language count mentioned by the reference",
+    "learning": "persistent recipes, components, source provenance and review records; no model weight training"
+  },
+  "observed_beats": [
+    {
+      "id": "B01",
+      "name": "Gancho com comparação",
+      "start_frame": 0,
+      "end_frame_exclusive": 314,
+      "start_seconds": 0.0,
+      "end_seconds": 5.233333333333333,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B02",
+      "name": "Correção do sujeito",
+      "start_frame": 314,
+      "end_frame_exclusive": 430,
+      "start_seconds": 5.233333333333333,
+      "end_seconds": 7.166666666666667,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B03",
+      "name": "Indivíduo e prova visual",
+      "start_frame": 430,
+      "end_frame_exclusive": 606,
+      "start_seconds": 7.166666666666667,
+      "end_seconds": 10.1,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B04",
+      "name": "Tração com contador e gráfico",
+      "start_frame": 606,
+      "end_frame_exclusive": 862,
+      "start_seconds": 10.1,
+      "end_seconds": 14.366666666666667,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B05",
+      "name": "Execução local",
+      "start_frame": 862,
+      "end_frame_exclusive": 1033,
+      "start_seconds": 14.366666666666667,
+      "end_seconds": 17.216666666666665,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B06",
+      "name": "Riscos de custos e valor zero",
+      "start_frame": 1033,
+      "end_frame_exclusive": 1266,
+      "start_seconds": 17.216666666666665,
+      "end_seconds": 21.1,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B07",
+      "name": "Comparação de funcionalidades",
+      "start_frame": 1266,
+      "end_frame_exclusive": 1443,
+      "start_seconds": 21.1,
+      "end_seconds": 24.05,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B08",
+      "name": "Função 1: voz",
+      "start_frame": 1443,
+      "end_frame_exclusive": 1520,
+      "start_seconds": 24.05,
+      "end_seconds": 25.333333333333332,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B09",
+      "name": "Função 2: idiomas",
+      "start_frame": 1520,
+      "end_frame_exclusive": 1662,
+      "start_seconds": 25.333333333333332,
+      "end_seconds": 27.7,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B10",
+      "name": "Função 3: audiobook",
+      "start_frame": 1662,
+      "end_frame_exclusive": 1746,
+      "start_seconds": 27.7,
+      "end_seconds": 29.1,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B11",
+      "name": "Função 4: catálogo de idiomas e motores",
+      "start_frame": 1746,
+      "end_frame_exclusive": 2067,
+      "start_seconds": 29.1,
+      "end_seconds": 34.45,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B12",
+      "name": "Instalação com terminal",
+      "start_frame": 2067,
+      "end_frame_exclusive": 2431,
+      "start_seconds": 34.45,
+      "end_seconds": 40.516666666666666,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B13",
+      "name": "Olho e pausa de atenção",
+      "start_frame": 2431,
+      "end_frame_exclusive": 2561,
+      "start_seconds": 40.516666666666666,
+      "end_seconds": 42.68333333333333,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B14",
+      "name": "Microfone e visualização radial",
+      "start_frame": 2561,
+      "end_frame_exclusive": 2767,
+      "start_seconds": 42.68333333333333,
+      "end_seconds": 46.11666666666667,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B15",
+      "name": "Retrato circular e waveform",
+      "start_frame": 2767,
+      "end_frame_exclusive": 3000,
+      "start_seconds": 46.11666666666667,
+      "end_seconds": 50.0,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    },
+    {
+      "id": "B16",
+      "name": "CTA com palavra digitada",
+      "start_frame": 3000,
+      "end_frame_exclusive": 3281,
+      "start_seconds": 50.0,
+      "end_seconds": 54.68333333333333,
+      "boundary_evidence": "manual semantic annotation supported by frame sheets and change peaks",
+      "boundary_uncertainty_frames": 6
+    }
+  ],
+  "patterns": [
+    {
+      "id": "P10",
+      "name": "Hierarquia editorial",
+      "renderer_kind": "typography",
+      "status": "candidate-prototype",
+      "source_frames": [
+        60,
+        2076
+      ],
+      "required_layers": [
+        "título sans bold",
+        "palavra em cor de acento",
+        "apoio serif italic",
+        "cues de entrada"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "O desenho e a posição da tipografia são observáveis; a família exata da fonte e suas curvas não foram recuperadas."
+    },
+    {
+      "id": "P11",
+      "name": "Painéis conectados",
+      "renderer_kind": "comparison",
+      "status": "candidate-prototype",
+      "source_frames": [
+        90,
+        180,
+        240
+      ],
+      "required_layers": [
+        "painel de origem",
+        "painel de destino",
+        "conectores",
+        "preenchimento escalonado"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "Reconstituir a relação visual. Não presumir acesso ao código ou equivalência funcional de produtos."
+    },
+    {
+      "id": "P12",
+      "name": "Correção e foco semântico",
+      "renderer_kind": "focus",
+      "status": "candidate-prototype",
+      "source_frames": [
+        330,
+        360,
+        450
+      ],
+      "required_layers": [
+        "grupo de ícones",
+        "risco de correção",
+        "sujeito destacado",
+        "opacidade por grupo"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "A hierarquia de autoria é uma hipótese de montagem a partir da troca visível de ícones."
+    },
+    {
+      "id": "P13",
+      "name": "Contador com evidência",
+      "renderer_kind": "metric",
+      "status": "candidate-prototype",
+      "source_frames": [
+        630,
+        720,
+        780,
+        1860
+      ],
+      "required_layers": [
+        "número",
+        "rótulo",
+        "curva vetorial",
+        "fonte e data"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "Os números e alegações vistos no anexo não foram verificados como dados atuais. O protótipo usa valores explicitamente ilustrativos."
+    },
+    {
+      "id": "P14",
+      "name": "Risco e revelação",
+      "renderer_kind": "strike",
+      "status": "candidate-prototype",
+      "source_frames": [
+        1050,
+        1110,
+        1200
+      ],
+      "required_layers": [
+        "linhas de informação",
+        "riscos animados",
+        "resultado em destaque",
+        "sticker"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "Uma promessa de custo zero depende de verificação própria. O demo usa texto qualitativo, sem herdar a alegação do anexo."
+    },
+    {
+      "id": "P15",
+      "name": "Funções em sequência",
+      "renderer_kind": "capabilities",
+      "status": "candidate-prototype",
+      "source_frames": [
+        1470,
+        1560,
+        1690,
+        1860
+      ],
+      "required_layers": [
+        "indicador de etapa",
+        "painel de prova visual",
+        "rótulo por capacidade",
+        "chips de idioma"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "Screenshots da referência não entram no template. Trocar o conteúdo de prova e revisar legibilidade em cada tema."
+    },
+    {
+      "id": "P16",
+      "name": "Terminal digitado",
+      "renderer_kind": "terminal",
+      "status": "candidate-prototype",
+      "source_frames": [
+        2076,
+        2220,
+        2370
+      ],
+      "required_layers": [
+        "janela",
+        "texto progressivo",
+        "cursor",
+        "etiqueta de resultado"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "O texto é apenas renderizado. Nenhum comando visto no vídeo é executado."
+    },
+    {
+      "id": "P17",
+      "name": "Reator radial de áudio",
+      "renderer_kind": "radial",
+      "status": "candidate-prototype",
+      "source_frames": [
+        2600,
+        2660,
+        2720
+      ],
+      "required_layers": [
+        "ícone central",
+        "64 barras",
+        "sinal de entrada",
+        "mapeamento de amplitude"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "A origem exata das barras da referência é desconhecida. O protótipo calcula visualização a partir de um arquivo de áudio."
+    },
+    {
+      "id": "P18",
+      "name": "Retrato com waveform",
+      "renderer_kind": "portrait",
+      "status": "candidate-prototype",
+      "source_frames": [
+        2800,
+        2890,
+        2960
+      ],
+      "required_layers": [
+        "retrato circular",
+        "borda",
+        "waveform",
+        "rótulo"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "O demo usa avatar tipográfico próprio, sem reutilizar o rosto nem a voz do vídeo."
+    },
+    {
+      "id": "P19",
+      "name": "CTA por palavra-chave",
+      "renderer_kind": "keyword",
+      "status": "candidate-prototype",
+      "source_frames": [
+        3020,
+        3120,
+        3200
+      ],
+      "required_layers": [
+        "campo arredondado",
+        "texto digitado",
+        "seta",
+        "balão de resposta"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "Template de montagem visual. Não configura envio de mensagens nem promete links automáticos."
+    },
+    {
+      "id": "P20",
+      "name": "Luz e papel em camadas",
+      "renderer_kind": "paper",
+      "status": "candidate-prototype",
+      "source_frames": [
+        900,
+        2076,
+        2600
+      ],
+      "required_layers": [
+        "fundo claro",
+        "grade fina",
+        "sombras suaves",
+        "camada de conteúdo"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "A aparência pode ser aproximada com CSS/SVG. Não é recuperação da iluminação original."
+    },
+    {
+      "id": "P21",
+      "name": "Olho e pausa de atenção",
+      "renderer_kind": "eye",
+      "status": "candidate-prototype",
+      "source_frames": [
+        2460,
+        2490,
+        2520
+      ],
+      "required_layers": [
+        "contorno de olho",
+        "íris",
+        "pupila",
+        "abertura e deslocamento"
+      ],
+      "implementation": "remotion/src/EditorialPatterns.tsx",
+      "parameters": "inferred reconstruction, independent of original project",
+      "limitation": "Metáfora vetorial reconstruída. Timing e curvas são escolhas do protótipo."
+    }
+  ],
+  "audio_observations": {
+    "asr_model": "faster-whisper-small-int8",
+    "device": "CPU in current session; DACOL offline",
+    "word_count": 146,
+    "transcription_seconds": 18.7693,
+    "radial_pink_area_vs_rms_zero_lag": 0.30456590740685324,
+    "interpretation": "moderate association only; does not identify the original analyzer, smoothing, gain or causal signal path"
+  },
+  "technical_evaluation": {
+    "all_frames_decoded": true,
+    "pts_count_matches_decode": true,
+    "near_duplicate_fraction": 0.06432926829268293,
+    "demo_render": "completed: 1080x1920, 30fps, 1080 frames, 36 seconds, silent preview",
+    "visual_equivalence_to_original": "not evaluated; demo adapts individual techniques, not the full source film",
+    "production_approved": false
+  }
+}

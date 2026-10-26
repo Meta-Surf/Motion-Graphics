@@ -13,13 +13,17 @@
     "preview:library": "node scripts-render-preview.mjs",
     "render:amf": "node render-amf.mjs",
     "render:study": "remotion render src/index.ts ReferenceMotionStudy renders/reference-study.mp4",
-    "render:breakdown": "remotion render src/index.ts LayerBreakdown renders/layer-breakdown.mp4"
+    "render:breakdown": "remotion render src/index.ts LayerBreakdown renders/layer-breakdown.mp4",
+    "prepare:editorial": "python ../scripts/make_editorial_demo_audio.py",
+    "render:editorial": "npm run prepare:editorial && remotion render src/index.ts EditorialPatternDemo renders/editorial-patterns.mp4"
   },
   "dependencies": {
     "@react-three/fiber": "9.8.2",
     "@remotion/bundler": "4.0.538",
     "@remotion/captions": "4.0.538",
     "@remotion/cli": "4.0.538",
+    "@remotion/media-utils": "4.0.538",
+    "@remotion/motion-blur": "4.0.538",
     "@remotion/renderer": "4.0.538",
     "@remotion/three": "4.0.538",
     "@remotion/transitions": "4.0.538",
