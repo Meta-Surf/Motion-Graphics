@@ -17,4 +17,11 @@ class PipelineTest(unittest.TestCase):
  def test_missing_voice_is_blocked(self):
   m={'format':{'duration':'60'},'streams':[{'codec_type':'video','codec_name':'h264','width':1080,'height':1920}]}
   self.assertTrue(any('AAC' in x for x in final.check_media(m)));self.assertEqual(final.check_media(m,False),[])
+ def test_finalizer_accepts_both_new_format_limits(self):
+  for kind,width,height,minimum,maximum in [('short_9_16',1080,1920,15,180),('long_16_9',1920,1080,480,1800)]:
+   for duration in [minimum,maximum]:
+    media={'format':{'duration':str(duration)},'streams':[{'codec_type':'video','codec_name':'h264','width':width,'height':height},{'codec_type':'audio','codec_name':'aac','duration':str(duration)}]}
+    self.assertEqual(final.check_media(media,video_type=kind),[])
+   media['format']['duration']=str(maximum+1)
+   self.assertTrue(final.check_media(media,video_type=kind))
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gemini Motion planning manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "video_type",
+    "scenes"
+  ],
+  "properties": {
+    "video_type": {
+      "enum": [
+        "short_9_16",
+        "long_16_9"
+      ]
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 240,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "template_id",
+          "narration_text",
+          "image_prompt"
+        ],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "enum": [
+              "product-reveal",
+              "exploded-interface",
+              "anchor-zoom",
+              "emissive-highlight",
+              "rotating-object",
+              "word-typography",
+              "iris-transition",
+              "foreground-bars",
+              "brand-resolve",
+              "titles",
+              "comparison",
+              "semantic-focus",
+              "evidence-counter",
+              "strike-reveal",
+              "capability-pager",
+              "typed-terminal",
+              "audio-reactor",
+              "portrait-waveform",
+              "keyword-cta",
+              "paper-light",
+              "eye-pause"
+            ]
+          },
+          "narration_text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 3000,
+            "pattern": "\\S"
+          },
+          "image_prompt": {
+            "type": "string",
+            "minLength": 30,
+            "maxLength": 2200,
+            "pattern": "\\S"
+          }
+        }
+      }
+    }
+  }
+}

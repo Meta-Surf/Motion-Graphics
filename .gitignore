@@ -10,6 +10,12 @@ review/
 *.wav
 *.m4a
 __pycache__/
+.venv/
+.python-deps/
+node_modules/
+output/
+.motion-chunks/
+remotion/public/generated/
 *.py[cod]
 .DS_Store
 

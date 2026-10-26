@@ -1,0 +1,20 @@
+{
+  "video_type": "short_9_16",
+  "scenes": [
+    {
+      "template_id": "titles",
+      "narration_text": "Um vídeo começa com uma ideia clara e uma história que vale a pena contar.",
+      "image_prompt": "Vertical editorial photograph of a brushed aluminum cinema camera on an oak desk in a contemporary film studio, navy acoustic walls, soft amber light from camera left, dark uncluttered upper title space. cinematic lighting, hyper-realistic materials, editorial photography, physically plausible detail, controlled filmic contrast, 8k detail aesthetic, no text, no logos, no watermarks, no flat vector illustration"
+    },
+    {
+      "template_id": "comparison",
+      "narration_text": "A imagem apresenta o contexto, enquanto a narração conduz a história. Cada camada precisa ajudar o público a compreender o assunto.",
+      "image_prompt": "Vertical documentary close-up of two optical lenses on the same oak studio desk, brushed aluminum surfaces, navy acoustic wall, soft amber light from camera left, negative space above the lenses. cinematic lighting, hyper-realistic materials, editorial photography, physically plausible detail, controlled filmic contrast, 8k detail aesthetic, no text, no logos, no watermarks, no flat vector illustration"
+    },
+    {
+      "template_id": "word-typography",
+      "narration_text": "Na revisão, conferimos se voz, imagem e movimento trabalham juntos. A consistência dessas escolhas dá sentido ao resultado.",
+      "image_prompt": "Vertical editorial photograph of the same brushed aluminum camera lens on the oak desk, reflected amber practical light, navy acoustic studio wall, tactile material detail and dark negative space in the upper frame. cinematic lighting, hyper-realistic materials, editorial photography, physically plausible detail, controlled filmic contrast, 8k detail aesthetic, no text, no logos, no watermarks, no flat vector illustration"
+    }
+  ]
+}

@@ -49,6 +49,7 @@ def main() -> int:
     parser.add_argument("--script", help="Optional script or narration transcript file")
     parser.add_argument("--captions", help="Optional SRT/VTT captions file")
     parser.add_argument("--storyboard", help="Optional storyboard JSON file")
+    parser.add_argument("--video-type", choices=("short_9_16", "long_16_9"), default="short_9_16")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="Review handoff directory")
     args = parser.parse_args()
 
@@ -61,17 +62,16 @@ def main() -> int:
     video_stream = next((s for s in streams if s.get("codec_type") == "video"), None)
     if not video_stream:
         parser.error("Input has no video stream")
-    if video_stream.get("width") != 1080 or video_stream.get("height") != 1920:
-        parser.error(f"Expected vertical 1080x1920 video, got {video_stream.get('width')}x{video_stream.get('height')}")
+    width, height, minimum, maximum = (1080, 1920, 15, 180) if args.video_type == "short_9_16" else (1920, 1080, 480, 1800)
+    if (video_stream.get("width"), video_stream.get("height")) != (width, height):
+        parser.error(f"Expected {width}x{height} video, got {video_stream.get('width')}x{video_stream.get('height')}")
     audio_stream = next((s for s in streams if s.get("codec_type") == "audio"), None)
     if not audio_stream or audio_stream.get("codec_name") != "aac":
         parser.error("Final review requires an AAC audio track; silent previews are not final exports")
     if video_stream.get("codec_name") != "h264":
         parser.error("Expected H.264 video")
-    if metadata["duration_seconds"] > 60.05:
-        parser.error("This pipeline targets Shorts up to 60 seconds")
-    if metadata["duration_seconds"] < 30:
-        parser.error(f"Short must be at least 30 seconds; found {metadata['duration_seconds']}s")
+    if not minimum <= metadata["duration_seconds"] <= maximum + .05:
+        parser.error(f"Expected {minimum}–{maximum} seconds; found {metadata['duration_seconds']}s")
 
     args.output.mkdir(parents=True, exist_ok=True)
     target_video = args.output / video.name
@@ -83,6 +83,7 @@ def main() -> int:
     }
     manifest = {
         "schema_version": 1,
+        "video_type": args.video_type,
         "created_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "reviewer": "Editonny",
         "video": target_video.name,
@@ -95,7 +96,7 @@ def main() -> int:
             {"id": "captions_timing", "status": "pending", "note": "Compare spoken words, caption text, timing, and punctuation."},
             {"id": "audio", "status": "pending", "note": "Check intelligibility, clipping, loudness changes, and music/voice balance."},
             {"id": "pace_transitions", "status": "pending", "note": "Check scene rhythm, cuts, transitions, and the opening hook."},
-            {"id": "export", "status": "pending", "note": "Confirm 9:16, 1080x1920, at least 30 seconds, and playable audio/video streams."},
+            {"id": "export", "status": "pending", "note": f"Confirm {width}x{height}, {minimum}–{maximum} seconds, and playable audio/video streams."},
         ],
         "decision": "pending",
         "findings": [],

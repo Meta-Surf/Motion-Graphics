@@ -7,15 +7,32 @@ on:
       - ".github/workflows/remotion-check.yml"
       - "src/process_image_queue.py"
       - "src/providers/cloudflare_workers_ai.py"
+      - "src/providers/gemini_orchestrator.py"
+      - "src/image_queue.py"
+      - "motion-library/catalog.json"
+      - "motion-library/orchestration-templates.json"
       - "examples/cloudflare-layered-image-job.example.json"
       - "scripts/**"
       - "src/providers/voicestudio.py"
+      - "src/build_composition.py"
+      - "src/video_contract.py"
+      - "schemas/**"
+      - "examples/video-director.*.json"
+      - "examples/gemini-manifest.example.json"
   pull_request:
     paths:
       - "remotion/**"
       - ".github/workflows/remotion-check.yml"
       - "scripts/**"
       - "src/providers/**"
+      - "src/image_queue.py"
+      - "motion-library/catalog.json"
+      - "motion-library/orchestration-templates.json"
+      - "src/build_composition.py"
+      - "src/video_contract.py"
+      - "schemas/**"
+      - "examples/video-director.*.json"
+      - "examples/gemini-manifest.example.json"
 
 jobs:
   typecheck:
@@ -43,3 +60,8 @@ jobs:
       - run: python -m json.tool examples/cloudflare-layered-image-job.example.json > /dev/null
 
       - run: python scripts/test_pipeline.py
+      - run: python -m pip install -r scripts/requirements-pipeline.txt
+      - run: python scripts/test_orchestration.py
+      - run: python src/build_composition.py examples/video-director.short.json --validate-only
+      - run: python -m pip install -r scripts/requirements-gemini.txt
+      - run: python scripts/test_gemini_orchestrator.py

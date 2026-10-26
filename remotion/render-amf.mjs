@@ -30,7 +30,7 @@ function run(exe,params){const r=spawnSync(exe,params,{stdio:'inherit'});if(r.er
 const silent=preview?output:output.replace(/\.mp4$/i,'.silent.mp4');
 if(silent===output&&!preview)throw new Error('Output filename must end in .mp4');
 run(ffmpeg,['-hide_banner','-n','-framerate',String(composition.fps),'-i',path.join(frameDir,`element-%0${digits}d.jpeg`),'-c:v','h264_amf','-quality','quality','-vf','scale=in_range=pc:out_range=tv:out_color_matrix=bt709,format=yuv420p','-color_range','tv','-colorspace','bt709','-color_primaries','bt709','-color_trc','bt709','-pix_fmt','yuv420p','-b:v','12M','-movflags','+faststart',silent]);
-if(!preview)run(option('--python')??'python',[path.resolve('../scripts/finalize_short.py'),silent,'--voice',path.resolve(voice),'--output',output,'--ffmpeg',ffmpeg,'--ffprobe',ffprobe]);
+if(!preview)run(option('--python')??'python',[path.resolve('../scripts/finalize_short.py'),silent,'--voice',path.resolve(voice),'--output',output,'--ffmpeg',ffmpeg,'--ffprobe',ffprobe,'--video-type',inputProps.video_type??'short_9_16']);
 await fs.writeFile(output.replace(/\.mp4$/i,'.render.json'),JSON.stringify({composition:id,durationInFrames:composition.durationInFrames,fps:composition.fps,seconds:(Date.now()-started)/1000,encoder:'h264_amf',gl:'angle',silentPreview:preview},null,2));
 // Retain source frames until final review; cleanup is an explicit user operation.
 console.log(`Output: ${output}\nFrames: ${frameDir}`);

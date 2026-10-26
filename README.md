@@ -1,12 +1,16 @@
-# Shorts Motion Pipeline
+# Motion Video Pipeline
 
-Projeto independente para planejar, produzir e renderizar Shorts verticais com motion graphics, narração e imagens geradas por IA.
+Projeto independente para planejar, produzir e renderizar Shorts 9:16 de 15–180 segundos e vídeos 16:9 de 8–30 minutos com motion graphics, narração e imagens geradas por IA.
+
+O [pipeline universal por JSON](docs/universal-video-pipeline.md) inclui schema para a IA diretora, integração com a fila Cloudflare e VoiceStudio GPU, props compiladas e renderização Remotion em blocos de 60–120 segundos. Veja o [exemplo de direção](examples/video-director.short.json), o [system prompt visual](prompts/video-director.system.txt) e o [guia de adaptação 16:9](docs/remotion-formats.md).
+
+O [orquestrador Gemini](docs/gemini-orchestrator.md) transforma roteiros em texto simples em um plano de cenas com escolhas entre os 21 padrões catalogados e cria os lotes de imagem compatíveis com a fila existente.
 
 > O vídeo de demonstração anterior não faz parte do repositório. Ele serviu como protótipo e evidenciou o principal ponto a melhorar: a arte vetorial simples não tem o nível visual desejado. Este repositório guarda o pipeline reutilizável, não um Short específico.
 
 ## Objetivo
 
-Transformar um roteiro de pelo menos 30 segundos em um Short 9:16 com:
+Transformar um roteiro em um Short 9:16 de 15–180 s ou vídeo 16:9 de 480–1800 s com:
 
 - cenas ilustradas por imagens de alta qualidade geradas por API;
 - direção de arte consistente entre cenas;
@@ -23,7 +27,7 @@ Transformar um roteiro de pelo menos 30 segundos em um Short 9:16 com:
 5. Revisar contato/seleção das imagens antes da montagem final.
 6. Gerar narração pelo VoiceStudio no Dacol.
 7. Montar imagens, movimentos (pan/zoom/parallax), gráficos, legendas e áudio.
-8. Validar duração mínima de 30s, enquadramento 9:16, legibilidade e qualidade.
+8. Validar duração e resolução do formato escolhido, legibilidade, sincronização e qualidade.
 
 ## API de imagem
 
@@ -50,7 +54,7 @@ O [Editonny](https://github.com/soumatheusgomes/editonny) pode apoiar a revisão
 
 ## Execução
 
-O pipeline completo de storyboard, narração e render ainda está em desenvolvimento. O adaptador de imagem pode ser usado isoladamente conforme a documentação do provedor.
+O fluxo `AiVideo` compila um roteiro JSON em assets, narração contínua e props renderizáveis. A geração de assets exige os serviços configurados; aprovação visual e escuta continuam sendo etapas explícitas de revisão. O adaptador de imagem também pode ser usado isoladamente.
 
 ## Geração automática sem iniciar o workflow manualmente
 

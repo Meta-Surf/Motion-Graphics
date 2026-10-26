@@ -7,6 +7,17 @@ import { getTimelineDuration } from "./timeline";
 import {ReferenceMotionStudy,LayerBreakdown} from './ReferenceMotionStudy';
 import {MobileLayeredShort,MOBILE_DURATIONS,validateMobile} from './MobileLayeredShort';
 import {EditorialPatternDemo} from './EditorialPatterns';
+import {VideoComposition} from './VideoComposition';
+import {validateVideo, type VideoCompositionProps} from './video-contract';
+
+// The director compiler supplies real assets through --props; no API calls occur inside Remotion.
+const directedDefaults: VideoCompositionProps = {
+  schema_version: 1, project_id: 'director-demo', title: 'Motion', video_type: 'short_9_16',
+  fps: 30, width: 1080, height: 1920, durationInFrames: 450,
+  audio: 'generated/director-demo/narration.wav',
+  scenes: [{id: 'scene-one', template_id: 'photo_essay', title: 'Passe o JSON compilado em --props',
+    fromFrame: 0, durationInFrames: 450, image: 'generated/director-demo/image.png', labels: []}],
+};
 
 const demoProps: ShortProps = {
   title: "IA transforma a criação de vídeos",
@@ -20,6 +31,9 @@ const demoProps: ShortProps = {
 
 export const RemotionRoot: React.FC = () => (
   <>
+  <Composition id="AiVideo" component={VideoComposition} defaultProps={directedDefaults}
+    durationInFrames={450} width={1080} height={1920} fps={30}
+    calculateMetadata={({props}) => validateVideo(props)}/>
   <Composition
     id="AiShort"
     component={ShortComposition}

@@ -1,0 +1,3 @@
+-r requirements-pipeline.txt
+# Requested legacy SDK: deprecated upstream; isolated from the rendering dependencies.
+google-generativeai==0.8.5

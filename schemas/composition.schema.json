@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compiled Motion composition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "title",
+    "video_type",
+    "fps",
+    "width",
+    "height",
+    "durationInFrames",
+    "audio",
+    "scenes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "\\S"
+    },
+    "video_type": {
+      "enum": [
+        "short_9_16",
+        "long_16_9"
+      ]
+    },
+    "fps": {
+      "enum": [
+        24,
+        25,
+        30,
+        60
+      ]
+    },
+    "width": {
+      "enum": [
+        1080,
+        1920
+      ]
+    },
+    "height": {
+      "enum": [
+        1080,
+        1920
+      ]
+    },
+    "durationInFrames": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "audio": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^generated/[a-z0-9-]+/[a-zA-Z0-9/_.-]+$"
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "template_id",
+          "title",
+          "fromFrame",
+          "durationInFrames",
+          "image",
+          "labels"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+          },
+          "template_id": {
+            "enum": [
+              "photo_essay",
+              "layers",
+              "object3d",
+              "dataflow",
+              "cutaway",
+              "scale",
+              "compare"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "\\S"
+          },
+          "fromFrame": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "durationInFrames": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "image": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "^generated/[a-z0-9-]+/[a-zA-Z0-9/_.-]+$"
+          },
+          "labels": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 28,
+              "pattern": "\\S"
+            }
+          }
+        }
+      }
+    }
+  }
+}

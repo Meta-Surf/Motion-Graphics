@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "description": "Planning aliases for the research catalog; these are not AiVideo renderer IDs.",
+  "templates": [
+    {
+      "id": "product-reveal",
+      "catalog_id": "P01"
+    },
+    {
+      "id": "exploded-interface",
+      "catalog_id": "P02"
+    },
+    {
+      "id": "anchor-zoom",
+      "catalog_id": "P03"
+    },
+    {
+      "id": "emissive-highlight",
+      "catalog_id": "P04"
+    },
+    {
+      "id": "rotating-object",
+      "catalog_id": "P05"
+    },
+    {
+      "id": "word-typography",
+      "catalog_id": "P06"
+    },
+    {
+      "id": "iris-transition",
+      "catalog_id": "P07"
+    },
+    {
+      "id": "foreground-bars",
+      "catalog_id": "P08"
+    },
+    {
+      "id": "brand-resolve",
+      "catalog_id": "P09"
+    },
+    {
+      "id": "titles",
+      "catalog_id": "P10"
+    },
+    {
+      "id": "comparison",
+      "catalog_id": "P11"
+    },
+    {
+      "id": "semantic-focus",
+      "catalog_id": "P12"
+    },
+    {
+      "id": "evidence-counter",
+      "catalog_id": "P13"
+    },
+    {
+      "id": "strike-reveal",
+      "catalog_id": "P14"
+    },
+    {
+      "id": "capability-pager",
+      "catalog_id": "P15"
+    },
+    {
+      "id": "typed-terminal",
+      "catalog_id": "P16"
+    },
+    {
+      "id": "audio-reactor",
+      "catalog_id": "P17"
+    },
+    {
+      "id": "portrait-waveform",
+      "catalog_id": "P18"
+    },
+    {
+      "id": "keyword-cta",
+      "catalog_id": "P19"
+    },
+    {
+      "id": "paper-light",
+      "catalog_id": "P20"
+    },
+    {
+      "id": "eye-pause",
+      "catalog_id": "P21"
+    }
+  ]
+}

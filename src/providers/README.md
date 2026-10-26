@@ -1,4 +1,6 @@
-# Provedores de imagem
+# Provedores de imagem, voz e planejamento
+
+`gemini_orchestrator.py` usa o SDK `google-generativeai` solicitado para transformar um roteiro em um manifesto validado e lotes da fila Cloudflare. Leia [configuração, contratos e limitações](../../docs/gemini-orchestrator.md). A dependência é opcional para os demais provedores e o renderer.
 
 Implementar aqui adaptadores independentes de fornecedor. Contrato proposto:
 

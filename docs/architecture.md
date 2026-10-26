@@ -1,5 +1,7 @@
 # Arquitetura do pipeline
 
+O contrato atual aceita Shorts 9:16 de 15–180 s e vídeos 16:9 de 8–30 min. Consulte o [fluxo universal implementado](universal-video-pipeline.md), os schemas em `schemas/` e a composição `AiVideo`. As descrições de demos verticais abaixo documentam também os renderers anteriores.
+
 ## Princípio
 
 O projeto produz Shorts independentes do tema. Cada vídeo tem um pacote próprio de roteiro, cenas, prompts, imagens, narração e render. O código reutilizável não deve carregar assets ou decisões específicas do Short anterior.
@@ -7,7 +9,7 @@ O projeto produz Shorts independentes do tema. Cada vídeo tem um pacote própri
 ## Componentes
 
 1. **Research**: registra assunto, data, evidências, links e ressalvas factuais.
-2. **Script**: roteiro em português, CTA e estimativa de duração. A meta inicial é 35–55 segundos para deixar margem acima do mínimo de 30s.
+2. **Script**: roteiro em português, CTA e estimativa de duração. O fluxo universal mede o WAV e valida a faixa do formato; a estimativa textual serve para planejar o ritmo.
 3. **Storyboard**: cenas com `id`, `start`, `end`, `voiceover`, `visual_goal`, `image_prompt`, `motion`, `source_notes` e `asset`.
 4. **Image provider**: contrato de provedor desacoplado. Deve retornar arquivos locais e metadados; nenhum token fica em JSON versionado.
 5. **Voice**: gera narração no VoiceStudio/Dacol e informa duração real e parâmetros.

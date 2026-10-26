@@ -10,7 +10,7 @@
 
 ## Movimento e composição
 
-- 9:16 com área segura para interface do Shorts e legendas.
+- 9:16 ou 16:9 com área segura para a interface do player, títulos e legendas quando presentes.
 - Pan/zoom/parallax sutis, sem aparência de slideshow parado.
 - Usar motion graphics em primeiro plano para reforçar a narração: títulos, relações, dados, interfaces ou etapas.
 - Alternar cenas com e sem overlays para evitar excesso de cartões e interfaces.
@@ -22,8 +22,8 @@
 
 - Conferir abertura, transições de cena, cenas com texto e fechamento.
 - Confirmar que toda afirmação acompanha a narração e fontes revisadas.
-- Duração mínima: 30 segundos; alvo recomendado: 35–55 segundos.
-- Verificar 1080×1920, H.264/AAC, áudio audível e ausência de quadros pretos ou imagens quebradas.
+- Duração: Shorts 15–180 segundos; longos 480–1800 segundos, medida no áudio real.
+- Verificar 1080×1920 ou 1920×1080 conforme o formato, H.264/AAC, áudio audível e ausência de quadros pretos ou imagens quebradas.
 
 
 ## Assets em camadas e áudio

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "project_id": "cinema-dos-dados",
+  "title": "Como uma ideia se transforma em vídeo",
+  "video_type": "short_9_16",
+  "fps": 30,
+  "voice": {
+    "profile_id": "REPLACE_WITH_APPROVED_PROFILE",
+    "steps": 32
+  },
+  "art_direction": {
+    "palette": "deep navy, warm amber, restrained mint accents",
+    "lighting": "motivated soft window key from camera left, subtle practical lights",
+    "camera": "full-frame 50mm lens family, realistic shallow depth of field",
+    "continuity": "the same contemporary film studio; brushed aluminum equipment, oak desk and dark acoustic walls"
+  },
+  "scenes": [
+    {
+      "id": "scene-idea",
+      "template_id": "photo_essay",
+      "title": "Tudo começa com uma ideia",
+      "narration_text": "Um vídeo começa antes da primeira imagem. Ele nasce de uma ideia clara, de uma pergunta interessante e de uma história que vale a pena contar.",
+      "image_prompt": "Vertical medium close-up of an oak desk in a contemporary film studio, a blank notebook beside a brushed aluminum camera, warm practical light, tactile surfaces, uncluttered dark upper region for a title. cinematic lighting, hyper-realistic materials, editorial photography, physically plausible detail, controlled filmic contrast, 8k detail aesthetic, no text, no logos, no watermarks, no flat vector illustration",
+      "seed": 42,
+      "labels": []
+    },
+    {
+      "id": "scene-layers",
+      "template_id": "layers",
+      "title": "Cada camada tem uma função",
+      "narration_text": "Depois, imagem, voz e movimento ganham funções diferentes. A imagem apresenta o contexto, a narração conduz a história e o movimento ajuda a destacar o que importa.",
+      "image_prompt": "Vertical documentary photograph of a brushed aluminum cinema camera on the same oak desk, dark acoustic studio walls behind it, focused optical glass and realistic metal detail, subject lower in frame, clear upper title space. cinematic lighting, hyper-realistic materials, editorial photography, physically plausible detail, controlled filmic contrast, 8k detail aesthetic, no text, no logos, no watermarks, no flat vector illustration",
+      "seed": 42,
+      "labels": [
+        "IMAGEM",
+        "VOZ",
+        "MOVIMENTO"
+      ]
+    },
+    {
+      "id": "scene-review",
+      "template_id": "photo_essay",
+      "title": "A revisão dá sentido ao resultado",
+      "narration_text": "Na revisão, cada escolha precisa fazer sentido. O objetivo é manter a história compreensível e a direção visual coerente, do primeiro enquadramento até a última palavra.",
+      "image_prompt": "Vertical close-up of the same brushed aluminum camera lens on the oak studio desk, subtle reflection of an amber practical light, dark navy acoustic wall, fine material texture, uncluttered upper region. cinematic lighting, hyper-realistic materials, editorial photography, physically plausible detail, controlled filmic contrast, 8k detail aesthetic, no text, no logos, no watermarks, no flat vector illustration",
+      "seed": 42,
+      "labels": []
+    }
+  ]
+}
