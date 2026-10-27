@@ -54,7 +54,8 @@ def fingerprint(props: dict, concurrency: int, browser_executable: str | None = 
     for name in ("package-lock.json", "package.json"):
         path = ROOT / "remotion" / name
         files[name] = file_digest(path)
-    assets = {source: file_digest(public_asset(source)) for source in {props["audio"], *(s["image"] for s in props["scenes"])}}
+    layer_assets = {layer['image'] for scene in props['scenes'] for layer in scene.get('layers', [])}
+    assets = {source: file_digest(public_asset(source)) for source in {*layer_assets, props["audio"], *(s["image"] for s in props["scenes"])}}
     return digest({"props": props, "source": files, "assets": assets, "concurrency": concurrency,
                    "browser": browser_executable, "render_script": file_digest(Path(__file__)),
                    "encoding": "h264-crf18-medium-yuv420p-bt709-png"})
