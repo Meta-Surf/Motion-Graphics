@@ -56,16 +56,16 @@ class VoiceStudio:
     def health(self):
         with urllib.request.urlopen(self.url+'/health',timeout=15) as r: health=json.load(r)
         require_gpu(health);return health
-    def transcribe(self,path: Path) -> dict:
+    def transcribe(self,path: Path, language: str='pt') -> dict:
         boundary='MotionVoice'+uuid.uuid4().hex
-        fields={'model':'whisper-1','language':'pt','response_format':'verbose_json'}
+        fields={'model':'whisper-1','language':language,'response_format':'verbose_json'}
         body=b''
         for key,value in fields.items():
             body+=f'--{boundary}\r\nContent-Disposition: form-data; name="{key}"\r\n\r\n{value}\r\n'.encode()
         body+=f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="voice.wav"\r\nContent-Type: audio/wav\r\n\r\n'.encode()+path.read_bytes()+f'\r\n--{boundary}--\r\n'.encode()
         request=urllib.request.Request(self.url+'/v1/audio/transcriptions',data=body,headers={'Content-Type':'multipart/form-data; boundary='+boundary})
         with urllib.request.urlopen(request,timeout=120) as response:return json.load(response)
-    def narrate(self,text: str,output: Path,profile: str,steps: int=32) -> dict:
+    def narrate(self,text: str,output: Path,profile: str,steps: int=32,language: str='pt') -> dict:
         health=self.health()
         if not profile.strip(): raise ValueError('An approved profile ID is required')
         output=output.resolve();cache=output.parent/'voice-cache';cache.mkdir(parents=True,exist_ok=True)
@@ -74,7 +74,7 @@ class VoiceStudio:
         for chunk in chunks:
             # Recheck before each new take; a restart must never silently select CPU.
             self.health()
-            payload={'model':'omnivoice','input':chunk,'voice':profile,'language':'pt','response_format':'wav','num_step':steps,'speed':1.0,'seed':42}
+            payload={'model':'omnivoice','input':chunk,'voice':profile,'language':language,'response_format':'wav','num_step':steps,'speed':1.0,'seed':42}
             signature=json.dumps({'request':payload,'server':self.url,'version':health.get('version'),'profile':profile_state},sort_keys=True).encode()
             key=hashlib.sha256(signature).hexdigest();p=cache/(key+'.wav');started=time.perf_counter();cached=p.exists()
             review_path=cache/(key+'.review.json')
@@ -88,19 +88,19 @@ class VoiceStudio:
                 temp.replace(p)
             if review_path.exists(): review=json.loads(review_path.read_text(encoding='utf-8'))
             else:
-                review=self.transcribe(p);review['script_similarity']=check_transcript(chunk,review['text'])
+                review=self.transcribe(p,language);review['script_similarity']=check_transcript(chunk,review['text'])
                 review_path.write_text(json.dumps(review,ensure_ascii=False,indent=2),encoding='utf-8')
             check_transcript(chunk,review['text'])
             with wave.open(str(p)) as w: seconds=w.getnframes()/w.getframerate()
             paths.append(p);takes.append({'text':chunk,'cache_key':key,'duration_seconds':seconds,'generation_seconds':round(time.perf_counter()-started,3),'cached':cached,'transcript':review['text'],'script_similarity':review['script_similarity']})
         duration=merge_wavs(paths,output)
-        meta={'provider':'voicestudio','url':self.url,'health':health,'profile_id':profile,'steps':steps,'speed':1.0,'duration_seconds':duration,'takes':takes}
+        meta={'provider':'voicestudio','url':self.url,'health':health,'profile_id':profile,'language':language,'steps':steps,'speed':1.0,'duration_seconds':duration,'takes':takes}
         output.with_suffix('.voice.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         return meta
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--health',action='store_true');p.add_argument('--url',default=os.getenv('MOTION_VOICE_URL',DEFAULT_URL));p.add_argument('--script',type=Path);p.add_argument('--output',type=Path);p.add_argument('--profile-id');p.add_argument('--steps',type=int,choices=[16,32],default=32);a=p.parse_args();client=VoiceStudio(a.url)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--health',action='store_true');p.add_argument('--url',default=os.getenv('MOTION_VOICE_URL',DEFAULT_URL));p.add_argument('--script',type=Path);p.add_argument('--output',type=Path);p.add_argument('--profile-id');p.add_argument('--language',default='pt',choices=['pt','en']);p.add_argument('--steps',type=int,choices=[16,32],default=32);a=p.parse_args();client=VoiceStudio(a.url)
     if a.health: print(json.dumps(client.health()));return
     if not all((a.script,a.output,a.profile_id)):p.error('--script, --output and --profile-id are required')
-    print(json.dumps(client.narrate(a.script.read_text(encoding='utf-8-sig'),a.output,a.profile_id,a.steps),ensure_ascii=False,indent=2))
+    print(json.dumps(client.narrate(a.script.read_text(encoding='utf-8-sig'),a.output,a.profile_id,a.steps,a.language),ensure_ascii=False,indent=2))
 if __name__=='__main__':main()
