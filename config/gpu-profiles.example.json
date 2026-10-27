@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "device": "CONFIGURE_TARGET_ADAPTER",
+  "gpu_lock": "MOTION_LIBRARY_ROOT/gpu.lock (wrappers only)",
+  "profiles": {
+    "voice": {"backend": "configure GPU voice service", "gpu_required": true, "fallback": false},
+    "asr": {"backend": "configure compatible ASR backend", "gpu_required": true, "fallback": false},
+    "scene_render": {"backend": "Chromium ANGLE", "gpu_required": true, "fallback": false},
+    "encode": {"backend": "FFmpeg h264_amf (compatible AMD hardware required)", "gpu_required": true, "fallback": false},
+    "chunk_encode_legacy": {"backend": "FFmpeg libx264", "gpu_required": false, "fallback": false},
+    "alpha_inspection": {"backend": "FFmpeg RGBA CPU", "gpu_required": false, "fallback": false},
+    "mask_extraction": {"backend": "FFmpeg alphaextract CPU", "gpu_required": false, "fallback": false},
+    "segmentation": {"backend": null, "gpu_required": true, "fallback": false},
+    "embeddings": {"backend": null, "gpu_required": true, "fallback": false}
+  },
+  "validation": "Measure compatibility, quality, time, RAM and VRAM on the target machine before production"
+}

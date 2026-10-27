@@ -84,3 +84,7 @@ O primeiro estudo adiciona decomposição por frames, medidas de movimento e uma
 O [template de mobile em camadas](docs/mobile-layered-short.md) aplica esse aprendizado com aparelho 3D procedural, interface nítida, cartões independentes, arte Cloudflare em primeiro plano e narração GPU sincronizada.
 
 O [estudo 002 — explicador editorial](docs/editorial-motion-study-002.md) adiciona 12 padrões implementados: títulos, comparação por painéis, foco semântico, contadores, listas riscadas, funções em sequência, terminal, visualização de áudio, retrato, CTA, papel iluminado e olho. O [catálogo consolidado](motion-library/catalog.json) reúne 21 padrões em dois estudos. Em `remotion`, `npm run render:editorial` gera uma prévia técnica de 36 s sem som e sem depender das imagens da referência. Os novos modelos aguardam revisão por conteúdo antes de promoção a produção.
+
+## Biblioteca permanente de recursos
+
+A [biblioteca SQLite/FTS5](docs/asset-library.md) oferece importação sem mover originais, galeria local e seleções por cena para o Remotion. O plano por idioma usa a duração real dos WAVs e acrescenta camadas e cues opcionais ao contrato AiVideo. Consulte o [roadmap](docs/production-roadmap.md), as [decisões](docs/production-decisions.md) e o [exemplo de perfis de execução](config/gpu-profiles.example.json). Auditorias de ambientes e resultados de produções ficam nos relatórios locais.

@@ -3,6 +3,8 @@ name: Remotion typecheck
 on:
   push:
     paths:
+      - "src/**"
+      - "config/**"
       - "remotion/**"
       - ".github/workflows/remotion-check.yml"
       - "src/process_image_queue.py"
@@ -21,6 +23,8 @@ on:
       - "examples/gemini-manifest.example.json"
   pull_request:
     paths:
+      - "src/**"
+      - "config/**"
       - "remotion/**"
       - ".github/workflows/remotion-check.yml"
       - "scripts/**"
@@ -61,6 +65,9 @@ jobs:
 
       - run: python scripts/test_pipeline.py
       - run: python -m pip install -r scripts/requirements-pipeline.txt
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: python scripts/test_asset_library.py
+      - run: python scripts/test_library_project.py
       - run: python scripts/test_orchestration.py
       - run: python src/build_composition.py examples/video-director.short.json --validate-only
       - run: python -m pip install -r scripts/requirements-gemini.txt
