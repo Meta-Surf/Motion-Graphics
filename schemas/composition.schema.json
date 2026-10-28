@@ -126,6 +126,82 @@
               "maxLength": 28,
               "pattern": "\\S"
             }
+          },
+          "layers": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "image",
+                "x",
+                "y",
+                "width",
+                "depth"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+                },
+                "image": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 500,
+                  "pattern": "^generated/[a-z0-9-]+/[a-zA-Z0-9/_.-]+$"
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "width": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 2
+                },
+                "depth": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 3
+                }
+              }
+            }
+          },
+          "highlight_cues": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "text",
+                "startFrame",
+                "endFrame"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 180
+                },
+                "startFrame": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "endFrame": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
           }
         }
       }
