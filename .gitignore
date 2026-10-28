@@ -26,3 +26,9 @@ voice-cache/
 remotion/public/reference-study-*/
 remotion/public/mobile-ai-*/
 remotion/public/editorial-demo/
+
+# Local catalog, backups and derived media must remain outside Git.
+*.sqlite
+*.sqlite-*
+*.db
+library-data/
