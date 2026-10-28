@@ -1,0 +1,30 @@
+name: HyperFrames integration checks
+on:
+  push:
+    paths: ['hyperframes/**', 'src/hyperframes_bridge.py', 'src/video_contract.py', 'schemas/composition.schema.json', 'scripts/render_library_project.py', 'scripts/requirements-pipeline.txt', 'scripts/*hyperframes*', '.github/workflows/hyperframes-check.yml']
+  pull_request:
+    paths: ['hyperframes/**', 'src/hyperframes_bridge.py', 'src/video_contract.py', 'schemas/composition.schema.json', 'scripts/render_library_project.py', 'scripts/requirements-pipeline.txt', 'scripts/*hyperframes*', '.github/workflows/hyperframes-check.yml']
+permissions:
+  contents: read
+jobs:
+  offline-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: hyperframes/package-lock.json
+      - run: python -m pip install -r scripts/requirements-pipeline.txt
+      - run: npm ci --prefix hyperframes --omit=optional
+        env:
+          HYPERFRAMES_SKIP_SKILLS: '1'
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: python scripts/test_asset_library.py
+      - run: python scripts/test_library_project.py
+      - run: python scripts/test_hyperframes.py
+      - run: python -m compileall -q src/hyperframes_bridge.py scripts/hyperframes_media.py scripts/hyperframes_models.py scripts/render_hyperframes.py

@@ -32,3 +32,10 @@ remotion/public/editorial-demo/
 *.sqlite-*
 *.db
 library-data/
+
+# HyperFrames: local projects, caches and weights are not source.
+.hyperframes/
+hyperframes/projects/
+hyperframes/local.json
+*.onnx
+*.bin

@@ -1,0 +1,22 @@
+{
+  "name": "motion-graphics-hyperframes",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "hf": "python ../scripts/hyperframes_cli.py",
+    "doctor": "python ../scripts/hyperframes_cli.py doctor",
+    "skills:check": "hyperframes skills check",
+    "skills:update": "hyperframes skills update remotion-to-hyperframes",
+    "test": "python ../scripts/test_hyperframes.py"
+  },
+  "dependencies": {
+    "hyperframes": "0.8.211",
+    "gsap": "3.14.2"
+  },
+  "optionalDependencies": {
+    "onnxruntime-node": "1.21.1"
+  }
+}

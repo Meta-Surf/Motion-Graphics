@@ -1,0 +1,3 @@
+# Optional local cutouts only; the compiler and model verifier use the standard library.
+Pillow>=11,<13
+numpy>=2,<3

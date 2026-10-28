@@ -20,7 +20,15 @@ def require_hardware_render(exit_code, diagnostic):
     return clean
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('props',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--browser',type=Path);p.add_argument('--recover-silent',type=Path,help='Explicitly recover a known silent AMF render; never automatic');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('props',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--browser',type=Path);p.add_argument('--recover-silent',type=Path,help='Explicitly recover a known silent AMF render; never automatic');p.add_argument('--renderer',choices=['remotion','hyperframes'],default='remotion');p.add_argument('--public',type=Path,default=ROOT/'remotion/public');p.add_argument('--gpu',action='store_true',help='Explicit GPU mode for HyperFrames; default CPU is benchmark-backed');p.add_argument('--words',type=Path);a=p.parse_args()
+    if a.renderer=='hyperframes':
+        if a.recover_silent:p.error('--recover-silent is a Remotion-only recovery path')
+        from hyperframes_bridge import compile_hyperframes
+        project=a.output.resolve().with_suffix('.hyperframes')
+        compile_hyperframes(read_json(a.props),a.public,project,ROOT/'hyperframes/node_modules/gsap/dist/gsap.min.js',words=json.loads(a.words.read_text(encoding='utf-8-sig')) if a.words else None)
+        command=[sys.executable,str(ROOT/'scripts/render_hyperframes.py'),str(project),'--action','render','--output',str(a.output.resolve())]
+        if a.gpu:command.append('--gpu')
+        subprocess.run(command,check=True);sys.exit(0)
     props=read_json(a.props);validate_composition(props);audio=public_asset(props['audio'])
     (_,_,rate),samples=wav_info(audio)
     if abs(samples/rate-props['durationInFrames']/props['fps'])>1/rate:raise ValueError('Narration does not match scene timing')
