@@ -316,6 +316,15 @@
               "type": "null"
             }
           ]
+        },
+        "existing_renderer": {
+          "enum": [
+            null,
+            "hyperframes",
+            "remotion",
+            "editonny",
+            "concat"
+          ]
         }
       },
       "required": [
@@ -486,9 +495,27 @@
         "plan": {
           "anyOf": [
             {
-              "type": "string",
-              "minLength": 1,
-              "pattern": "\\S"
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "request_sha256",
+                "reviewer",
+                "evidence"
+              ],
+              "properties": {
+                "request_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
             },
             {
               "type": "null"
@@ -498,9 +525,27 @@
         "sample": {
           "anyOf": [
             {
-              "type": "string",
-              "minLength": 1,
-              "pattern": "\\S"
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "request_sha256",
+                "reviewer",
+                "evidence"
+              ],
+              "properties": {
+                "request_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
             },
             {
               "type": "null"
@@ -535,6 +580,10 @@
                   "type": "string",
                   "minLength": 1,
                   "pattern": "\\S"
+                },
+                "request_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
                 }
               },
               "required": [
@@ -542,7 +591,8 @@
                 "shown_at",
                 "reply",
                 "replied_at",
-                "message_id"
+                "message_id",
+                "request_sha256"
               ]
             },
             {
@@ -595,12 +645,20 @@
                   "type": "null"
                 }
               ]
+            },
+            "media_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
             }
           },
           "required": [
             "status",
             "reviewer",
-            "evidence"
+            "evidence",
+            "media_sha256"
           ]
         },
         "listening": {
@@ -637,12 +695,20 @@
                   "type": "null"
                 }
               ]
+            },
+            "media_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
             }
           },
           "required": [
             "status",
             "reviewer",
-            "evidence"
+            "evidence",
+            "media_sha256"
           ]
         },
         "sync": {
@@ -679,12 +745,20 @@
                   "type": "null"
                 }
               ]
+            },
+            "media_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
             }
           },
           "required": [
             "status",
             "reviewer",
-            "evidence"
+            "evidence",
+            "media_sha256"
           ]
         },
         "captions": {
@@ -721,12 +795,20 @@
                   "type": "null"
                 }
               ]
+            },
+            "media_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
             }
           },
           "required": [
             "status",
             "reviewer",
-            "evidence"
+            "evidence",
+            "media_sha256"
           ]
         },
         "playback": {
@@ -763,12 +845,20 @@
                   "type": "null"
                 }
               ]
+            },
+            "media_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
             }
           },
           "required": [
             "status",
             "reviewer",
-            "evidence"
+            "evidence",
+            "media_sha256"
           ]
         },
         "rights": {
@@ -805,12 +895,20 @@
                   "type": "null"
                 }
               ]
+            },
+            "media_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
             }
           },
           "required": [
             "status",
             "reviewer",
-            "evidence"
+            "evidence",
+            "media_sha256"
           ]
         }
       },

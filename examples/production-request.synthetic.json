@@ -43,7 +43,8 @@
         "project/",
         "delivery.json"
       ]
-    }
+    },
+    "existing_renderer": null
   },
   "assets": [],
   "scenes": [
@@ -67,32 +68,38 @@
     "visual": {
       "status": "pending",
       "reviewer": null,
-      "evidence": null
+      "evidence": null,
+      "media_sha256": null
     },
     "listening": {
       "status": "pending",
       "reviewer": null,
-      "evidence": null
+      "evidence": null,
+      "media_sha256": null
     },
     "sync": {
       "status": "pending",
       "reviewer": null,
-      "evidence": null
+      "evidence": null,
+      "media_sha256": null
     },
     "captions": {
       "status": "pending",
       "reviewer": null,
-      "evidence": null
+      "evidence": null,
+      "media_sha256": null
     },
     "playback": {
       "status": "pending",
       "reviewer": null,
-      "evidence": null
+      "evidence": null,
+      "media_sha256": null
     },
     "rights": {
       "status": "pending",
       "reviewer": null,
-      "evidence": null
+      "evidence": null,
+      "media_sha256": null
     }
   }
 }

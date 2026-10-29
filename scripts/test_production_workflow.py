@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'src'),str(ROOT/'scripts')]
-from production_workflow import classify,validate_request,plan_request,delivery_report
+from production_workflow import classify,validate_request,plan_request,delivery_report,approval_fingerprint,new_request
 from video_contract import read_json
 import render_chunks as chunks
 from gpu_resources import gpu_lease
@@ -31,7 +31,7 @@ class ProcedureTest(unittest.TestCase):
         plan=plan_request(self.request,self.caps)
         self.assertEqual(set(plan['questions']),{'purpose','sources.selected_media'})
         self.assertTrue(any('subsequent explicit reply' in g for g in plan['gates']))
-        self.request['approvals']['editonny_card']=dict(summary='actual displayed card',shown_at='2026-10-28T19:00:00-03:00',reply='ok',replied_at='2026-10-28T19:00:00-03:00',message_id='user-message')
+        self.request['approvals']['editonny_card']=dict(summary='actual displayed card',shown_at='2026-10-28T19:00:00-03:00',reply='ok',replied_at='2026-10-28T19:00:00-03:00',message_id='user-message',request_sha256=approval_fingerprint(self.request))
         with self.assertRaisesRegex(ValueError,'subsequent'):validate_request(self.request)
 
     def test_preferred_hyperframes_and_supported_remotion_exception(self):
@@ -41,8 +41,38 @@ class ProcedureTest(unittest.TestCase):
         self.assertEqual(route()['tool'],'remotion')
         self.request['scenes'][0]['template_id']='titles'
         self.assertTrue(route()['blocked'])
-        self.request['scenes'][0]['template_id']='layers';self.request['kind']='update'
+        self.request['scenes'][0]['template_id']='layers';self.request['kind']='update';self.request['brief']['existing_renderer']='remotion'
         self.assertEqual(route()['tool'],'remotion')
+
+    def test_draft_does_not_invent_user_decisions(self):
+        draft=new_request('Fazer um corte','new-cut')
+        self.assertEqual(draft['kind'],'cut')
+        self.assertIsNone(draft['brief']['voice'])
+        self.assertIsNone(draft['brief']['music'])
+        self.assertEqual(draft['scenes'],[])
+        self.assertIn('purpose',plan_request(draft,{})['questions'])
+
+    def test_unsupported_language_format_and_preserved_hyperframes_project(self):
+        self.request['brief']['voice']=dict(mode='narration',profile_id='approved',authorized=True)
+        self.request['brief']['language']='en'
+        narration=next(r for r in plan_request(self.request,self.caps)['routes'] if r['stage']=='narration')
+        self.assertTrue(narration['blocked'])
+        self.request['brief']['voice']['mode']='none'
+        self.request['brief']['format']['width']=720
+        motion=next(r for r in plan_request(self.request,self.caps)['routes'] if r['stage']=='motion')
+        self.assertTrue(motion['blocked'])
+        self.request['brief']['format']['width']=1080
+        self.request['kind']='update';self.request['brief']['existing_renderer']='hyperframes'
+        motion=next(r for r in plan_request(self.request,self.caps)['routes'] if r['stage']=='motion')
+        self.assertEqual(motion['tool'],'hyperframes')
+
+    def test_concat_needs_sample_and_editonny_card_expires_with_decisions(self):
+        self.caps['concat']=dict(state='functional',evidence='App launches')
+        timeline=next(r for r in plan_request(self.request,self.caps)['routes'] if r['stage']=='timeline')
+        self.assertEqual(timeline['tool'],'native-project')
+        self.request['kind']='edit'
+        self.request['approvals']['editonny_card']=dict(summary='card',shown_at='2026-10-28T19:00:00-03:00',reply='ok',replied_at='2026-10-28T19:01:00-03:00',message_id='real-message',request_sha256='0'*64)
+        self.assertTrue(any('Editonny:' in g for g in plan_request(self.request,self.caps)['gates']))
 
     def test_installation_does_not_establish_capability(self):
         self.caps['hyperframes']=dict(state='installed',evidence='binary exists')
@@ -69,6 +99,23 @@ class ProcedureTest(unittest.TestCase):
         self.assertEqual(p['status'],'needs_decisions')
         self.assertEqual(p['questions'],[])
         self.assertTrue(p['gates'])
+
+    def test_changed_brief_invalidates_plan_and_sample_approval(self):
+        key=approval_fingerprint(self.request)
+        for name in ('plan','sample'):
+            self.request['approvals'][name]=dict(request_sha256=key,reviewer='test reviewer',evidence='test-only fixture')
+        self.assertEqual(plan_request(self.request,self.caps)['gates'],[])
+        self.request['scenes'][0]['script']='Changed text'
+        self.assertEqual(len(plan_request(self.request,self.caps)['gates']),2)
+
+    def test_voice_device_must_match_explicit_selection(self):
+        from providers.voicestudio import require_gpu
+        with patch.dict(os.environ,{'MOTION_VOICE_DEVICE':'AMD Radeon RX 7800 XT'}):
+            require_gpu(dict(status='ok',device='cuda (AMD Radeon RX 7800 XT)'))
+            with self.assertRaisesRegex(RuntimeError,'differs'):
+                require_gpu(dict(status='ok',device='cuda (other GPU)'))
+            with self.assertRaises(RuntimeError):
+                require_gpu(dict(status='ok',device='cpu'))
 
     def test_shared_lease_blocks_other_worktrees_and_releases_on_failure(self):
         with tempfile.TemporaryDirectory() as t,patch.dict(os.environ,{'MOTION_GPU_LOCK':str(Path(t)/'gpu.lock')}):
@@ -106,6 +153,9 @@ class ProcedureTest(unittest.TestCase):
             report=delivery_report(video,self.request)
             self.assertEqual(report['technical'],'passed');self.assertEqual(report['delivery'],'blocked')
             self.assertIn('playback',report['pending'])
+            for review in self.request['reviews'].values():
+                review.update(status='passed',reviewer='test fixture',evidence='Test proof for a different file',media_sha256='0'*64)
+            self.assertEqual(delivery_report(video,self.request)['delivery'],'blocked')
             self.request['brief']['format']['audio_codec']=None
             self.assertEqual(delivery_report(video,self.request)['technical'],'failed')
 

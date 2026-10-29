@@ -12,6 +12,9 @@ def require_gpu(health: dict) -> None:
     device = str(health.get('device', '')).lower()
     if health.get('status') != 'ok' or not any(x in device for x in ('cuda', 'rocm', 'hip', 'mps', 'vulkan')) or 'cpu' in device:
         raise RuntimeError(f'GPU voice service required; reported device: {device!r}. Start the WSL GPU service on port 3901. CPU fallback is disabled.')
+    expected=os.getenv('MOTION_VOICE_DEVICE','').strip().lower()
+    if expected and expected not in device:
+        raise RuntimeError(f'Voice device differs from MOTION_VOICE_DEVICE: {device!r}; no automatic device change.')
 
 def split_text(text: str, limit: int = 220) -> list[str]:
     if limit < 40: raise ValueError('Chunk limit must be at least 40 characters')

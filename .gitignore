@@ -44,3 +44,8 @@ hyperframes/local.json
 *.local.json
 maintenance/
 *.log
+
+# Project-specific media and publishing packages stay local.
+remotion/public/
+production/
+drive-export/

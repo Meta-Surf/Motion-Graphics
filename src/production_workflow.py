@@ -63,11 +63,25 @@ def validate_request(value: dict) -> None:
             raise ValueError(f'{name}: reviewer and evidence required, including justified not_applicable')
 
 
+def approval_fingerprint(value: dict) -> str:
+    return digest({key:val for key,val in value.items() if key not in ('approvals','reviews')})
+
+
+def new_request(request: str, project_id: str, kind: str | None = None) -> dict:
+    """Create a draft without inventing production choices or approvals."""
+    value = read_json(ROOT / 'examples/production-request.synthetic.json')
+    value.update(request=request, project_id=project_id, kind=kind or classify(request))
+    value['brief'] = {key: [] if key == 'references' else None for key in value['brief']}
+    value['scenes'] = []
+    validate_request(value)
+    return value
+
+
 def plan_request(value: dict, capabilities: dict) -> dict:
     """Capabilities are current local observations, never inferred from README claims."""
     validate_request(value)
     brief = value['brief']
-    questions = [key for key, answer in brief.items() if answer is None]
+    questions = [key for key, answer in brief.items() if answer is None and (key != 'existing_renderer' or value['kind'] == 'update')]
     voice = brief['voice']
     if voice and voice['mode'] == 'narration' and (not voice['authorized'] or not voice['profile_id']):
         questions.append('voice.authorized_profile')
@@ -86,13 +100,15 @@ def plan_request(value: dict, capabilities: dict) -> dict:
 
     if not value['scenes'] and value['kind'] in {'creation', 'motion'}:
         gates.append('Prepare script, scene map, sources and asset/audio plan')
-    if not value['approvals']['plan']:
+    current = approval_fingerprint(value)
+    if not value['approvals']['plan'] or value['approvals']['plan']['request_sha256'] != current:
         gates.append('Record approval of the script, scenes, sources, tools and criteria before full production')
-    if not value['approvals']['sample']:
+    if not value['approvals']['sample'] or value['approvals']['sample']['request_sha256'] != current:
         gates.append('Measure and review a representative sample before full production')
     if value['kind'] in EDIT_KINDS | {'review'}:
         route('editorial', 'editonny', 'Inspect sources and use the installed package quality controls', not available('editonny'))
-        if value['kind'] in EDIT_KINDS and not value['approvals']['editonny_card']:
+        card = value['approvals']['editonny_card']
+        if value['kind'] in EDIT_KINDS and (not card or card.get('request_sha256') != current):
             gates.append('Editonny: inspect → settings card → subsequent explicit reply → workspace init')
     for scene in value['scenes']:
         selected = [a for a in value['assets'] if a['id'] in scene['assets']]
@@ -109,23 +125,37 @@ def plan_request(value: dict, capabilities: dict) -> dict:
         else:
             route('assets:' + scene['id'], 'decision', 'Select existing assets before production', True)
     if voice and voice['mode'] == 'narration':
-        route('narration', 'voicestudio', 'Approved profile; live health must identify the DACOL AMD GPU; speed=1; no CPU fallback', not available('voicestudio'))
+        supported_language = (brief['language'] or '').lower() in ('pt', 'pt-br')
+        route('narration', 'voicestudio',
+              'Current adapter requires Portuguese, approved profile and live AMD GPU; speed=1; another language needs a tested route',
+              not available('voicestudio') or not supported_language)
     else:
         route('audio', 'reuse', 'Preserve original audio or explicitly silent output; music/effects only when requested')
     if value['kind'] in {'creation', 'motion', 'update'} and value['scenes']:
         templates = {s['template_id'] for s in value['scenes']}
-        if templates <= HF_TEMPLATES and available('hyperframes') and value['kind'] != 'update':
+        fmt = brief['format']
+        duration = brief['duration_seconds']
+        supported_format = bool(fmt and duration is not None and Fraction(fmt['fps']) in (24, 25, 30, 60) and (
+            (fmt['width'], fmt['height']) == (1080, 1920) and 15 <= duration <= 180 or
+            (fmt['width'], fmt['height']) == (1920, 1080) and 480 <= duration <= 1800))
+        previous = brief.get('existing_renderer')
+        if not supported_format:
+            route('motion', 'decision', 'Current AiVideo bridge does not support the requested format/duration; select a tested editing or native composition route', True)
+        elif value['kind'] == 'update' and previous is None:
+            route('motion', 'decision', 'Inspect the existing editable project and identify its renderer before updating', True)
+        elif templates <= HF_TEMPLATES and available('hyperframes') and (value['kind'] != 'update' or previous == 'hyperframes'):
             route('motion', 'hyperframes', 'Preferred for supported photo_essay/layers; run official check and sample')
-        elif templates <= REMOTION_TEMPLATES and available('remotion'):
+        elif templates <= REMOTION_TEMPLATES and available('remotion') and (value['kind'] != 'update' or previous == 'remotion'):
             reason = ('Preserve existing Remotion composition for this update' if value['kind'] == 'update' else 'HyperFrames bridge lacks these templates' if not templates <= HF_TEMPLATES else 'HyperFrames unavailable in current observations')
             route('motion', 'remotion', reason + '; preserve existing composition and sample before full render')
         else:
             route('motion', 'decision', 'No tested renderer binding for these templates; catalog/Gemini IDs are planning recipes', True)
     if brief['delivery'] and brief['delivery']['editable']:
-        route('timeline', 'concat' if available('concat') else 'native-project',
+        concat_tested = capabilities.get('concat', {}).get('state') in ('sampled', 'production') and available('concat')
+        route('timeline', 'concat' if concat_tested else 'native-project',
               'Use Concat only with tested import/reopen evidence; retain native source and assets otherwise')
     return dict(project_id=value['project_id'],kind=value['kind'],suggested_kind=classify(value['request']),
-                request_sha256=digest(value),questions=questions,routes=routes,gates=gates,
+                request_sha256=current,questions=questions,routes=routes,gates=gates,
                 status='needs_decisions' if questions or gates else 'ready_for_full_production',
                 external_authorization=brief['external'],
                 note='This planner executes no generation, editing or paid requests. Evidence never approves itself.')
@@ -163,8 +193,9 @@ def delivery_report(media: Path, request: dict, *, ffprobe='ffprobe', ffmpeg='ff
     if decoded.returncode:
         failures.append('Full decode failed')
     reviews = request['reviews']
-    pending = [name for name, review in reviews.items() if review['status']=='pending']
-    return dict(media=str(media.resolve()),sha256=file_digest(media),bytes=media.stat().st_size,
+    actual_hash=file_digest(media)
+    pending = [name for name, review in reviews.items() if review['status']=='pending' or review['media_sha256']!=actual_hash]
+    return dict(media=str(media.resolve()),sha256=actual_hash,bytes=media.stat().st_size,
                 technical='failed' if failures else 'passed',failures=failures,reviews=reviews,
                 pending=pending,delivery='blocked' if failures or pending else 'approved',
                 note='Stream durations do not prove lip sync, caption accuracy, listening or appearance; record those reviews separately.')

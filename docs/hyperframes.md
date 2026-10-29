@@ -142,7 +142,7 @@ Add `--layers` to the diagnostic command to exercise a transparent foreground.
 The diagnostic uses a generated SVG, quiet tone and authored timed labels, not a
 fake voice or measured ASR transcript. The CI workflow runs offline contract tests,
 not media generation or model downloads. Actual render/ASR/cutout results are
-recorded in `docs/hyperframes-validation.md`; do not infer visual approval from CI.
+recorded in `docs/production-audit-2026-10-28.md`; do not infer visual approval from CI.
 
 ## Updating and rollback
 

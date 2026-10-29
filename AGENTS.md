@@ -38,7 +38,12 @@ um substituto das props de render. Não presuma integração a partir de um cat�
    voz, mídia privada, modelos, bancos ou renders. Uma limitação medida deve ser
    registrada como tal, sem promover ferramenta apenas instalada a produção.
 
-Checks: `python scripts/test_production_workflow.py`, suites Python em
-`scripts/test_*.py`, `npm test --prefix remotion`, `npm run typecheck --prefix remotion`.
-A suite Gemini requer `scripts/requirements-gemini.txt`; HyperFrames requer seu
-lockfile e `npm ci --prefix hyperframes`. Não execute geração paga em testes.
+A versão operacional única é `main`. O checkout principal do DACOL deve apontar
+para o mesmo commit aprovado. Integrações temporárias são consolidadas e removidas
+após validação; fontes de projetos privados e histórico Git são preservados.
+
+Checks: `python scripts/check_project.py` executa as suites Python, Remotion e o
+typecheck sem serviços de geração. Use `--python-only` em ambientes sem Node.
+A suite Gemini requer `scripts/requirements-gemini.txt`. Não execute geração paga
+em testes. Comece um briefing com `production.py init`, sem usar o diagnóstico
+sintético como se fossem decisões de um pedido real.

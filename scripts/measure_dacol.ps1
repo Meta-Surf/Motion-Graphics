@@ -10,6 +10,7 @@ $watch=[Diagnostics.Stopwatch]::StartNew()
 # Start-Process uses a Windows command line. Quote every argument and reject quotes.
 $quoted=@($CommandArguments | ForEach-Object {if($_.Contains('"')){throw 'Embedded quotes unsupported'}; '"'+$_+'"'})
 $child=Start-Process -FilePath $Executable -ArgumentList $quoted -PassThru -NoNewWindow -RedirectStandardOutput "$root/stdout.log" -RedirectStandardError "$root/stderr.log"
+$retainedHandle=$child.Handle # Retain the process handle so ExitCode survives Refresh on Windows PowerShell.
 $samples=@()
 do {
     $sample=[ordered]@{elapsed_seconds=[math]::Round($watch.Elapsed.TotalSeconds,3);cpu_percent=$null;gpu_engine_peak_percent=$null;dedicated_gpu_bytes=$null;root_working_set_bytes=$null;counter_error=$null}

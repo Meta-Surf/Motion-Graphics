@@ -2,7 +2,7 @@
 
 Este é o ponto de partida. Os guias de renderer detalham implementações específicas;
 as decisões de trabalho ficam no manifesto `production-request.schema.json`.
-Use `examples/production-request.synthetic.json` como modelo e mantenha os manifestos
+Crie um pedido com `python scripts/production.py init "pedido" --project-id meu-video --output output/projects/meu-video/request.json`. Use `examples/production-request.synthetic.json` como referência e mantenha os manifestos
 reais em `output/projects/<id>/v001/`, fora do Git. Nunca fabrique uma aprovação.
 
 ## Entrada e inspeção automática
@@ -10,9 +10,12 @@ reais em `output/projects/<id>/v001/`, fora do Git. Nunca fabrique uma aprovaç�
 `python scripts/production.py classify "pedido"` sugere uma das seis classes:
 criação completa, edição de fontes, corte, motion, revisão, atualização. A classe
 explícita do manifesto prevalece; pedidos mistos podem requerer etapas diferentes.
+`python scripts/production.py doctor --output output/maintenance/doctor-v001.json`
+inventaria Git/worktrees, versões, espaço, renderers e health sem gerar assets.
+No Windows inclui GPU/driver e WSL. Inspeção de instalação não aprova inferência.
 Para edição/corte/revisão, primeiro localize os arquivos pedidos. Inspecione
 resolução, duração, FPS racional/VFR, rotação, streams, cor/HDR, áudio e hashes com
-FFprobe. Leia Git status, HEAD e worktrees. Não transcreva todo o material para
+`python scripts/production.py inspect SOURCE1 SOURCE2` (FFprobe e SHA-256, sem upload). Leia Git status, HEAD e worktrees. Não transcreva todo o material para
 simplesmente descobrir as configurações. Na skill editonny, observe os limites de
 amostragem pré-confirmação (até 30 s por fonte, até três fontes, modelos em cache).
 
@@ -59,6 +62,8 @@ Use o exemplo `examples/capabilities.example.json` como estrutura, não como pro
 worktree não configura automaticamente o checkout atual. Revise observações a cada
 sessão e após mudança de versão/driver. O planner não executa produção nem substitui
 o preflight: aprovação de roteiro e amostra são gates registrados por quem revisou.
+Registre `request_sha256` retornado pelo planner, revisor e evidência nas aprovações;
+qualquer mudança no briefing/cenas/assets invalida o aceite anterior.
 
 ## Hierarquia por etapa
 
@@ -73,8 +78,9 @@ o preflight: aprovação de roteiro e amostra são gates registrados por quem re
 | Imagem/áudio/vídeo gerado | Reuso → comparação local/external | Escolher por requisito/qualidade/custo, sem tentativas pagas cegas |
 | União de blocos | FFmpeg stream copy se assinaturas forem compatíveis | Codec/timebase/extradata divergentes exigem decisão e nova amostra |
 
-O planner preserva Remotion por padrão em atualização de composição existente;
-confirme a origem se o projeto anterior era HyperFrames/outro editor. Ele lista
+Em atualização, preencha `brief.existing_renderer` a partir do projeto observado.
+O planner preserva HyperFrames ou Remotion e bloqueia origem desconhecida; não migra
+uma composição silenciosamente. Outros editores precisam de rota validada explícita. Ele lista
 rotas, justificativas e bloqueios; não tenta converter 21 receitas em componentes.
 Veja `docs/contract-compatibility.md` para os contratos e as lacunas reais.
 
@@ -86,7 +92,8 @@ Nova edição: **inspecionar → cartão completo → resposta explícita poster
 workspace init**. O cartão cobre objetivo, fontes/ordem, imagem/cor, formato,
 idiomas distintos, legendas, limpeza, som, visuais e revisão/destino. Identifique
 valores pedidos, observados e sugeridos. Guarde o cartão exato, hora real, reply
-posterior e identificador real da mensagem. O schema verifica ordem das datas,
+posterior, identificador real da mensagem e `request_sha256` atual. Um cartão
+associado a decisões anteriores precisa ser reapresentado e aceito. O schema verifica ordem das datas,
 mas não autentica o usuário: o agente deve obter a resposta na conversa.
 
 Antes da resposta, apenas inspeções permitidas e temporárias; sem workspace,
@@ -98,7 +105,11 @@ para executar editonny; `prepare_editonny_review.py` é apenas handoff, não exe
 ## Amostra e recursos no DACOL
 
 Confirme health do VoiceStudio na porta 3901 e o nome do dispositivo; a indicação
-`cuda` pode ser a API PyTorch sobre AMD/ROCm. Verifique WSL/PyTorch HIP separadamente.
+`cuda` pode ser a API PyTorch sobre AMD/ROCm. Verifique WSL/PyTorch HIP separadamente. Em WSL com `/dev/dxg`, o probe configura
+`HSA_ENABLE_DXG_DETECTION=1` antes de importar PyTorch, como o serviço existente.
+Execute `scripts/probe_rocm.py` com o Python e o loader ROCm do serviço: ele testa
+um cálculo na GPU sem carregar modelo ou gerar voz.
+No DACOL defina `MOTION_VOICE_DEVICE=AMD Radeon RX 7800 XT` para rejeitar outro dispositivo.
 O desktop 3900 é outra instalação. Não suponha VRAM a partir de AdapterRAM WMI
 32-bit. Não mude perfil, idioma, speed=1 ou CPU automaticamente. O adaptador de
 voz atual gera/transcreve português; outro idioma precisa de rota testada explícita.
@@ -155,7 +166,7 @@ fallback silencioso. Preservar o último pacote aprovado permite rollback.
 
 Execute lint/check oficial, testes aplicáveis, FFprobe e decode integral. Depois
 revise frames de entrada/meio/saída, movimento reproduzido, voz/escuta, sincronismo,
-legendas e cortes. Registre revisor e arquivo/resultado em `reviews`; justifique
+legendas e cortes. Registre revisor, arquivo/resultado e `media_sha256` dos bytes finais em `reviews`; justifique
 `not_applicable` quando não há voz/legendas. Não marque inspeção de still como
 reprodução validada. Loudness, pico, cor/HDR e legibilidade devem respeitar o
 briefing e a rota do editor; o verificador abaixo não mede tudo isso sozinho.

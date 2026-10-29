@@ -53,50 +53,51 @@ def collect_image(request: dict, directory: Path, manifests: list[dict], ffprobe
                   image_generator=generate) -> tuple[Path, dict]:
     directory.mkdir(parents=True, exist_ok=True)
     key = request["asset_id"]
-    record_path = directory / (key + ".asset.json")
-    if record_path.exists():
-        try:
-            record = read_json(record_path)
-            path = directory / record.get("file", "")
-            matches = all(record.get(name) == request[name] for name in ("prompt", "model", "seed", "width", "height"))
-            if matches and path.parent.resolve() == directory.resolve() and path.is_file() and file_digest(path) == record.get("sha256"):
-                validate_image(path, request, ffprobe)
-                return path, record
-        except (OSError, ValueError, subprocess.SubprocessError):
-            pass  # Invalid cache records are rebuilt or reimported from the supplied batch.
-    path = None
-    if manifests:
-        for manifest in manifests:
-            for asset in manifest.get("assets", []):
-                if asset.get("asset_id") != key:
-                    continue
-                for name in ("prompt", "model", "seed"):
-                    if asset.get(name) != request[name]:
-                        raise ValueError(f"Queue provenance mismatch for {key}: {name}")
-                if (asset.get("requested_width"), asset.get("requested_height")) != (request["width"], request["height"]):
-                    raise ValueError(f"Queue dimensions mismatch for {key}")
-                source = (ROOT / asset["file"]).resolve()
-                if not source.is_relative_to((ROOT / "output" / "generated").resolve()):
-                    raise ValueError("Queue assets must be downloaded into output/generated")
-                validate_image(source, request, ffprobe)
-                path = directory / (key + source.suffix.lower())
-                shutil.copyfile(source, path)
-                break
-            if path:
-                break
-        if path is None:
-            raise ValueError(f"No downloaded queue asset found: {key}")
-    else:
-        try:
-            with contextlib.redirect_stdout(sys.stderr):
-                path = image_generator(request["prompt"], directory / request["filename"], request["width"],
-                                       request["height"], request["model"], request["seed"])
-        except SystemExit as exc:
-            raise RuntimeError(f"Image provider failed: {exc}") from exc
-    record = {**request, "file": path.name, **validate_image(path, request, ffprobe),
-              "provider": "cloudflare-workers-ai", "visual_review": "pending"}
-    write_json(record_path, record)
-    return path, record
+    with exclusive_lock(directory / (key + ".lock")):
+        record_path = directory / (key + ".asset.json")
+        if record_path.exists():
+            try:
+                record = read_json(record_path)
+                path = directory / record.get("file", "")
+                matches = all(record.get(name) == request[name] for name in ("prompt", "model", "seed", "width", "height"))
+                if matches and path.parent.resolve() == directory.resolve() and path.is_file() and file_digest(path) == record.get("sha256"):
+                    validate_image(path, request, ffprobe)
+                    return path, record
+            except (OSError, ValueError, subprocess.SubprocessError):
+                pass  # Invalid cache records are rebuilt or reimported from the supplied batch.
+        path = None
+        if manifests:
+            for manifest in manifests:
+                for asset in manifest.get("assets", []):
+                    if asset.get("asset_id") != key:
+                        continue
+                    for name in ("prompt", "model", "seed"):
+                        if asset.get(name) != request[name]:
+                            raise ValueError(f"Queue provenance mismatch for {key}: {name}")
+                    if (asset.get("requested_width"), asset.get("requested_height")) != (request["width"], request["height"]):
+                        raise ValueError(f"Queue dimensions mismatch for {key}")
+                    source = (ROOT / asset["file"]).resolve()
+                    if not source.is_relative_to((ROOT / "output" / "generated").resolve()):
+                        raise ValueError("Queue assets must be downloaded into output/generated")
+                    validate_image(source, request, ffprobe)
+                    path = directory / (key + source.suffix.lower())
+                    shutil.copyfile(source, path)
+                    break
+                if path:
+                    break
+            if path is None:
+                raise ValueError(f"No downloaded queue asset found: {key}")
+        else:
+            try:
+                with contextlib.redirect_stdout(sys.stderr):
+                    path = image_generator(request["prompt"], directory / request["filename"], request["width"],
+                                           request["height"], request["model"], request["seed"])
+            except SystemExit as exc:
+                raise RuntimeError(f"Image provider failed: {exc}") from exc
+        record = {**request, "file": path.name, **validate_image(path, request, ffprobe),
+                  "provider": "cloudflare-workers-ai", "visual_review": "pending"}
+        write_json(record_path, record)
+        return path, record
 
 
 def wav_info(path: Path) -> tuple[tuple[int, int, int], int]:
