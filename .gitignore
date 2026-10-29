@@ -26,3 +26,26 @@ voice-cache/
 remotion/public/reference-study-*/
 remotion/public/mobile-ai-*/
 remotion/public/editorial-demo/
+
+# Local catalog, backups and derived media must remain outside Git.
+*.sqlite
+*.sqlite-*
+*.db
+library-data/
+
+# HyperFrames: local projects, caches and weights are not source.
+.hyperframes/
+hyperframes/projects/
+hyperframes/local.json
+*.onnx
+*.bin
+
+# Local production requests, profiles, reviews and telemetry.
+*.local.json
+maintenance/
+*.log
+
+# Project-specific media and publishing packages stay local.
+remotion/public/
+production/
+drive-export/

@@ -1,0 +1,225 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "video_type": {
+      "enum": [
+        "short_9_16",
+        "long_16_9"
+      ]
+    },
+    "fps": {
+      "enum": [
+        24,
+        25,
+        30,
+        60
+      ]
+    },
+    "voices": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "approval_evidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "profile_id",
+          "approval_evidence"
+        ]
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 400,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "template_id": {
+            "enum": [
+              "photo_essay",
+              "layers",
+              "object3d",
+              "dataflow",
+              "cutaway",
+              "scale",
+              "compare"
+            ]
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            "maxItems": 8
+          },
+          "narration": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000
+                },
+                "asset_id": {
+                  "type": "string",
+                  "pattern": "^asset-[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "text",
+                "asset_id"
+              ]
+            }
+          },
+          "duration_seconds": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "resources_needed": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            }
+          },
+          "new_generation_reason": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "composition": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "x": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "width": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 2
+                },
+                "depth": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 3
+                }
+              },
+              "required": [
+                "x",
+                "y",
+                "width",
+                "depth"
+              ]
+            }
+          },
+          "captions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "start_seconds": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "end_seconds": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "text",
+                  "start_seconds",
+                  "end_seconds"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "objective",
+          "template_id",
+          "narration",
+          "resources_needed",
+          "new_generation_reason"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "title",
+    "video_type",
+    "fps",
+    "voices",
+    "scenes"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Library production plan v1 (adapter to AiVideo)"
+}

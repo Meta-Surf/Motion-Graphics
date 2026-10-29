@@ -3,12 +3,18 @@
 from __future__ import annotations
 import argparse, hashlib, json, os, re, time, urllib.request, wave, unicodedata, difflib, uuid
 from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from gpu_resources import gpu_task
 DEFAULT_URL = 'http://127.0.0.1:3901'
 
 def require_gpu(health: dict) -> None:
     device = str(health.get('device', '')).lower()
     if health.get('status') != 'ok' or not any(x in device for x in ('cuda', 'rocm', 'hip', 'mps', 'vulkan')) or 'cpu' in device:
         raise RuntimeError(f'GPU voice service required; reported device: {device!r}. Start the WSL GPU service on port 3901. CPU fallback is disabled.')
+    expected=os.getenv('MOTION_VOICE_DEVICE','').strip().lower()
+    if expected and expected not in device:
+        raise RuntimeError(f'Voice device differs from MOTION_VOICE_DEVICE: {device!r}; no automatic device change.')
 
 def split_text(text: str, limit: int = 220) -> list[str]:
     if limit < 40: raise ValueError('Chunk limit must be at least 40 characters')
@@ -56,6 +62,7 @@ class VoiceStudio:
     def health(self):
         with urllib.request.urlopen(self.url+'/health',timeout=15) as r: health=json.load(r)
         require_gpu(health);return health
+    @gpu_task('voicestudio-transcribe')
     def transcribe(self,path: Path) -> dict:
         boundary='MotionVoice'+uuid.uuid4().hex
         fields={'model':'whisper-1','language':'pt','response_format':'verbose_json'}
@@ -65,10 +72,11 @@ class VoiceStudio:
         body+=f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="voice.wav"\r\nContent-Type: audio/wav\r\n\r\n'.encode()+path.read_bytes()+f'\r\n--{boundary}--\r\n'.encode()
         request=urllib.request.Request(self.url+'/v1/audio/transcriptions',data=body,headers={'Content-Type':'multipart/form-data; boundary='+boundary})
         with urllib.request.urlopen(request,timeout=120) as response:return json.load(response)
+    @gpu_task('voicestudio-narrate')
     def narrate(self,text: str,output: Path,profile: str,steps: int=32) -> dict:
         health=self.health()
         if not profile.strip(): raise ValueError('An approved profile ID is required')
-        output=output.resolve();cache=output.parent/'voice-cache';cache.mkdir(parents=True,exist_ok=True)
+        output=output.resolve();cache=Path(os.getenv('MOTION_VOICE_CACHE',str(Path.home()/'MotionLibrary/voice-cache')));cache.mkdir(parents=True,exist_ok=True)
         with urllib.request.urlopen(self.url+'/profiles/'+profile,timeout=15) as response: profile_state=json.load(response)
         chunks=split_text(text);paths=[];takes=[]
         for chunk in chunks:
@@ -86,9 +94,11 @@ class VoiceStudio:
                 with wave.open(str(temp)) as w:
                     if w.getnframes()<=0: raise RuntimeError('Empty narration')
                 temp.replace(p)
-            if review_path.exists(): review=json.loads(review_path.read_text(encoding='utf-8'))
-            else:
+            audio_hash=hashlib.sha256(p.read_bytes()).hexdigest()
+            review=json.loads(review_path.read_text(encoding='utf-8')) if review_path.exists() else {}
+            if review.get('audio_sha256')!=audio_hash:
                 review=self.transcribe(p);review['script_similarity']=check_transcript(chunk,review['text'])
+                review['audio_sha256']=audio_hash
                 review_path.write_text(json.dumps(review,ensure_ascii=False,indent=2),encoding='utf-8')
             check_transcript(chunk,review['text'])
             with wave.open(str(p)) as w: seconds=w.getnframes()/w.getframerate()

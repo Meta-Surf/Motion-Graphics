@@ -227,7 +227,7 @@ def image_requests(manifest: VideoManifest) -> list[dict[str, Any]]:
 def generate_video_manifest(script_text: str, *, output_path: Path | None = None,
                             video_type: VideoType | None = None, model_name: str | None = None,
                             timeout_seconds: float = 120, max_attempts: int = 3,
-                            max_output_tokens: int = 65536) -> VideoManifest:
+                            max_output_tokens: int = 65536, enqueue_images: bool = False) -> VideoManifest:
     """Call Gemini, validate the complete response, save the plan and enqueue image batches.
 
     Requires GEMINI_API_KEY and a structured-output model supplied by GEMINI_MODEL or
@@ -262,7 +262,7 @@ def generate_video_manifest(script_text: str, *, output_path: Path | None = None
     with exclusive_lock(destination.with_suffix(destination.suffix + ".lock")):
         write_json(destination, manifest)
         requests = image_requests(manifest)
-        jobs = enqueue_image_jobs(requests, pending, prefix="gemini")
+        jobs = enqueue_image_jobs(requests, pending, prefix="gemini") if enqueue_images else []
         write_json(destination.with_suffix(".meta.json"), {
             "provider": "gemini", "model": name, "script_sha256": digest(script_text), "manifest_sha256": identity,
             "catalog_sha256": digest(templates), "image_jobs": [Path(job).relative_to(ROOT).as_posix() for job in jobs],
@@ -280,6 +280,7 @@ def main() -> int:
     parser.add_argument("script", type=Path, help="UTF-8 plain narration script")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--model")
+    parser.add_argument("--enqueue-images", action="store_true", help="Publish image jobs only after provider/budget approval; default saves plan only")
     parser.add_argument("--video-type", choices=("short_9_16", "long_16_9"))
     parser.add_argument("--timeout", type=float, default=120)
     parser.add_argument("--max-attempts", type=int, default=3)
@@ -289,7 +290,7 @@ def main() -> int:
     try:
         manifest = generate_video_manifest(args.script.read_text(encoding="utf-8-sig"), output_path=args.output,
             video_type=args.video_type, model_name=args.model, timeout_seconds=args.timeout,
-            max_attempts=args.max_attempts, max_output_tokens=args.max_output_tokens)
+            max_attempts=args.max_attempts, max_output_tokens=args.max_output_tokens, enqueue_images=args.enqueue_images)
         print(json.dumps(manifest, ensure_ascii=False))
         return 0
     except (GeminiOrchestrationError, OSError, ValueError) as exc:

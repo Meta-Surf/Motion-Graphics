@@ -12,6 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from build_composition import wav_info
+from gpu_resources import gpu_task
 from video_contract import (
     ROOT, digest, executable, file_digest, probe, public_asset, read_json,
     validate_composition, write_json,
@@ -54,12 +55,36 @@ def fingerprint(props: dict, concurrency: int, browser_executable: str | None = 
     for name in ("package-lock.json", "package.json"):
         path = ROOT / "remotion" / name
         files[name] = file_digest(path)
-    assets = {source: file_digest(public_asset(source)) for source in {props["audio"], *(s["image"] for s in props["scenes"])}}
+    layer_assets = {layer['image'] for scene in props['scenes'] for layer in scene.get('layers', [])}
+    assets = {source: file_digest(public_asset(source)) for source in {*layer_assets, props["audio"], *(s["image"] for s in props["scenes"])}}
     return digest({"props": props, "source": files, "assets": assets, "concurrency": concurrency,
                    "browser": browser_executable, "render_script": file_digest(Path(__file__)),
                    "encoding": "h264-crf18-medium-yuv420p-bt709-png"})
 
 
+
+def block_fingerprint(props: dict, start: int, end: int, concurrency: int, browser_executable: str | None = None) -> str:
+    """Only visible scene dependencies; continuous narration is muxed separately.
+
+    Absolute frame bounds are part of the key: moving a scene invalidates its blocks.
+    Code, lockfiles, format and browser changes invalidate all affected rendering.
+    """
+    visible = [scene for scene in props['scenes']
+               if scene['fromFrame'] <= end and scene['fromFrame'] + scene['durationInFrames'] > start]
+    sources = {scene['image'] for scene in visible}
+    sources.update(layer['image'] for scene in visible for layer in scene.get('layers', []))
+    code = {str(path.relative_to(ROOT)): file_digest(path)
+            for path in sorted((ROOT / 'remotion' / 'src').rglob('*')) if path.is_file()}
+    for name in ('package-lock.json', 'package.json'):
+        code[name] = file_digest(ROOT / 'remotion' / name)
+    return digest(dict(scenes=visible, start=start, end=end,
+                       format={k: props[k] for k in ('width','height','fps','durationInFrames')},
+                       assets={source:file_digest(public_asset(source)) for source in sorted(sources)},
+                       code=code, concurrency=concurrency, browser=browser_executable,
+                       render_script=file_digest(Path(__file__))))
+
+
+@gpu_task('remotion-chunks')
 def render(props_path: Path, output: Path, chunk_seconds: int = 90, concurrency: int = 1,
            resume: bool = False, overwrite: bool = False, ffmpeg: str | None = None,
            ffprobe: str | None = None, timeout: int = 3600, browser_executable: str | None = None) -> dict:
@@ -94,13 +119,16 @@ def render(props_path: Path, output: Path, chunk_seconds: int = 90, concurrency:
         write_json(snapshot, props)
         chunks, reference = [], None
         for index, (start, end) in enumerate(frame_ranges(props["durationInFrames"], props["fps"], chunk_seconds)):
-            chunk = work / f"chunk-{start:08d}-{end:08d}.mp4"
+            block_key = block_fingerprint(props, start, end, concurrency, browser_executable)
+            block_dir = output.parent / '.motion-chunks' / 'blocks' / block_key
+            block_dir.mkdir(parents=True, exist_ok=True)
+            chunk = block_dir / 'video.mp4'
             chunk_record = chunk.with_suffix(".json")
             valid = False
             if resume and chunk.exists() and chunk_record.exists():
                 try:
                     record = read_json(chunk_record)
-                    valid = record.get("sha256") == file_digest(chunk)
+                    valid = record.get("block_key") == block_key and record.get("sha256") == file_digest(chunk)
                     if valid:
                         video_signature(chunk, props, end - start + 1, ffprobe)
                 except (OSError, ValueError, subprocess.SubprocessError):
@@ -118,14 +146,20 @@ def render(props_path: Path, output: Path, chunk_seconds: int = 90, concurrency:
                     subprocess.run(command, cwd=ROOT / "remotion", check=True, timeout=timeout, stdout=sys.stderr)
                     video_signature(partial, props, end - start + 1, ffprobe)
                     partial.replace(chunk)
-                    write_json(chunk_record, {"sha256": file_digest(chunk), "fromFrame": start, "endFrame": end})
+                    write_json(chunk_record, {"sha256": file_digest(chunk), "block_key": block_key, "fromFrame": start, "endFrame": end})
                 finally:
                     partial.unlink(missing_ok=True)
             current = video_signature(chunk, props, end - start + 1, ffprobe)
             if reference is not None and current != reference:
                 raise ValueError("Chunk codec parameters differ; stream-copy concatenation would be unsafe")
             reference = current
-            chunks.append(chunk)
+            # Controlled relative path for concat's safe mode, including Unicode parent paths.
+            local_chunk = work / f'chunk-{start:08d}-{end:08d}.mp4'
+            if local_chunk.exists(): local_chunk.unlink()
+            import os, shutil
+            try: os.link(chunk, local_chunk)
+            except OSError: shutil.copyfile(chunk, local_chunk)
+            chunks.append(local_chunk)
         # Controlled ASCII basenames avoid concat escaping issues with apostrophes/Unicode in workspace paths.
         concat = work / "concat.txt"
         concat.write_text("ffconcat version 1.0\n" + "".join(f"file '{p.name}'\n" for p in chunks), encoding="ascii")

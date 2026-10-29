@@ -89,6 +89,13 @@ def validate_composition(value: dict) -> None:
     for scene in value["scenes"]:
         if scene["id"] in ids or scene["fromFrame"] != cursor:
             raise ValueError("Scenes must have unique IDs and form a contiguous timeline starting at zero")
+        layers = scene.get('layers', [])
+        if len({layer['id'] for layer in layers}) != len(layers): raise ValueError('Duplicate layer IDs')
+        for layer in layers:
+            if '..' in layer['image'].split('/'): raise ValueError('Layer path traversal')
+        for cue in scene.get('highlight_cues', []):
+            if cue['startFrame'] >= cue['endFrame'] or cue['endFrame'] > scene['durationInFrames']:
+                raise ValueError('Invalid speech cue')
         ids.add(scene["id"])
         cursor += scene["durationInFrames"]
     if cursor != value["durationInFrames"] or not minimum <= cursor / value["fps"] <= maximum:

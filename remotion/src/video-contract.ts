@@ -23,6 +23,8 @@ export interface VideoDirector {
   scenes: DirectorScene[];
 }
 export interface CompiledScene {
+  layers?: Array<{id: string; image: string; x: number; y: number; width: number; depth: number}>;
+  highlight_cues?: Array<{text: string; startFrame: number; endFrame: number}>;
   id: string;
   template_id: TemplateId;
   title: string;
@@ -78,6 +80,12 @@ export function validateVideo(props: VideoCompositionProps) {
         || !Array.isArray(scene.labels) || scene.labels.length > 5 || scene.labels.some(label => typeof label !== 'string' || !label.trim() || label.length > 28)) {
       throw new Error('Invalid scene, template, asset or discontinuous timeline');
     }
+    if (scene.layers && (!Array.isArray(scene.layers) || scene.layers.length > 16 || new Set(scene.layers.map(l => l.id)).size !== scene.layers.length || scene.layers.some(l =>
+      !/^[a-z0-9][a-z0-9_-]{0,63}$/.test(l.id) || !validAsset(l.image) || ![l.x,l.y,l.width,l.depth].every(Number.isFinite)
+      || l.x < 0 || l.x > 1 || l.y < 0 || l.y > 1 || l.width <= 0 || l.width > 2 || l.depth < 0 || l.depth > 3))) throw new Error('Invalid reusable layer');
+    if (scene.highlight_cues && (!Array.isArray(scene.highlight_cues) || scene.highlight_cues.length > 1000 || scene.highlight_cues.some(c =>
+      !Number.isSafeInteger(c.startFrame) || !Number.isSafeInteger(c.endFrame) || c.startFrame < 0 || c.endFrame <= c.startFrame
+      || c.endFrame > scene.durationInFrames || typeof c.text !== 'string' || !c.text.trim() || c.text.length > 180))) throw new Error('Invalid speech cue');
     ids.add(scene.id);
     cursor += scene.durationInFrames;
   }

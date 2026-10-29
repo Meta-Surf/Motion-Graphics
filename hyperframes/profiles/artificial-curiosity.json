@@ -1,0 +1,9 @@
+{
+  "id": "artificial-curiosity",
+  "font": "Inter",
+  "colors": {"background": "#03101c", "text": "#ffffff", "accent": "#76f0ce"},
+  "portrait": {"titleX":108,"titleY":230,"titleWidth":810,"titleSize":78,"heroX":108,"heroY":510,"heroWidth":810,"heroHeight":570,"captionX":108,"captionY":1138,"captionWidth":810,"captionHeight":176,"captionSize":54},
+  "landscape": {"titleX":192,"titleY":108,"titleWidth":1536,"titleSize":80,"heroX":192,"heroY":300,"heroWidth":1536,"heroHeight":480,"captionX":192,"captionY":820,"captionWidth":1536,"captionHeight":140,"captionSize":52},
+  "captions": {"maxWords":5,"pauseSeconds":0.15},
+  "audio": {"integratedLUFS":-16,"truePeakDBTP":-1.7}
+}

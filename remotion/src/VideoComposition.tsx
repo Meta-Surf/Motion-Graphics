@@ -1,3 +1,4 @@
+import {ReusableLayers} from './ReusableLayers';
 import React from 'react';
 import {AbsoluteFill, Audio, Img, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {MotionTemplate} from './MotionTemplates';
@@ -42,6 +43,7 @@ const DirectedScene: React.FC<{scene: CompiledScene}> = ({scene}) => {
         <MotionPanel scene={scene} width={panelWidth} height={panelHeight}/>
       </div>
     </AbsoluteFill>
+    <ReusableLayers scene={scene}/>
   </AbsoluteFill>;
 };
 

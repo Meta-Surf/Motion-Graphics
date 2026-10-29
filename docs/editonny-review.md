@@ -5,13 +5,13 @@
 ## Fluxo
 
 1. Renderize o Short com Remotion ou com o renderer Python existente.
-2. Prepare uma cópia isolada para revisão. O script confere via FFprobe que o arquivo tem vídeo, mede pelo menos 30 segundos e é 1080×1920.
+2. Prepare uma cópia isolada para revisão. O script confere via FFprobe que o arquivo tem vídeo, confere dimensões, duração e streams do formato escolhido (Short 15–180 s ou 16:9 480–1800 s).
 3. Inclua roteiro/transcrição, legendas e storyboard se estiverem disponíveis.
 4. Abra a pasta gerada no computador com Editonny instalado e peça uma **revisão**. Preserve a exportação original.
 5. Registre os achados e decisão em `review-manifest.json`. Se o Editonny propuser cortes, tratamento de áudio, legendas ou reenquadramento, aplique somente após revisar a proposta e aprove uma amostra; mantenha a composição Remotion original como base e compare a nova exportação.
 6. Execute novamente as verificações técnicas no arquivo final e marque a decisão como `approved` somente quando os bloqueios forem resolvidos.
 
-O Editonny exige confirmação das configurações antes de editar. Portanto, comece com solicitação de revisão somente; não autorize cortes ou re-render automático por inferência.
+Para cada nova edição: inspecione, apresente o cartão completo de configurações e aguarde uma resposta explícita posterior antes de criar o workspace. O pedido inicial nunca aprova seu próprio cartão. Consulte a skill física instalada e o [procedimento operacional](production-procedure.md). O Editonny exige confirmação das configurações antes de editar. Portanto, comece com solicitação de revisão somente; não autorize cortes ou re-render automático por inferência.
 
 ## Preparar pacote
 

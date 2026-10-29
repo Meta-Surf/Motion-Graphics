@@ -1,86 +1,132 @@
-# Motion Video Pipeline
+# Motion Graphics
 
-Projeto independente para planejar, produzir e renderizar Shorts 9:16 de 15–180 segundos e vídeos 16:9 de 8–30 minutos com motion graphics, narração e imagens geradas por IA.
+Sistema local para planejar, criar, editar e validar vídeos, cortes e motion graphics.
+O projeto mantém briefing, decisões, assets, fontes e composição editável junto das
+evidências de entrega. **`main` é a única versão de referência** no GitHub e no DACOL.
 
-O [pipeline universal por JSON](docs/universal-video-pipeline.md) inclui schema para a IA diretora, integração com a fila Cloudflare e VoiceStudio GPU, props compiladas e renderização Remotion em blocos de 60–120 segundos. Veja o [exemplo de direção](examples/video-director.short.json), o [system prompt visual](prompts/video-director.system.txt) e o [guia de adaptação 16:9](docs/remotion-formats.md).
+Leia o [procedimento operacional](docs/production-procedure.md). O
+[AGENTS.md](AGENTS.md) torna essas regras permanentes para agentes que trabalham no
+projeto. O sistema auxilia a produção; aprovação visual, escuta e decisões do
+usuário continuam explícitas.
 
-O [orquestrador Gemini](docs/gemini-orchestrator.md) transforma roteiros em texto simples em um plano de cenas com escolhas entre os 21 padrões catalogados e cria os lotes de imagem compatíveis com a fila existente.
+## O que funciona
 
-> O vídeo de demonstração anterior não faz parte do repositório. Ele serviu como protótipo e evidenciou o principal ponto a melhorar: a arte vetorial simples não tem o nível visual desejado. Este repositório guarda o pipeline reutilizável, não um Short específico.
+| Etapa | Implementação | Limite verificado |
+|---|---|---|
+| Entrada | `production.py init`, classificação e manifesto validado | Pergunta decisões ausentes; não inventa consentimento |
+| Inspeção | Doctor, FFprobe e SHA-256 dos arquivos | Instalação e health não comprovam inferência |
+| Planejamento | Seleção de rotas com motivos e bloqueios | Não executa serviços pagos nem transforma plano em aprovação |
+| Biblioteca | SQLite/FTS5, importação, seleção, backup e restauração | Licença/direitos e qualidade precisam ser aprovados |
+| Novo motion | HyperFrames 0.8.211 e GSAP fixados | Ponte testada para `photo_essay` e `layers` |
+| Composições existentes | Remotion 4.0.538/AiVideo | Sete templates; preserva o renderer identificado |
+| Voz | Adaptador VoiceStudio, GPU obrigatória, cache e ASR | Português; perfil autorizado, dispositivo confirmado e speed=1 |
+| Imagens | Fila Cloudflare ou geração direta explícita | Provedor, licença, privacidade e orçamento aprovados antes da chamada |
+| Edição/revisão | Handoff local para editonny | Preflight → inspeção → cartão → resposta posterior → trabalho |
+| Entrega | Probe, codecs, FPS, duração, áudio, decode e hashes | Revisões finais devem corresponder aos bytes entregues |
 
-## Objetivo
+Concat está disponível como opção de timeline local quando houver prova de
+importação, salvamento e reabertura. A integração automática com ele permanece
+pendente. Os **21 padrões catalogados são receitas/estudos**, não 21 templates
+intercambiáveis. Consulte a [matriz de contratos](docs/contract-compatibility.md).
 
-Transformar um roteiro em um Short 9:16 de 15–180 s ou vídeo 16:9 de 480–1800 s com:
+## Instalação reproduzível
 
-- cenas ilustradas por imagens de alta qualidade geradas por API;
-- direção de arte consistente entre cenas;
-- movimento de câmera e motion graphics sobre as imagens;
-- narração via VoiceStudio no computador Dacol;
-- legendas sincronizadas e exportação H.264/AAC para YouTube Shorts.
+Python 3.12+, Node 22.13+ ou 24+, FFmpeg e FFprobe no PATH. PowerShell, na raiz:
 
-## Pipeline proposto
+```powershell
+python -m venv .venv
+& .\.venv\Scripts\python.exe -m pip install -r scripts/requirements-gemini.txt
+npm.cmd ci --prefix remotion
+npm.cmd ci --prefix hyperframes
+```
 
-1. Pesquisar e validar o assunto e as fontes.
-2. Escrever roteiro, estimar duração e dividir em cenas com timecodes.
-3. Criar prompts visuais por cena e um guia de estilo comum.
-4. Gerar imagens via provedor configurável, guardando prompt, modelo, dimensões e referência da imagem.
-5. Revisar contato/seleção das imagens antes da montagem final.
-6. Gerar narração pelo VoiceStudio no Dacol.
-7. Montar imagens, movimentos (pan/zoom/parallax), gráficos, legendas e áudio.
-8. Validar duração e resolução do formato escolhido, legibilidade, sincronização e qualidade.
+Os lockfiles npm fixam as dependências. O SDK Gemini legado permanece isolado no
+adaptador existente. Modelos de ASR/recorte e o VoiceStudio têm preparação própria;
+instalar dependências não baixa todos os modelos nem instala serviços externos.
+Consulte [HyperFrames](docs/hyperframes.md) e [voz/GPU no DACOL](docs/dacol-gpu-and-production.md).
+Credenciais ficam no ambiente; `.env.example` contém somente nomes e exemplos.
 
-## API de imagem
+## Começar um pedido
 
-Integração inicial disponível: **Cloudflare Workers AI com FLUX.2 Klein 4B**. O adaptador em `src/providers/cloudflare_workers_ai.py` envia um prompt e salva o arquivo de imagem no formato retornado pela API; credenciais são lidas do ambiente e nunca devem ser versionadas. Veja [a configuração e os comandos](docs/cloudflare-workers-ai.md).
+Nos exemplos, `python` representa o executável da venv. Guarde pedidos reais em
+`output/projects/`, fora do Git:
 
-A chamada usa processamento remoto pela Cloudflare; não usa a GPU local. Revise a cota e os preços atuais antes de gerar lotes.
+```powershell
+python scripts/production.py doctor --output output/maintenance/doctor.json
+python scripts/production.py init "Criar um motion para apresentar o produto" --project-id produto --output output/projects/produto/request.json
+python scripts/production.py inspect CAMINHO_DO_VIDEO.mp4
+python scripts/production.py plan output/projects/produto/request.json --capabilities examples/capabilities.example.json
+```
 
-## Estrutura
+O `init` cria um briefing com decisões desconhecidas como `null`. Complete somente
+os campos comprovados pelo pedido ou pela inspeção. No `plan`, substitua o exemplo
+de capacidades por observações locais com evidência. Arquivos já existentes não
+são sobrescritos: edite o pedido em andamento para retomar o trabalho.
 
-- `docs/architecture.md` — arquitetura e decisões de qualidade.
-- `docs/visual-quality-gates.md` — critérios para aprovar imagens e montagem.
-- `docs/cloudflare-workers-ai.md` — configuração, uso e custos do provedor.
-- `docs/github-actions-cloudflare.md` — uso dos secrets no Actions e transferência dos assets para o editor local.
-- `src/providers/cloudflare_workers_ai.py` — adaptador de geração via Workers AI.
-- `.env.example` — nomes de configuração sem segredos.
+Antes de produção integral, defina roteiro, fontes, cenas, assets, áudio, ferramentas
+e critérios; gere e meça uma amostra representativa. Registre os aceites reais com
+o hash retornado pelo planner. Mudanças nas decisões invalidam aceites anteriores.
+Música, efeitos, voz, cor, formato e serviço pago nunca são alterados silenciosamente.
 
-## Renderer opcional com Remotion
+## Produzir uma amostra editável
 
-O repositório inclui um renderer alternativo em `remotion/` para composições dinâmicas: títulos cinéticos, painéis em primeiro plano, layouts narrativos, animações por frame e movimento de câmera. Ele é opcional; o adaptador Cloudflare, a fila de imagens e os workflows atuais continuam disponíveis. Consulte [o guia do Remotion](docs/remotion-renderer.md).
+Diagnóstico sintético de 15 s, com SVG em camadas, tom de teste e rótulo temporizado:
 
-## Revisão final opcional
+```powershell
+python scripts/make_hyperframes_smoke.py --layers --output output/smoke
+python scripts/render_hyperframes.py output/smoke/project --action render --output output/smoke/preview.mp4 --gpu
+```
 
-O [Editonny](https://github.com/soumatheusgomes/editonny) pode apoiar a revisão local pós-render e ajustes editoriais com confirmação. Adicionamos um handoff que valida o arquivo e cria um manifesto/checklist sem chamar serviços externos nem modificar a exportação original. Veja [integração e fluxo de revisão](docs/editonny-review.md).
+`--gpu` é uma escolha explícita de navegador/encoder. Omiti-lo seleciona o perfil
+CPU da CLI; não há fallback automático entre perfis. Use diretórios novos para
+novas amostras. Para renderizar uma composição real compatível:
 
-## Execução
+```powershell
+python scripts/render_library_project.py composition.json --renderer hyperframes --output output/preview.mp4 --gpu
+```
 
-O fluxo `AiVideo` compila um roteiro JSON em assets, narração contínua e props renderizáveis. A geração de assets exige os serviços configurados; aprovação visual e escuta continuam sendo etapas explícitas de revisão. O adaptador de imagem também pode ser usado isoladamente.
+Composições Remotion existentes usam a rota correspondente. O render em blocos
+reutiliza intervalos válidos por hash e dependências; a união compatível usa stream
+copy, e o áudio contínuo é muxado no final:
 
-## Geração automática sem iniciar o workflow manualmente
+```powershell
+python scripts/render_chunks.py composition.json --output output/final.mp4 --concurrency 1 --resume
+```
 
-O workflow `.github/workflows/cloudflare-image-queue.yml` aceita manifestos JSON em `jobs/pending/`. Uma atualização da fila tenta iniciar a geração automaticamente; há também uma verificação horária como recuperação. Imagens geradas são publicadas como artefatos do GitHub Actions por 7 dias e o manifesto concluído é movido para `jobs/processed/`.
+Voz e renders participantes compartilham `MOTION_GPU_LOCK`; o cache de takes usa
+`MOTION_VOICE_CACHE`. Consulte o procedimento para medir CPU/GPU/memória e recuperar
+falhas. Encoder de GPU não comprova aceleração de todas as outras etapas.
 
-Use `src/process_image_queue.py` para validar e processar os pedidos. Cada manifesto pode solicitar de 1 a 8 imagens, com prompts de até 3.000 caracteres. As credenciais continuam somente nos secrets do repositório. Consulte `docs/image-generation-queue.md` para o formato do pedido e limites, e [o guia de credenciais e fluxo Actions → editor local](docs/github-actions-cloudflare.md).
+## Validar e entregar
 
-## Motion por camadas e áudio sincronizado
+```powershell
+python scripts/check_project.py
+python scripts/production.py verify output/projects/produto/request.json output/final.mp4 --output output/delivery.json
+```
 
-O Remotion aceita múltiplos assets com movimento independente e faixas temporizadas de voz, música e efeitos, com fades e ducking em janelas marcadas. O cálculo de duração é compartilhado com a timeline para evitar frames vazios no fechamento. Consulte a documentação em docs/remotion-renderer.md, o exemplo examples/remotion-layers.example.json e execute os testes e typecheck no diretório remotion.
+A primeira linha roda as suites offline e o typecheck, sem provedores de geração.
+A segunda valida o arquivo real. Exit code **2** significa entrega bloqueada,
+inclusive quando a parte técnica passou mas faltam imagem, escuta, sincronismo,
+legendas, reprodução ou direitos. Registre revisor, evidência e hash de mídia;
+`not_applicable` também precisa de justificativa.
 
-## Atualização de qualidade e DACOL
+Entregue o vídeo, manifesto, roteiro/fontes, assets selecionados e ledger, projeto
+nativo/props, legendas solicitadas e evidências. Preserve originais e projetos de
+produção fora do código reutilizável. Credenciais, referências de voz, bancos,
+modelos, mídia privada e renders não entram no Git.
 
-- [Voz GPU, inicialização e fluxo no DACOL](docs/dacol-gpu-and-production.md).
-- [Biblioteca de seis novos motions e keyframes](docs/motion-library.md).
-- Voz por GPU: `python src/providers/voicestudio.py --health` (porta 3901, sem fallback CPU).
-- No diretório `remotion`, use `npm ci`, `npm test`, `npm run typecheck` e `npm run preview:library`.
-- `npm run render:amf` exige `--voice` para uma exportação final ou `--silent-preview` para uma prévia explicitamente sem som.
-- `scripts/finalize_short.py` inclui a narração e valida o MP4; o handoff Editonny agora rejeita arquivos finais sem áudio.
+## Evidências e documentação
 
-O desktop Windows do VoiceStudio (3900) e o serviço AMD ROCm no WSL (3901) são instalações diferentes. A produção no DACOL usa a segunda. Consulte o diagnóstico antes de reinstalar modelos.
+- [Validação medida e limites atuais](docs/production-audit-2026-10-28.md).
+- [Operação completa e recuperação](docs/production-procedure.md).
+- [Biblioteca e restauração](docs/asset-library.md).
+- [Contratos e compatibilidade](docs/contract-compatibility.md).
+- [HyperFrames e modelos locais](docs/hyperframes.md).
+- [AiVideo, voz e render em blocos](docs/universal-video-pipeline.md).
+- [Gemini: planejamento e publicação explícita de imagens](docs/gemini-orchestrator.md).
+- [Fila de imagens e retenção dos artefatos](docs/image-generation-queue.md).
+- [Editonny: confirmação e revisão](docs/editonny-review.md).
+- [Estudos de motion e qualidade](docs/motion-library.md).
 
-## Estudos de referências e padrões
-
-O primeiro estudo adiciona decomposição por frames, medidas de movimento e uma reconstrução editável com camadas independentes. Consulte [o processo e suas limitações](docs/reference-learning.md) e [o catálogo do estudo 001](motion-library/studies/001.json). Os renders `render:study` e `render:breakdown` são prévias técnicas sem áudio; os fluxos existentes de Shorts, Cloudflare e VoiceStudio permanecem disponíveis.
-
-O [template de mobile em camadas](docs/mobile-layered-short.md) aplica esse aprendizado com aparelho 3D procedural, interface nítida, cartões independentes, arte Cloudflare em primeiro plano e narração GPU sincronizada.
-
-O [estudo 002 — explicador editorial](docs/editorial-motion-study-002.md) adiciona 12 padrões implementados: títulos, comparação por painéis, foco semântico, contadores, listas riscadas, funções em sequência, terminal, visualização de áudio, retrato, CTA, papel iluminado e olho. O [catálogo consolidado](motion-library/catalog.json) reúne 21 padrões em dois estudos. Em `remotion`, `npm run render:editorial` gera uma prévia técnica de 36 s sem som e sem depender das imagens da referência. Os novos modelos aguardam revisão por conteúdo antes de promoção a produção.
+As medições descrevem as amostras executadas, sem prometer aprovação editorial,
+suporte universal a formatos ou integração que ainda não tenha sido testada.
