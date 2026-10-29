@@ -1,5 +1,10 @@
 # Direção por JSON, Shorts e vídeos longos
 
+> Para novos pedidos, siga primeiro [o procedimento operacional](production-procedure.md).
+> Este guia descreve uma rota específica; suporte, aprovação e escolha de ferramenta
+> são definidos pelo briefing e pela [matriz de compatibilidade](contract-compatibility.md).
+
+
 O fluxo `AiVideo` aceita Shorts 9:16 de **15–180 s** e vídeos 16:9 de **480–1800 s**. A duração é medida nos WAVs, arredondada para frames inteiros; estimativas de palavras não decidem a duração final. As composições e estudos anteriores continuam registrados no Remotion.
 
 ## Arquivos e contratos

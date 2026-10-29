@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "project_id": "synthetic-procedure",
+  "request": "Criar motion gráfico sintético para testar o procedimento local.",
+  "kind": "motion",
+  "brief": {
+    "purpose": "Verificar o pipeline com mídia sintética",
+    "audience": "Equipe de produção",
+    "sources": [],
+    "language": "pt",
+    "format": {
+      "width": 1080,
+      "height": 1920,
+      "fps": "24/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "pixel_format": "yuv420p"
+    },
+    "duration_seconds": 15,
+    "references": [],
+    "voice": {
+      "mode": "none",
+      "profile_id": null,
+      "authorized": false
+    },
+    "captions": "authored",
+    "music": false,
+    "effects": false,
+    "deadline": "Sem prazo externo; diagnóstico local",
+    "external": {
+      "allowed": false,
+      "providers": [],
+      "max_cost": 0,
+      "currency": "BRL",
+      "private_upload": false
+    },
+    "delivery": {
+      "folder": "output/procedure-smoke-v001",
+      "editable": true,
+      "files": [
+        "validation.mp4",
+        "props.json",
+        "project/",
+        "delivery.json"
+      ]
+    }
+  },
+  "assets": [],
+  "scenes": [
+    {
+      "id": "diagnostic",
+      "objective": "Validar camadas e texto em movimento",
+      "script": "Rótulos de diagnóstico; tom de teste, sem narração.",
+      "template_id": "layers",
+      "assets": [],
+      "new_asset_reason": "SVG e tom sintéticos, sem provedor ou custo",
+      "asset_strategy": "synthetic",
+      "provider": null
+    }
+  ],
+  "approvals": {
+    "plan": null,
+    "sample": null,
+    "editonny_card": null
+  },
+  "reviews": {
+    "visual": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null
+    },
+    "listening": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null
+    },
+    "sync": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null
+    },
+    "captions": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null
+    },
+    "playback": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null
+    },
+    "rights": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null
+    }
+  }
+}

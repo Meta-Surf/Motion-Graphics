@@ -1,5 +1,10 @@
 # DACOL: voz por GPU e produção independente
 
+> Para novos pedidos, siga primeiro [o procedimento operacional](production-procedure.md).
+> Este guia descreve uma rota específica; suporte, aprovação e escolha de ferramenta
+> são definidos pelo briefing e pela [matriz de compatibilidade](contract-compatibility.md).
+
+
 ## Correção de 24/10/2026
 
 A auditoria inicial verificou o aplicativo Windows em localhost:3900. Ele tem PyTorch 2.8.0+cu128 e não usa a Radeon. Havia, porém, uma instalação ROCm previamente funcional no Ubuntu-24.04/WSL2, em localhost:3901. Não foi necessário trocar o motor nem instalar uma nova distribuição.

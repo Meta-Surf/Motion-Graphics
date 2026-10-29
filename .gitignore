@@ -39,3 +39,8 @@ hyperframes/projects/
 hyperframes/local.json
 *.onnx
 *.bin
+
+# Local production requests, profiles, reviews and telemetry.
+*.local.json
+maintenance/
+*.log

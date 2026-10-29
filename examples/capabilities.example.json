@@ -1,0 +1,8 @@
+{
+  "hyperframes": {"state": "installed", "evidence": "Substituir por caminho/versão e resultado local atual"},
+  "remotion": {"state": "installed", "evidence": "Substituir por composição e teste reais"},
+  "voicestudio": {"state": "absent", "evidence": null},
+  "editonny": {"state": "absent", "evidence": null},
+  "concat": {"state": "absent", "evidence": null},
+  "local-generation": {"state": "absent", "evidence": null}
+}

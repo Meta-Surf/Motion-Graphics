@@ -1,10 +1,26 @@
 # Motion Video Pipeline
 
+Comece pelo [procedimento operacional](docs/production-procedure.md) e pelas
+[instruções permanentes](AGENTS.md). O fluxo classifica criação, edição, corte,
+motion, revisão e atualização; registra decisões, reutiliza assets e exige uma
+amostra medida. Use `python scripts/production.py plan` com o
+[manifesto de briefing](examples/production-request.synthetic.json). A
+[matriz de contratos](docs/contract-compatibility.md) distingue capacidades
+implementadas de receitas de planejamento. Veja a
+[auditoria e validação DACOL](docs/production-audit-2026-10-28.md).
+
+Para novos motions, avalie HyperFrames primeiro nos templates suportados;
+composições existentes e recursos especializados continuam no Remotion conforme
+amostra. O default técnico das CLIs antigas permanece Remotion: escolha a rota
+explicitamente pelo procedimento. Concat e editonny são etapas locais com seus
+próprios preflights e controles de confirmação.
+
+
 Projeto independente para planejar, produzir e renderizar Shorts 9:16 de 15–180 segundos e vídeos 16:9 de 8–30 minutos com motion graphics, narração e imagens geradas por IA.
 
 O [pipeline universal por JSON](docs/universal-video-pipeline.md) inclui schema para a IA diretora, integração com a fila Cloudflare e VoiceStudio GPU, props compiladas e renderização Remotion em blocos de 60–120 segundos. Veja o [exemplo de direção](examples/video-director.short.json), o [system prompt visual](prompts/video-director.system.txt) e o [guia de adaptação 16:9](docs/remotion-formats.md).
 
-O [orquestrador Gemini](docs/gemini-orchestrator.md) transforma roteiros em texto simples em um plano de cenas com escolhas entre os 21 padrões catalogados e cria os lotes de imagem compatíveis com a fila existente.
+O [orquestrador Gemini](docs/gemini-orchestrator.md) transforma roteiros em texto simples em um plano de cenas com escolhas entre os 21 padrões catalogados e, com `--enqueue-images` após autorização de provedor/orçamento, publica lotes compatíveis com a fila existente. O padrão salva somente o plano; a própria chamada Gemini pode ter custo.
 
 > O vídeo de demonstração anterior não faz parte do repositório. Ele serviu como protótipo e evidenciou o principal ponto a melhorar: a arte vetorial simples não tem o nível visual desejado. Este repositório guarda o pipeline reutilizável, não um Short específico.
 

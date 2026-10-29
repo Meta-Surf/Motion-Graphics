@@ -1,5 +1,10 @@
 # Gemini como planejador do Motion
 
+> Para novos pedidos, siga primeiro [o procedimento operacional](production-procedure.md).
+> Este guia descreve uma rota específica; suporte, aprovação e escolha de ferramenta
+> são definidos pelo briefing e pela [matriz de compatibilidade](contract-compatibility.md).
+
+
 `src/providers/gemini_orchestrator.py` recebe um roteiro em texto simples, pede um plano ao Gemini com `response_mime_type="application/json"` e `response_schema`, valida o resultado e publica os pedidos de imagem no formato da fila existente. A função pública é `generate_video_manifest(script_text: str) -> VideoManifest`, com opções adicionais por argumentos nomeados.
 
 ## SDK e configuração
@@ -86,3 +91,11 @@ Os testes usam o SDK real para conferir a conversão do schema e simulam as resp
 Verificação local: 12 testes do Gemini e os 14 testes de regressão Python passaram. O teste de integração confirmou o consumo dos lotes pelo `process_image_queue.py` real, com a geração de imagem substituída por um provedor falso. O acesso ao modelo e à cota da conta precisa ser validado com a configuração real do usuário.
 
 Referências: [saída estruturada](https://ai.google.dev/gemini-api/docs/structured-output), [RequestOptions do SDK solicitado](https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/docs/api/google/generativeai/types/RequestOptions.md).
+
+## Separação entre plano e geração de imagem
+
+A chamada Gemini usa o provedor/modelo configurado e pode consumir cota/custo.
+O padrão agora salva plano e metadados sem publicar jobs de imagem. Somente após
+revisão do plano, reutilização e orçamento, acrescente `--enqueue-images` à CLI
+ou `enqueue_images=True` à função. Nenhuma chamada real deve ocorrer em CI.
+O manifesto com 21 aliases continua sendo planejamento; não é entrada AiVideo.

@@ -149,7 +149,11 @@ def build(director: dict, voice: VoiceStudio, ffprobe: str, manifests: list[dict
     fps, cursor, scenes, takes, assets = director["fps"], 0, [], [], []
     for scene, request in zip(director["scenes"], image_requests(director), strict=True):
         print(f"Building scene {scene['id']}", file=sys.stderr)
-        image, record = collect_image(request, package / "images", manifests or [], ffprobe, image_generator)
+        cached_image, record = collect_image(request, ROOT / 'output/asset-cache/images', manifests or [], ffprobe, image_generator)
+        image = package / 'images' / cached_image.name
+        image.parent.mkdir(parents=True, exist_ok=True)
+        if not image.exists() or file_digest(image) != record['sha256']:
+            shutil.copyfile(cached_image, image)
         audio = package / (scene["id"] + ".wav")
         voice.narrate(scene["narration_text"], audio, director["voice"]["profile_id"], director["voice"].get("steps", 32))
         (_, _, rate), samples = wav_info(audio)

@@ -1,5 +1,10 @@
 # HyperFrames local integration
 
+> Para novos pedidos, siga primeiro [o procedimento operacional](production-procedure.md).
+> Este guia descreve uma rota específica; suporte, aprovação e escolha de ferramenta
+> são definidos pelo briefing e pela [matriz de compatibilidade](contract-compatibility.md).
+
+
 HyperFrames is an additional renderer for the existing Motion composition contract
 and SQLite media library. Remotion remains the default. VoiceStudio remains the
 narrator; no new paid generation, cloud rendering or publishing is enabled.

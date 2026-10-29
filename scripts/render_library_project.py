@@ -35,7 +35,7 @@ if __name__=='__main__':
     output=a.output.resolve()
     if output.exists():raise ValueError('Output exists; use a new version')
     output.parent.mkdir(parents=True,exist_ok=True)
-    library=Library();lock=library.root/'gpu.lock';library.close()
+    lock=Path(os.getenv('MOTION_GPU_LOCK',str(Path.home()/'MotionLibrary/gpu.lock')));lock.parent.mkdir(parents=True,exist_ok=True)
     with lock.open('x') as f:f.write(json.dumps(dict(pid=os.getpid(),task='render-amf')))
     start=time.perf_counter();preflight=None
     browser=a.browser or Path(os.getenv('MOTION_RENDER_BROWSER',r'C:\Program Files\Google\Chrome\Application\chrome.exe'))

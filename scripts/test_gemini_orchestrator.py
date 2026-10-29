@@ -64,7 +64,7 @@ class GeminiTest(unittest.TestCase):
         self.assertIn("response_schema", converted)
 
     def test_happy_path_saves_plan_and_compatible_image_jobs(self):
-        result = gemini.generate_video_manifest(SCRIPT)
+        result = gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
         self.assertEqual(result["video_type"], "short_9_16")
         self.assertTrue(all(s["image_prompt"].endswith(gemini.VISUAL_SUFFIX) for s in result["scenes"]))
         self.configure.assert_called_once_with(api_key="test-key-never-log", transport="rest")
@@ -83,6 +83,10 @@ class GeminiTest(unittest.TestCase):
         self.assertEqual(set(result), {"video_type", "scenes"})
         self.assertTrue(all(set(s) == {"template_id", "narration_text", "image_prompt"} for s in result["scenes"]))
 
+    def test_default_planning_does_not_publish_generation_jobs(self):
+        gemini.generate_video_manifest(SCRIPT)
+        self.assertFalse((self.root / 'jobs/pending').exists())
+
     def test_retries_transient_quota_and_timeout_errors_then_succeeds(self):
         for exception in (gemini.api_errors.ResourceExhausted, gemini.api_errors.DeadlineExceeded,
                           gemini.api_errors.ServiceUnavailable, gemini.request_errors.Timeout,
@@ -90,7 +94,7 @@ class GeminiTest(unittest.TestCase):
             with self.subTest(exception=exception):
                 self.model.generate_content.reset_mock()
                 self.model.generate_content.side_effect = [exception("test-key-never-log"), response()]
-                gemini.generate_video_manifest(SCRIPT)
+                gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
                 self.assertEqual(self.model.generate_content.call_count, 2)
                 self.sleep.assert_called()
 
@@ -108,7 +112,7 @@ class GeminiTest(unittest.TestCase):
     def test_auth_errors_are_not_retried_or_published(self):
         self.model.generate_content.side_effect = gemini.api_errors.PermissionDenied("URL with test-key-never-log")
         with self.assertRaises(gemini.GeminiOrchestrationError) as caught:
-            gemini.generate_video_manifest(SCRIPT)
+            gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
         self.assertNotIn("test-key-never-log", str(caught.exception))
         self.assertEqual(self.model.generate_content.call_count, 1)
         self.sleep.assert_not_called()
@@ -123,7 +127,7 @@ class GeminiTest(unittest.TestCase):
             with self.subTest(value=value):
                 self.model.generate_content.return_value = value
                 with self.assertRaises(gemini.GeminiOrchestrationError):
-                    gemini.generate_video_manifest(SCRIPT)
+                    gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
                 self.assertFalse((self.root / "jobs").exists())
 
     def test_invalid_templates_extra_fields_and_changed_narration_are_rejected(self):
@@ -154,15 +158,15 @@ class GeminiTest(unittest.TestCase):
             "image_prompt": f"Editorial photograph of cinema camera number {i} in a realistic studio, with warm light and rich material texture."} for i in range(17)]
         script = " ".join(s["narration_text"] for s in value["scenes"])
         self.model.generate_content.return_value = response(value)
-        gemini.generate_video_manifest(script)
+        gemini.generate_video_manifest(script, enqueue_images=True)
         jobs = list((self.root / "jobs" / "pending").glob("*.json"))
         self.assertEqual(sorted(len(json.loads(path.read_text())["images"]) for path in jobs), [1, 8, 8])
         names = {path.name for path in jobs}
-        gemini.generate_video_manifest(script)
+        gemini.generate_video_manifest(script, enqueue_images=True)
         self.assertEqual({path.name for path in (self.root / "jobs" / "pending").glob("*.json")}, names)
 
     def test_existing_image_processor_consumes_generated_jobs(self):
-        gemini.generate_video_manifest(SCRIPT)
+        gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
 
         def fake_generate(prompt, output, width, height, model, seed):
             output.parent.mkdir(parents=True, exist_ok=True)
@@ -188,10 +192,10 @@ class GeminiTest(unittest.TestCase):
                 gemini.generate_video_manifest(SCRIPT, **kwargs)
         with patch.dict("os.environ", {"GEMINI_API_KEY": ""}):
             with self.assertRaises(ValueError):
-                gemini.generate_video_manifest(SCRIPT)
+                gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
         with patch.dict("os.environ", {"GEMINI_MODEL": ""}):
             with self.assertRaises(ValueError):
-                gemini.generate_video_manifest(SCRIPT)
+                gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
         self.factory.assert_not_called()
 
     def test_duplicate_json_properties_and_catalog_drift_are_rejected(self):
@@ -202,7 +206,7 @@ class GeminiTest(unittest.TestCase):
         value["templates"].pop()
         path.write_text(json.dumps(value))
         with self.assertRaises(ValueError):
-            gemini.generate_video_manifest(SCRIPT)
+            gemini.generate_video_manifest(SCRIPT, enqueue_images=True)
         self.factory.assert_not_called()
 
 

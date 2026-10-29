@@ -1,5 +1,10 @@
 # Arquitetura do pipeline
 
+> Para novos pedidos, siga primeiro [o procedimento operacional](production-procedure.md).
+> Este guia descreve uma rota específica; suporte, aprovação e escolha de ferramenta
+> são definidos pelo briefing e pela [matriz de compatibilidade](contract-compatibility.md).
+
+
 O contrato atual aceita Shorts 9:16 de 15–180 s e vídeos 16:9 de 8–30 min. Consulte o [fluxo universal implementado](universal-video-pipeline.md), os schemas em `schemas/` e a composição `AiVideo`. As descrições de demos verticais abaixo documentam também os renderers anteriores.
 
 ## Princípio
